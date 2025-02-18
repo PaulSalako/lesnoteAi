@@ -1,0 +1,5 @@
+.theme-btn {
+  border-radius: 30px;
+  border: 1px solid var(--primary-color);
+  font-size: 1.3rem;
+}

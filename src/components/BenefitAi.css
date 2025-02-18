@@ -1,0 +1,61 @@
+/* General Section Styling */
+.target-audience {
+  color: #fff;
+  padding: 50px 20px;
+}
+.target-audience h2 {
+  text-align: left;
+  font-size: 2.5rem;
+  margin-bottom: 0.51rem;
+  color: var(--text-color);
+}
+.target-audience .b-p {
+  margin-bottom: 4rem;
+  color: var(--text-color);
+}
+/* Grid Layout */
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Audience Card */
+.audience-card {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.audience-card h3 {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.audience-card p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+/* Hover Effect */
+.audience-card:hover {
+  border-color: #8a2be2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .audience-grid {
+    grid-template-columns: 1fr;
+  }
+}
