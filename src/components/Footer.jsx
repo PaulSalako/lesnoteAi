@@ -1,29 +1,37 @@
 // src/components/Footer.jsx
 import React from 'react';
-import './Footer.css';
+import './styles/Footer.css';
 
 function Footer() {
   return (
-    <footer className="footer py-5">
+    <footer className="footer-section">
       <div className="container">
-        <div className="row gy-4">
-          {/* Company Info */}
-          <div className="col-lg-4 col-md-6">
-            <div className="footer-brand mb-4">
-              <h3 className="text-white mb-3">LesNote</h3>
-              <p className="text-light">Learn better, Faster, and smarter using LesNote!</p>
-            </div>
-            <div className="social-links">
-              <a href="#" className="me-3"><i className="bi bi-facebook"></i></a>
-              <a href="#" className="me-3"><i className="bi bi-twitter"></i></a>
-              <a href="#" className="me-3"><i className="bi bi-linkedin"></i></a>
-              <a href="#"><i className="bi bi-instagram"></i></a>
+        <div className="row">
+          {/* Brand Column */}
+          <div className="col-lg-4 mb-4 mb-lg-0">
+            <div className="footer-brand">
+              <h3>LesNote</h3>
+              <p>Learn better, Faster, and smarter using LesNote!</p>
+              <div className="social-links mt-3">
+                <a href="#" className="social-link">
+                  <i className="bi bi-facebook"></i>
+                </a>
+                <a href="#" className="social-link">
+                  <i className="bi bi-twitter"></i>
+                </a>
+                <a href="#" className="social-link">
+                  <i className="bi bi-instagram"></i>
+                </a>
+                <a href="#" className="social-link">
+                  <i className="bi bi-linkedin"></i>
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="col-lg-2 col-md-6">
-            <h5 className="text-white mb-3">Quick Links</h5>
+          <div className="col-sm-6 col-lg-2 mb-4 mb-lg-0">
+            <h5>Quick Links</h5>
             <ul className="footer-links">
               <li><a href="/">Home</a></li>
               <li><a href="/blog">Blog</a></li>
@@ -33,8 +41,8 @@ function Footer() {
           </div>
 
           {/* Legal */}
-          <div className="col-lg-2 col-md-6">
-            <h5 className="text-white mb-3">Legal</h5>
+          <div className="col-sm-6 col-lg-2 mb-4 mb-lg-0">
+            <h5>Legal</h5>
             <ul className="footer-links">
               <li><a href="/terms">Terms of Service</a></li>
               <li><a href="/privacy">Privacy Policy</a></li>
@@ -44,30 +52,42 @@ function Footer() {
           </div>
 
           {/* Contact Us */}
-          <div className="col-lg-4 col-md-6">
-            <h5 className="text-white mb-3">Contact Us</h5>
+          <div className="col-lg-4">
+            <h5>Contact Us</h5>
             <ul className="footer-contact">
               <li>
-                <i className="bi bi-envelope me-2"></i>
-                support@lesnote.com
+                <i className="bi bi-envelope"></i>
+                <span>support@lesnote.com</span>
               </li>
               <li>
-                <i className="bi bi-telephone me-2"></i>
-                +1 (234) 567-8900
+                <i className="bi bi-telephone"></i>
+                <span>+1 (234) 567-8900</span>
               </li>
               <li>
-                <i className="bi bi-geo-alt me-2"></i>
-                123 AI Street, Tech City
+                <i className="bi bi-geo-alt"></i>
+                <span>123 AI Street, Tech City</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="footer-bottom text-center mt-5 pt-4 border-top border-light">
-          <p className="mb-0 text-light">
-            © {new Date().getFullYear()} LesNote. All rights reserved.
-          </p>
+        <div className="footer-bottom">
+          <hr />
+          <div className="row align-items-center">
+            <div className="col-md-6">
+              <p className="mb-0">
+                © {new Date().getFullYear()} LesNote. All rights reserved.
+              </p>
+            </div>
+            <div className="col-md-6 text-md-end">
+              <div className="footer-bottom-links">
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+                <a href="/sitemap">Sitemap</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

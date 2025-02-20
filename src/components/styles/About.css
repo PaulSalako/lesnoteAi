@@ -1,0 +1,38 @@
+/* src/components/styles/About.css */
+.about-section {
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+    padding: 80px 0;
+  }
+  
+  .transform-rotate-2 {
+    transform: rotate(-2deg);
+  }
+  
+  .floating-element-1 {
+    animation: aboutFloating 6s ease-in-out infinite;
+    z-index: 2;
+  }
+  
+  .floating-element-2 {
+    animation: aboutFloating 6s ease-in-out infinite 1s;
+    z-index: 2;
+  }
+  
+  @keyframes aboutFloating {
+    0% { transform: translate(-50%, -50%); }
+    50% { transform: translate(-50%, -60%); }
+    100% { transform: translate(-50%, -50%); }
+  }
+  
+  .about-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  @media (max-width: 991.98px) {
+    .floating-element-1,
+    .floating-element-2 {
+      display: none;
+    }
+  }

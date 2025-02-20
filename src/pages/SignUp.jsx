@@ -1,111 +1,159 @@
+// src/pages/SignUp.jsx
 import { useState } from "react";
-
 import { Link, useNavigate } from "react-router-dom";
 import { getState } from "../contexts/NoteContext";
-import "./SignUp.css";
+import "../styles/SignUp.css";
 
 function SignUp() {
   const { handleSignup } = getState();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
+
   const submitSignup = async (e) => {
     e.preventDefault();
-    const success = await handleSignup(email, password);
+    const success = await handleSignup(formData.email, formData.password);
     if (success) navigate("/verify");
   };
 
   return (
-    <div className="sign_up">
-      <img src="/sign-up.svg" alt="login-image" className="sign-img" />
-      <div className="signup-container">
-        <Link to="/" className="close-btn" >
-          ✖
-        </Link>
-        <h1 className="logo">LesNote</h1>
-        <h2>Create an account</h2>
-        <p className="subtitle">
-          Welcome! Please fill in your details to get started
-        </p>
-
-        <button className="google-btn">
-          <img
-            src="https://img.icons8.com/?size=100&id=V5cGWnc9R4xj&format=png&color=000000"
-            alt="gogle-img"
-          />
-          Continue with Google
-        </button>
-
-        <div className="divider">or</div>
-
-        <form onSubmit={submitSignup}>
-          <div className="name-fields">
-            <div className="input-group">
-              <label>First Name</label>
-              <input type="text" placeholder="First name" required />
+    <div className="signup-wrapper">
+      {/* Left Section - Illustration & Info */}
+      <div className="signup-left">
+        <div className="signup-left-content">
+          <div className="brand-logo">
+            <img src="/lesnotelogo1.png" alt="LesNote Logo" />
+            <span>LesNoteAI</span>
+          </div>
+          <h1>Start Creating Amazing Lesson Notes</h1>
+          <p>Join thousands of teachers who trust LesNoteAI for their lesson planning needs.</p>
+          
+          <div className="feature-list">
+            <div className="feature-item">
+              <i className="bi bi-clock-history"></i>
+              <span>Save 3+ hours per lesson plan</span>
             </div>
-            <div className="input-group">
-              <label>Last Name</label>
-              <input type="text" placeholder="Last name" required />
+            <div className="feature-item">
+              <i className="bi bi-shield-check"></i>
+              <span>AI-powered professional templates</span>
+            </div>
+            <div className="feature-item">
+              <i className="bi bi-lightning-charge"></i>
+              <span>Generate notes in minutes</span>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              required
-            />
+      {/* Right Section - Sign Up Form */}
+      <div className="signup-right">
+        <div className="signup-form-wrapper">
+          <div className="signup-header">
+            <h2>Create Account</h2>
+            <p>Begin your journey to easier lesson planning</p>
           </div>
 
-          <div className="input-group">
-            <label>Password</label>
-            <div className="password-wrapper">
+          <button className="google-signup">
+            <img src="/google-icon.png" alt="Google" />
+            Continue with Google
+          </button>
+
+          <div className="separator">
+            <span>or continue with email</span>
+          </div>
+
+          <form onSubmit={submitSignup}>
+            <div className="form-row">
+              <div className="form-group">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  placeholder="John"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Email</label>
               <input
-                type={passwordVisible ? "text" : "password"}
-                placeholder="Enter your Password"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="john@example.com"
                 required
               />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={togglePasswordVisibility}
-              >
-                {passwordVisible ? "🙈" : "👁"}
-              </button>
             </div>
-          </div>
 
-          <div className="options">
-            <label className="checkbox">
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <a href="#">Forgot Password?</a>
-          </div>
+            <div className="form-group">
+              <label>Password</label>
+              <div className="password-input">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Create a secure password"
+                  required
+                />
+                <button 
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  <i className={`bi bi-${passwordVisible ? 'eye-slash' : 'eye'}`}></i>
+                </button>
+              </div>
+            </div>
 
-          <div className="terms">
-            <label>
-              <input type="checkbox" required />I agree to the{" "}
-              <a href="#">Terms of Use</a> and accept the{" "}
-              <a href="#">privacy policy</a>
-            </label>
-          </div>
+            <div className="terms-check">
+              <label className="checkbox-wrapper">
+                <input type="checkbox" required />
+                <span className="checkmark"></span>
+                <span className="terms-text">
+                  I agree to the <Link to="/terms">Terms of Service</Link> and <Link to="/privacy">Privacy Policy</Link>
+                </span>
+              </label>
+            </div>
 
-          <button type="submit" className="submit-btn">
-            Continue ►
-          </button>
-        </form>
+            <button type="submit" className="signup-button">
+              Create Account
+              <i className="bi bi-arrow-right"></i>
+            </button>
 
-        <p className="signin-text">
-          Already have an account? <Link to="/login">Sign in</Link>
-        </p>
+            <div className="login-link">
+              Already have an account? <Link to="/login">Sign in</Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

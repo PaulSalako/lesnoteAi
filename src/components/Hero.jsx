@@ -1,7 +1,8 @@
 // src/components/Hero.jsx
 import React, { useEffect } from 'react';
 import Typed from 'typed.js';
-import './nav.css';
+// import './nav.css';
+import './styles/Hero.css';
 
 function Hero() {
   // Add typing animation effect
