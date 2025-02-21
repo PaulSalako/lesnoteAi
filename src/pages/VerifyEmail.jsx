@@ -14,7 +14,7 @@ function VerifyEmail() {
     setError(null);
     setSuccess(false);
     const success = await handleVerify(code);
-    if (code.length > 4 || code.length < 4) return null;
+    if (code.length > 6 || code.length < 6) return null;
     if (success) navigate("/login");
   };
 
