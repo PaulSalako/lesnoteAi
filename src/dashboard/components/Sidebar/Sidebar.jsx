@@ -1,15 +1,21 @@
 // src/dashboard/components/Sidebar/Sidebar.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
+  const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredHistory = chatHistory.filter(item => 
+  const filteredHistory = chatHistory.filter(item =>
     item.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.subject.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleHistoryItemClick = (id) => {
+    navigate(`/dashboard/chat/${id}`);
+  };
 
   return (
     <aside className={`dashboard-sidebar ${isOpen ? 'open' : ''}`}>
@@ -26,41 +32,20 @@ function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
       <div className="sidebar-content">
         {/* Navigation Menu */}
         <div className="sidebar-menu">
-          <button className="new-note-btn">
+          <button 
+            className="new-note-btn"
+            onClick={() => navigate('/dashboard/new')}
+          >
             <i className="bi bi-plus-lg"></i>
             New Lesson Note
           </button>
-
-          {/* <div className="menu-section">
-            <div className="menu-header">
-              <span>Quick Links</span>
-            </div>
-            <ul className="menu-items">
-              <li className="active">
-                <i className="bi bi-house"></i>
-                <span>Home</span>
-              </li>
-              <li>
-                <i className="bi bi-files"></i>
-                <span>My Notes</span>
-              </li>
-              <li>
-                <i className="bi bi-star"></i>
-                <span>Favorites</span>
-              </li>
-              <li>
-                <i className="bi bi-trash"></i>
-                <span>Trash</span>
-              </li>
-            </ul>
-          </div> */}
         </div>
 
         {/* History Section */}
         <div className="history-section">
           <div className="section-header">
             <h3>Recent Notes</h3>
-            <button 
+            <button
               className="search-toggle"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             >
@@ -82,10 +67,10 @@ function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
           <div className="history-list">
             {filteredHistory.length > 0 ? (
               filteredHistory.map(item => (
-                <div 
+                <div
                   key={item.id}
                   className="history-item"
-                  onClick={() => onHistoryItemClick(item.id)}
+                  onClick={() => handleHistoryItemClick(item.id)}
                 >
                   <div className="history-item-icon">
                     <i className="bi bi-file-text"></i>

@@ -22,8 +22,8 @@ function Navbar({
       <nav className="dashboard-navbar">
         <div className="navbar-left">
           <div className="brand">
-            <img src="/lesnotelogo1.png" alt="LesNote" className="brand-logo" />
-            <span className="brand-name">LesNoteAI</span>
+            {/* <img src="/lesnotelogo1.png" alt="LesNote" className="brand-logo" /> */}
+            {/* <span className="brand-name">LesNoteAI</span> */}
           </div>
           <button className="menu-button" onClick={onMenuClick}>
             <i className="bi bi-list"></i>

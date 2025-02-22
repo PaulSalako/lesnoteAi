@@ -1,0 +1,27 @@
+/* src/dashboard/DashboardLayout.css */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9ff;
+}
+
+.dashboard-main {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-main.sidebar-open {
+  margin-left: 280px; /* Width of sidebar */
+}
+
+.dashboard-content {
+  padding: 2rem;
+  height: calc(100vh - 70px); /* Subtract navbar height */
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .dashboard-main.sidebar-open {
+      margin-left: 0;
+  }
+}

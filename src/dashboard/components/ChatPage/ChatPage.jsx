@@ -1,8 +1,14 @@
 // src/dashboard/components/ChatPage/ChatPage.jsx
 import { useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './ChatPage.css';
 
-function ChatPage({ onNewPrompt, onSaveAsPdf, onSaveAsImage }) {
+function ChatPage() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const location = useLocation();
+  const noteData = location.state?.noteData;
+
   const [messages, setMessages] = useState([
     // Example message structure
     {
@@ -33,6 +39,24 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
     }
   ]);
 
+  const handleSaveAsPdf = async () => {
+    try {
+      // Implement PDF saving logic here
+      console.log('Saving as PDF...');
+    } catch (error) {
+      console.error('Error saving PDF:', error);
+    }
+  };
+
+  const handleSaveAsImage = async () => {
+    try {
+      // Implement image saving logic here
+      console.log('Saving as Image...');
+    } catch (error) {
+      console.error('Error saving image:', error);
+    }
+  };
+
   return (
     <div className="chat-container">
       {/* Chat Header */}
@@ -46,15 +70,18 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
         </div>
         
         <div className="chat-actions">
-          <button className="action-btn" onClick={onSaveAsPdf}>
+          <button className="action-btn" onClick={handleSaveAsPdf}>
             <i className="bi bi-file-pdf"></i>
             Save as PDF
           </button>
-          <button className="action-btn" onClick={onSaveAsImage}>
+          <button className="action-btn" onClick={handleSaveAsImage}>
             <i className="bi bi-image"></i>
             Save as Image
           </button>
-          <button className="action-btn primary" onClick={onNewPrompt}>
+          <button 
+            className="action-btn primary" 
+            onClick={() => navigate('/dashboard/new')}
+          >
             <i className="bi bi-plus-lg"></i>
             New Note
           </button>
@@ -99,36 +126,21 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
         ))}
       </div>
 
-
-
-     
-      {/* <div className="feedback-section">
-        <p>Was this lesson note helpful?</p>
-        <div className="feedback-buttons">
-          <button className="feedback-btn">
-            <i className="bi bi-hand-thumbs-up"></i>
-            Yes
-          </button>
-          <button className="feedback-btn">
-            <i className="bi bi-hand-thumbs-down"></i>
-            No
-          </button>
-        </div>
-      </div> */}
-
-     
+      {/* Regenerate Section */}
       <div className="regenerate-section">
         <button className="regenerate-btn">
           <i className="bi bi-arrow-clockwise"></i>
           Regenerate Response
         </button>
-        <button className="modify-btn">
+        <button 
+          className="modify-btn"
+          onClick={() => navigate('/dashboard/new')}
+        >
           <i className="bi bi-pencil"></i>
           Modify Prompt
         </button>
       </div>
     </div>
-    
   );
 }
 

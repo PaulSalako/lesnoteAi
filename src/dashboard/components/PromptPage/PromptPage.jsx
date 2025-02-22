@@ -1,8 +1,11 @@
 // src/dashboard/components/PromptPage/PromptPage.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PromptPage.css';
 
-function PromptPage({ onGenerate }) {
+function PromptPage() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     subject: '',
     topic: '',
@@ -11,8 +14,6 @@ function PromptPage({ onGenerate }) {
     duration: '',
     date: new Date().toISOString().split('T')[0]
   });
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,10 +26,22 @@ function PromptPage({ onGenerate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
     try {
-      await onGenerate(formData);
+      // Here you would normally make an API call to generate the note
+      // For now, we'll simulate it with a timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Generate a temporary ID (in real app, this would come from your API)
+      const noteId = Date.now();
+      
+      // Navigate to chat page with the generated note ID
+      navigate(`/dashboard/chat/${noteId}`, { 
+        state: { noteData: formData } 
+      });
     } catch (error) {
       console.error('Error generating note:', error);
+      // Handle error (show error message to user)
     } finally {
       setIsLoading(false);
     }
@@ -150,26 +163,6 @@ function PromptPage({ onGenerate }) {
             </button>
           </div>
         </form>
-
-        
-        {/* <div className="templates-section">
-          <h3>Quick Templates</h3>
-          <div className="template-grid">
-            <div className="template-card">
-              <i className="bi bi-file-text"></i>
-              <span>Basic Template</span>
-            </div>
-            <div className="template-card">
-              <i className="bi bi-graph-up"></i>
-              <span>Interactive</span>
-            </div>
-            <div className="template-card">
-              <i className="bi bi-trophy"></i>
-              <span>Advanced</span>
-            </div>
-          </div>
-        </div> */}
-
       </div>
     </div>
   );

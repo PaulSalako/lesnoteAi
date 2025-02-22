@@ -1,20 +1,18 @@
-// src/pages/Login.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getState } from "../contexts/NoteContext";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import "../styles/Login.css";
 
 function Login() {
-  const { handleLogin } = getState();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
+  
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,22 +20,55 @@ function Login() {
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await handleLogin(formData.email, formData.password);
-    if (success) navigate("/dashboard");
-  };
+    setLoading(true);
+    setError(null);
 
-  const handleGoogleSuccess = async (response) => {
-    const userData = jwtDecode(response.credential);
-    const success = await handleGoogleLogin(userData);
-    if (success) navigate("/dashboard");
-  };
+    try {
+      const response = await fetch("https://localhost:7225/api/Auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData)
+      });
 
-  const handleGoogleFailure = () => {
-    alert("Google Login Failed. Try again!");
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.requiresVerification) {
+          // Store email for verification page
+          localStorage.setItem("email", data.email);
+          navigate("/verify-email");
+          return;
+        }
+        throw new Error(data.message || "Login failed");
+      }
+
+      if (data.success) {
+        // Store token
+        const token = data.token;
+        if (rememberMe) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          sessionStorage.setItem("token", token);
+          sessionStorage.setItem("user", JSON.stringify(data.user));
+        }
+
+        // Navigate to dashboard
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred during login");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,6 +86,12 @@ function Login() {
             <p>Sign in to continue your journey</p>
           </div>
 
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Email</label>
@@ -64,6 +101,7 @@ function Login() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Enter your email"
+                className={error ? 'error' : ''}
                 required
               />
             </div>
@@ -77,6 +115,7 @@ function Login() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Enter your password"
+                  className={error ? 'error' : ''}
                   required
                 />
                 <button 
@@ -104,9 +143,21 @@ function Login() {
               </Link>
             </div>
 
-            <button type="submit" className="login-button">
-              Sign In
-              <i className="bi bi-arrow-right"></i>
+            <button 
+              type="submit" 
+              className="login-button"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading-spinner">
+                  <i className="bi bi-arrow-clockwise"></i>
+                </span>
+              ) : (
+                <>
+                  Sign In
+                  <i className="bi bi-arrow-right"></i>
+                </>
+              )}
             </button>
 
             <div className="signup-link">
