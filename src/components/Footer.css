@@ -1,23 +1,72 @@
-.footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
+/* src/components/Footer.css */
+.footer {
+  background-color: #8a2be2;
+  color: rgba(255, 255, 255, 0.8);
 }
-footer {
-  padding: 3rem;
-  background-color: var(--primary-color);
-  color: #fff;
+
+.footer-brand h3 {
+  font-weight: 700;
 }
-.footer-container ul {
+
+.social-links a {
+  color: white;
+  font-size: 1.2rem;
+  transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+  opacity: 0.8;
+}
+
+.footer-links {
   list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact li {
+  margin-bottom: 1rem;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
 }
-.footer-container ul b {
-  color: #fff;
+
+.footer-contact i {
+  font-size: 1.1rem;
 }
-.footer-container ul li,
-.footer-container {
-  color: #ccc;
+
+.footer-bottom {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+@media (max-width: 767.98px) {
+  .footer-brand {
+    text-align: center;
+  }
+  
+  .social-links {
+    justify-content: center;
+    display: flex;
+    margin-bottom: 2rem;
+  }
 }

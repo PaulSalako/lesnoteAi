@@ -1,0 +1,251 @@
+/* src/dashboard/components/Navbar/Navbar.css */
+.dashboard-navbar {
+  height: 70px;
+  background: white;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+}
+
+.brand-name {
+  font-weight: 600;
+  color: #8a2be2;
+  font-size: 1.2rem;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.menu-button:hover {
+  color: #8a2be2;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Token Display */
+.token-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f4f4f5;
+  padding: 6px 8px;
+  border-radius: 50px;
+}
+
+.token-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  color: #333;
+  font-weight: 500;
+}
+
+.token-count i {
+  color: #ffd700;
+}
+
+.buy-more-btn {
+  background: #8a2be2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.buy-more-btn:hover {
+  background: #7525c5;
+}
+
+/* Profile Section */
+.profile-section {
+  position: relative;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-button:hover {
+  background: #f4f4f5;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  background: #8a2be2;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.profile-name {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Dropdown Styles */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 260px;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #8a2be2;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-details .name {
+  font-weight: 600;
+  color: #333;
+}
+
+.user-details .role {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.dropdown-items {
+  padding: 8px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f4f5;
+}
+
+.dropdown-item.text-danger {
+  color: #dc3545;
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #fff5f5;
+}
+
+.dropdown-divider {
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .brand-name,
+  .profile-name {
+    display: none;
+  }
+  
+  .token-count span {
+    display: none;
+  }
+  
+  .buy-more-btn {
+    padding: 8px 12px;
+  }
+  
+  .profile-dropdown {
+    width: 220px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-navbar {
+    padding: 0 16px;
+  }
+  
+  .navbar-right {
+    gap: 16px;
+  }
+}

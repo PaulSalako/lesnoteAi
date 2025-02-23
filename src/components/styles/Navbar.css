@@ -1,0 +1,78 @@
+/* src/components/nav.css */
+.navbar {
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+  }
+  
+  .navbar.scrolled {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 0.5rem 0;
+  }
+  
+  /* Logo styles */
+  .navbar-brand img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar.scrolled .navbar-brand img {
+    height: 35px;
+  }
+  
+  .nav-link {
+    cursor: pointer;
+    position: relative;
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #8a2be2;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Button styles */
+  .btn {
+    transition: all 0.3s ease;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Make navbar items center-aligned on mobile */
+  @media (max-width: 991.98px) {
+    .navbar-brand img {
+      height: 35px;
+    }
+  
+    .navbar-nav {
+      text-align: center;
+      padding: 1rem 0;
+    }
+  
+    .nav-item {
+      margin: 0.5rem 0;
+    }
+  
+    .btn {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+  
+    .nav-item.ms-lg-2 {
+      margin-left: 0 !important;
+    }
+  }

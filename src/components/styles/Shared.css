@@ -1,0 +1,78 @@
+/* src/components/styles/Shared.css */
+/* Common Button Styles */
+.btn-primary {
+    transition: transform 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Common Card Styles */
+  .card-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card-hover-effect:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Common Colors */
+  :root {
+    --primary-color: #8a2be2;
+    --primary-light: rgba(138, 43, 226, 0.1);
+    --text-dark: #333;
+    --text-muted: #666;
+    --white: #fff;
+  }
+  
+  /* Common Section Styles */
+  .section-padding {
+    padding: 80px 0;
+  }
+  
+  .section-margin {
+    margin: 80px 0;
+  }
+  
+  /* Common Gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  }
+  
+  .gradient-purple {
+    background: linear-gradient(135deg, #8a2be2 0%, #6b1da9 100%);
+  }
+  
+  /* Common Animations */
+  @keyframes floatUp {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .float-animation {
+    animation: floatUp 6s ease-in-out infinite;
+  }
+  
+  /* Common Media Queries */
+  @media (max-width: 991.98px) {
+    .section-padding {
+      padding: 60px 0;
+    }
+    
+    .section-margin {
+      margin: 60px 0;
+    }
+  }
+  
+  @media (max-width: 767.98px) {
+    .section-padding {
+      padding: 40px 0;
+    }
+    
+    .section-margin {
+      margin: 40px 0;
+    }
+  }

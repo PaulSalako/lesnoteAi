@@ -1,0 +1,102 @@
+/* src/components/styles/HowItWorks.css */
+.how-it-works-section {
+    background: linear-gradient(135deg, #8a2be2 0%, #6b1da9 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .step-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .step-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .step-number {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #8a2be2;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 2px solid white;
+  }
+  
+  .icon-wrapper {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+  }
+  
+  .icon-wrapper i {
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .step-title {
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .step-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  
+  .how-it-works-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  @media (max-width: 991.98px) {
+    .step-card {
+      margin-bottom: 2rem;
+    }
+    
+    .icon-wrapper {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .icon-wrapper i {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 767.98px) {
+    .step-card {
+      padding: 1.5rem;
+    }
+  }

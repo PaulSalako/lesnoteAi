@@ -1,0 +1,138 @@
+/* src/components/styles/Footer.css */
+.footer-section {
+    background: #8a2be2;
+    color: white;
+    padding: 80px 0 20px;
+  }
+  
+  /* Brand Styles */
+  .footer-brand h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-brand p {
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Social Links */
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .social-link {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .social-link:hover {
+    background: white;
+    color: #8a2be2;
+    transform: translateY(-3px);
+  }
+  
+  /* Footer Headings */
+  .footer-section h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Footer Links */
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 1rem;
+  }
+  
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: white;
+    padding-left: 5px;
+  }
+  
+  /* Contact Info */
+  .footer-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-contact li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-contact i {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  
+  /* Footer Bottom */
+  .footer-bottom {
+    margin-top: 3rem;
+  }
+  
+  .footer-bottom hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+  }
+  
+  .footer-bottom p {
+    opacity: 0.9;
+  }
+  
+  .footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+  }
+  
+  .footer-bottom-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-bottom-links a:hover {
+    color: white;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 991.98px) {
+    .footer-section {
+      padding: 60px 0 20px;
+    }
+  }
+  
+  @media (max-width: 767.98px) {
+    .footer-bottom-links {
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    
+    .footer-bottom p {
+      text-align: center;
+    }
+  }

@@ -1,0 +1,209 @@
+/* src/dashboard/pages/DashboardHome.css */
+.dashboard-home {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .welcome-section {
+    margin-bottom: 2rem;
+  }
+  
+  .welcome-section h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .welcome-section p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stats-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+  
+  .purple .card-icon {
+    background: #f3e8ff;
+    color: #8a2be2;
+  }
+  
+  .blue .card-icon {
+    background: #e6f3ff;
+    color: #2563eb;
+  }
+  
+  .green .card-icon {
+    background: #ecfdf5;
+    color: #059669;
+  }
+  
+  .card-content h3 {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+  }
+  
+  .value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .action-section {
+    margin-bottom: 2rem;
+  }
+  
+  .create-button {
+    background: #8a2be2;
+    color: white;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .create-button:hover {
+    background: #7525c5;
+  }
+  
+  .recent-notes {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .view-all-button {
+    background: none;
+    border: none;
+    color: #8a2be2;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  
+  .note-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f8f9ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .note-card:hover {
+    background: #f0e6ff;
+  }
+  
+  .note-icon {
+    width: 40px;
+    height: 40px;
+    background: #8a2be2;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .note-details {
+    flex: 1;
+  }
+  
+  .note-details h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .note-details p {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .note-date {
+    font-size: 0.75rem;
+    color: #888;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+  
+  .empty-state i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .notes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
