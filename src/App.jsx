@@ -13,7 +13,7 @@ import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/pages/DashboardHome';
 import PromptPage from './dashboard/components/PromptPage/PromptPage';
 import ChatPage from './dashboard/components/ChatPage/ChatPage';
-
+import AllNotes from './dashboard/components/Notes/AllNotes'; // Fixed naming
 
 function App() {
   const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
@@ -30,13 +30,13 @@ function App() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-
             
             {/* Dashboard Routes */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardHome />} />
               <Route path="new" element={<PromptPage />} />
               <Route path="chat/:id" element={<ChatPage />} />
+              <Route path="notes" element={<AllNotes />} /> {/* Fixed component name */}
             </Route>
           </Routes>
         </BrowserRouter>

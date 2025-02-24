@@ -1,19 +1,58 @@
-// src/dashboard/components/Navbar/Navbar.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BuyTokensModal from '../BuyTokensModal/BuyTokensModal';
 import './Navbar.css';
 
-function Navbar({ 
-  onMenuClick, 
-  userName = "John Doe",
-  userEmail = "john.doe@example.com" // Add email prop with default value
-}) {
+function Navbar({ onMenuClick }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    tokens: 0
+  });
+  
   const navigate = useNavigate();
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const statsResponse = await fetch('https://localhost:7225/api/Dashboard/stats', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!statsResponse.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const statsData = await statsResponse.json();
+        setUserData({
+          name: statsData.userName || 'User',
+          email: JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'))?.Email || '',
+          tokens: statsData.availableTokens || 0
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        if (error.message.includes('unauthorized')) {
+          handleLogout();
+        }
+      }
+    };
+
+    if (token) {
+      fetchUserData();
+    } else {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 
@@ -22,8 +61,8 @@ function Navbar({
       <nav className="dashboard-navbar">
         <div className="navbar-left">
           <div className="brand">
-            {/* <img src="/lesnotelogo1.png" alt="LesNote" className="brand-logo" /> */}
-            {/* <span className="brand-name">LesNoteAI</span> */}
+            <img src="/lesnotelogo1.png" alt="LesNote" className="brand-logo" />
+            <span className="brand-name">LesNoteAI</span>
           </div>
           <button className="menu-button" onClick={onMenuClick}>
             <i className="bi bi-list"></i>
@@ -34,7 +73,7 @@ function Navbar({
           <div className="token-display">
             <div className="token-count">
               <i className="bi bi-coin"></i>
-              <span>20 tokens</span>
+              <span>{userData.tokens} tokens</span>
             </div>
             <button 
               className="buy-more-btn"
@@ -49,8 +88,8 @@ function Navbar({
               className="profile-button"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
-              <div className="profile-avatar">{userName.charAt(0)}</div>
-              <span className="profile-name">{userName}</span>
+              <div className="profile-avatar">{userData.name?.charAt(0).toUpperCase()}</div>
+              <span className="profile-name">{userData.name?.split(" ")[0].charAt(0).toUpperCase() + userData.name?.split(" ")[0].slice(1).toLowerCase()}</span>
               <i className={`bi bi-chevron-${isProfileOpen ? 'up' : 'down'}`}></i>
             </div>
 
@@ -58,13 +97,13 @@ function Navbar({
               <div className="profile-dropdown">
                 <div className="dropdown-header">
                   <div className="user-info">
-                    <div className="user-avatar">{userName.charAt(0)}</div>
+                    <div className="user-avatar">{userData.name?.charAt(0)}</div>
                     <div className="user-details">
-                      <span className="name">{userName}</span>
-                      <span className="role">Teacher</span>
+                      <span className="name">{userData.name}</span>
+                      <span className="email">{userData.email}</span>
                       <span className="token-info-dropdown">
                         <i className="bi bi-coin"></i>
-                        20 tokens available
+                        {userData.tokens} tokens available
                       </span>
                     </div>
                   </div>
@@ -104,7 +143,7 @@ function Navbar({
       <BuyTokensModal 
         isOpen={isTokenModalOpen}
         onClose={() => setIsTokenModalOpen(false)}
-        userEmail={userEmail} // Now properly defined through props
+        userEmail={userData.email}
       />
     </>
   );
