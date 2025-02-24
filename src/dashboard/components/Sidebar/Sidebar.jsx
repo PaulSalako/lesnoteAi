@@ -1,20 +1,68 @@
-// src/dashboard/components/Sidebar/Sidebar.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
-function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
+function Sidebar({ isOpen, onToggle }) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
 
-  const filteredHistory = chatHistory.filter(item =>
-    item.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch('https://localhost:7225/api/Dashboard/recent-notes', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to fetch notes');
+        }
+
+        const data = await response.json();
+        setChatHistory(data);
+      } catch (err) {
+        console.error('Error fetching history:', err);
+        setError(err.message);
+        if (err.message.includes('unauthorized')) {
+          localStorage.clear();
+          sessionStorage.clear();
+          navigate('/login');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchHistory();
+    }
+  }, [token, navigate]);
+
+  const filteredHistory = chatHistory
+    .filter(item =>
+      item.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .slice(0, 3); // Limit to 3 items
 
   const handleHistoryItemClick = (id) => {
     navigate(`/dashboard/chat/${id}`);
+  };
+
+  const handleViewAll = () => {
+    navigate('/dashboard/notes');
   };
 
   return (
@@ -45,12 +93,22 @@ function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
         <div className="history-section">
           <div className="section-header">
             <h3>Recent Notes</h3>
-            <button
-              className="search-toggle"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-            >
-              <i className="bi bi-search"></i>
-            </button>
+            <div className="header-actions">
+              <button
+                className="search-toggle"
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              >
+                <i className="bi bi-search"></i>
+              </button>
+              {chatHistory.length > 3 && (
+                <button
+                  className="view-all-btn"
+                  onClick={handleViewAll}
+                >
+                  View All
+                </button>
+              )}
+            </div>
           </div>
 
           {isSearchOpen && (
@@ -65,26 +123,46 @@ function Sidebar({ isOpen, onToggle, chatHistory = [], onHistoryItemClick }) {
           )}
 
           <div className="history-list">
-            {filteredHistory.length > 0 ? (
-              filteredHistory.map(item => (
-                <div
-                  key={item.id}
-                  className="history-item"
-                  onClick={() => handleHistoryItemClick(item.id)}
-                >
-                  <div className="history-item-icon">
-                    <i className="bi bi-file-text"></i>
-                  </div>
-                  <div className="history-item-content">
-                    <h4>{item.topic}</h4>
-                    <div className="history-item-meta">
-                      <span>{item.subject}</span>
-                      <span>•</span>
-                      <span>{item.date}</span>
+            {loading ? (
+              <div className="loading-state">
+                <i className="bi bi-arrow-clockwise spinning"></i>
+                <p>Loading notes...</p>
+              </div>
+            ) : error ? (
+              <div className="error-state">
+                <i className="bi bi-exclamation-circle"></i>
+                <p>{error}</p>
+              </div>
+            ) : filteredHistory.length > 0 ? (
+              <>
+                {filteredHistory.map(item => (
+                  <div
+                    key={item.id}
+                    className="history-item"
+                    onClick={() => handleHistoryItemClick(item.id)}
+                  >
+                    <div className="history-item-icon">
+                      <i className="bi bi-file-text"></i>
+                    </div>
+                    <div className="history-item-content">
+                      <h4>{item.topic}</h4>
+                      <div className="history-item-meta">
+                        <span>{item.subject}</span>
+                        <span>•</span>
+                        <span>{item.date}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))}
+                {chatHistory.length > 3 && !searchTerm && (
+                  <button 
+                    className="view-all-notes"
+                    onClick={handleViewAll}
+                  >
+                    View all {chatHistory.length} notes
+                  </button>
+                )}
+              </>
             ) : (
               <div className="empty-history">
                 <i className="bi bi-journal-text"></i>
