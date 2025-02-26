@@ -286,7 +286,7 @@ function SignUp() {
 
           <form onSubmit={submitSignup} className="signup-form">
             {/* Profile Image Upload */}
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Profile Picture (optional)</label>
               <div style={{ 
                 display: 'flex', 
@@ -328,7 +328,7 @@ function SignUp() {
                   <span className="error-message">{errors.profileImage}</span>
                 )}
               </div>
-            </div>
+            </div> */}
 
             <div className="form-row">
               <div className="form-group">
