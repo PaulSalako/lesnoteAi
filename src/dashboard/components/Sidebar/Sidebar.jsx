@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
 function Sidebar({ isOpen, onToggle }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -11,6 +12,10 @@ function Sidebar({ isOpen, onToggle }) {
   const [chatHistory, setChatHistory] = useState([]);
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  
+  // Check if we're on the dashboard home page
+  const isHomePage = location.pathname === '/dashboard' || location.pathname === '/dashboard/';
+  const isNotesPage = location.pathname === '/dashboard/notes';
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -80,12 +85,31 @@ function Sidebar({ isOpen, onToggle }) {
       <div className="sidebar-content">
         {/* Navigation Menu */}
         <div className="sidebar-menu">
+          {/* New Note Button at the top */}
           <button 
             className="new-note-btn"
             onClick={() => navigate('/dashboard/new')}
           >
             <i className="bi bi-plus-lg"></i>
             New Lesson Note
+          </button>
+          
+          {/* Home Navigation */}
+          <button 
+            className={`menu-item ${isHomePage ? 'active' : ''}`}
+            onClick={() => navigate('/dashboard')}
+          >
+            <i className="bi bi-house-door"></i>
+            <span>Home</span>
+          </button>
+
+          {/* Notes Navigation */}
+          <button 
+            className={`menu-item ${isNotesPage ? 'active' : ''}`}
+            onClick={() => navigate('/dashboard/notes')}
+          >
+            <i className="bi bi-journal-text"></i>
+            <span>All Notes</span>
           </button>
         </div>
 
@@ -154,14 +178,14 @@ function Sidebar({ isOpen, onToggle }) {
                     </div>
                   </div>
                 ))}
-                {chatHistory.length > 3 && !searchTerm && (
+                {/* {chatHistory.length > 3 && !searchTerm && (
                   <button 
                     className="view-all-notes"
                     onClick={handleViewAll}
                   >
                     View all {chatHistory.length} notes
                   </button>
-                )}
+                )} */}
               </>
             ) : (
               <div className="empty-history">
