@@ -29,10 +29,10 @@ function About() {
                   efficient, engaging, and enjoyable.
                 </p>
               </div>
-              <a href="/sign-up" className="btn btn-primary btn-lg rounded-pill px-5 py-3">
+              {/* <a href="/sign-up" className="btn btn-primary btn-lg rounded-pill px-5 py-3">
                 Start Now
                 <i className="bi bi-arrow-right ms-2"></i>
-              </a>
+              </a> */}
             </div>
           </div>
           
