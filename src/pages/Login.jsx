@@ -87,10 +87,12 @@ function Login() {
             <span>LesNoteAI</span>
           </div>
 
+
           <div className="login-header">
             {/* <h2>Welcome Back!</h2> */}
             <p>Sign in to continue your journey</p>
           </div>
+
 
           {error && (
             <div className="error-message">
