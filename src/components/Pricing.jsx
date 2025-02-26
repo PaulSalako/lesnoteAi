@@ -1,5 +1,5 @@
 // src/components/About.jsx
-import React from 'react';
+// import React from 'react';
 // import './nav.css';
 import './styles/Pricing.css';
 
@@ -137,28 +137,6 @@ function Pricing() {
       </div>
     </div>
 
-    {/* Additional Information */}
-    <div className="row mt-5">
-      <div className="col-lg-8 mx-auto">
-        <div className="pricing-info text-center">
-          <h4 className="mb-4">Why Choose Our Token System?</h4>
-          <div className="d-flex flex-wrap justify-content-center gap-4">
-            <div className="pricing-info-item">
-              <i className="bi bi-wallet2"></i>
-              <span>Pay as you go</span>
-            </div>
-            <div className="pricing-info-item">
-              <i className="bi bi-arrow-repeat"></i>
-              <span>Tokens never expire</span>
-            </div>
-            <div className="pricing-info-item">
-              <i className="bi bi-shield-check"></i>
-              <span>Secure payment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
     
