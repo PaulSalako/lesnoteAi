@@ -1,7 +1,7 @@
-// src/dashboard/components/ChatPage/ChatPage.jsx
+// src/dashboard/components/NoteChatPage/NoteChatPage.jsx
 import { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import './ChatPage.css';
+import './NoteChatPage.css';
 
 function ChatPage() {
   const navigate = useNavigate();

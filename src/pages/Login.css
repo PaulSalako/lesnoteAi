@@ -159,35 +159,61 @@
   .login {
     background-color: #fff;
   }
+}
 
+.error-message {
+  background-color: #fee2e2;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
 
-  .error-message {
-    background-color: #fee2e2;
-    border: 1px solid #dc2626;
-    color: #dc2626;
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
-    text-align: center;
-  }
-  
-  input.error {
-    border-color: #dc2626 !important;
-    background-color: #fee2e2 !important;
-  }
-  
-  .loading-spinner i {
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  .login-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
+input.error {
+  border-color: #dc2626 !important;
+  background-color: #fee2e2 !important;
+}
+
+.loading-spinner i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.back-home-container {
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.back-home-button {
+  display: inline-flex;
+  align-items: center;
+  color: #6b2be4;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.back-home-button:hover {
+  background-color: rgba(107, 43, 228, 0.05);
+  color: #5620c5;
+}
+
+.back-home-button i {
+  margin-right: 8px;
+  font-size: 14px;
 }

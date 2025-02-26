@@ -111,7 +111,7 @@ function Navbar() {
               </a>
             </li>
             <li className="nav-item ms-lg-2">
-              <a href="/login" className="btn btn-success rounded-pill px-4">Login</a>
+              <a href="/sign-in" className="btn btn-success rounded-pill px-4">Login</a>
             </li>
             <li className="nav-item ms-lg-2">
               <a className="btn btn-primary rounded-pill px-4" href="/sign-up">
