@@ -83,13 +83,13 @@ function Benefit() {
     <div className="row mt-5 g-4 stats-container">
       <div className="col-md-4 text-center">
         <div className="stat-item">
-          <h3 className="stat-number">3000+</h3>
+          <h3 className="stat-number">2000+</h3>
           <p className="stat-label">Teachers Using LesNote</p>
         </div>
       </div>
       <div className="col-md-4 text-center">
         <div className="stat-item">
-          <h3 className="stat-number">50,000+</h3>
+          <h3 className="stat-number">20,000+</h3>
           <p className="stat-label">Lessons Generated</p>
         </div>
       </div>
