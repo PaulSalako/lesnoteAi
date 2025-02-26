@@ -30,7 +30,7 @@ function About() {
                 </p>
               </div>
               <a href="/sign-up" className="btn btn-primary btn-lg rounded-pill px-5 py-3">
-                Start Generating
+                Start 
                 <i className="bi bi-arrow-right ms-2"></i>
               </a>
             </div>
