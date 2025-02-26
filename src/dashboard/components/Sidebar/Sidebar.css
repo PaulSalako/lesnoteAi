@@ -61,9 +61,50 @@
   overflow-y: auto;
 }
 
+/* Sidebar Menu */
+.sidebar-menu {
+  padding: 1.5rem 1.5rem 0.75rem;
+}
+
+/* Menu Items */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.menu-item i {
+  font-size: 1.25rem;
+}
+
+.menu-item span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.menu-item:hover {
+  background: #f8f9fa;
+  color: #8a2be2;
+}
+
+.menu-item.active {
+  background: #f0e6ff;
+  color: #8a2be2;
+}
+
 /* New Note Button */
 .new-note-btn {
-  margin: 1.5rem;
+  width: 100%;
   padding: 0.75rem;
   background: #8a2be2;
   color: white;
@@ -76,6 +117,7 @@
   gap: 0.5rem;
   font-weight: 500;
   transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
 }
 
 .new-note-btn:hover {
@@ -84,7 +126,7 @@
 
 /* History Section */
 .history-section {
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0 1rem;
   flex: 1;
   display: flex;
@@ -106,12 +148,32 @@
   margin: 0;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .search-toggle {
   background: none;
   border: none;
   color: #666;
   cursor: pointer;
   padding: 0.5rem;
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #8a2be2;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.view-all-btn:hover {
+  color: #7525c5;
 }
 
 .search-bar {
@@ -187,6 +249,23 @@
   color: #666;
 }
 
+.view-all-notes {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1rem;
+  color: #8a2be2;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.view-all-notes:hover {
+  background: #f0e6ff;
+}
+
 /* Empty State */
 .empty-history {
   padding: 2rem;
@@ -229,44 +308,6 @@
   animation: spin 1s linear infinite;
 }
 
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.view-all-btn {
-  background: none;
-  border: none;
-  color: #8a2be2;
-  font-size: 0.875rem;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.view-all-btn:hover {
-  color: #7525c5;
-}
-
-.view-all-notes {
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 1rem;
-  color: #8a2be2;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 8px;
-  margin-top: 0.5rem;
-}
-
-.view-all-notes:hover {
-  background: #f0e6ff;
-}
-
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -280,5 +321,9 @@
 
   .close-sidebar {
     display: block;
+  }
+  
+  .menu-item {
+    padding: 0.75rem 1rem;
   }
 }
