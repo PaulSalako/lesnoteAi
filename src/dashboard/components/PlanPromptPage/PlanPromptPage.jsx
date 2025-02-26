@@ -1,7 +1,7 @@
-// src/dashboard/components/PromptPage/PromptPage.jsx
+// src/dashboard/components/NotePromptPage/NotePromptPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './PromptPage.css';
+import './PlanPromptPage.css';
 
 function PromptPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ function PromptPage() {
       const noteId = Date.now();
       
       // Navigate to chat page with the generated note ID
-      navigate(`/dashboard/chat/${noteId}`, { 
+      navigate(`/dashboard/plan-chat/${noteId}`, { 
         state: { noteData: formData } 
       });
     } catch (error) {
@@ -50,8 +50,8 @@ function PromptPage() {
   return (
     <div className="prompt-container">
       <div className="prompt-header">
-        <h1>Generate Lesson Note</h1>
-        <p>Fill in the details below to create your lesson note</p>
+        <h1>Generate Lesson Plan</h1>
+        <p>Fill in the details below to create your lesson plan</p>
       </div>
 
       <div className="prompt-content">
@@ -157,7 +157,7 @@ function PromptPage() {
               ) : (
                 <>
                   <i className="bi bi-magic"></i>
-                  Generate Lesson Note
+                  Generate Lesson Plan
                 </>
               )}
             </button>

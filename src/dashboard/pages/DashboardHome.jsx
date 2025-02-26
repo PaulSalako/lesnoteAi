@@ -161,7 +161,7 @@ function DashboardHome() {
       <div className="action-section">
         <button 
           className="create-button"
-          onClick={() => navigate('/dashboard/new')}
+          onClick={() => navigate('/dashboard/lesson-note')}
         >
           <i className="bi bi-plus-lg"></i>
           Create New Note

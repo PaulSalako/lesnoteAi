@@ -76,10 +76,24 @@ function Login() {
       {/* Left Section - Form */}
       <div className="login-left">
         <div className="login-form-wrapper">
+          <div className="back-home-container">
+            <Link to="/" className="back-home-button">
+              <i className="bi bi-arrow-left"></i> Back to Home
+            </Link>
+          </div>
+          
           <div className="brand-logo">
             <img src="/lesnotelogo1.png" alt="LesNote Logo" />
             <span>LesNoteAI</span>
           </div>
+
+
+          <div className="login-header">
+            {/* <h2>Welcome Back!</h2> */}
+            <p>Sign in to continue your journey</p>
+          </div>
+
+
           {error && (
             <div className="error-message">
               {error}
@@ -117,7 +131,7 @@ function Login() {
                   className="toggle-password"
                   onClick={() => setPasswordVisible(!passwordVisible)}
                 >
-                  <i className={`bi bi-${passwordVisible ? 'eye-slash' : 'eye'}`}></i>
+                  <i className={`bi bi-${passwordVisible ? 'eye' : 'eye-slash' }`}></i>
                 </button>
               </div>
             </div>

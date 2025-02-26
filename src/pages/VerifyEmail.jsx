@@ -43,7 +43,7 @@ function VerifyEmail() {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      navigate("/login");
+      navigate("/sign-in");
     }
   }, [navigate]);
 
@@ -133,7 +133,7 @@ function VerifyEmail() {
       if (data.success) {
         setSuccess(true);
         setTimeout(() => {
-          navigate("/login");
+          navigate("/sign-in");
         }, 2000);
       }
     } catch (err) {

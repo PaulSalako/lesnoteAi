@@ -1,7 +1,7 @@
 // App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import { DataProvider } from "./contexts/NoteContext";
+// import { DataProvider } from "./contexts/NoteContext";
 import "./App.css";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -11,17 +11,28 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import VerifyEmail from "./pages/VerifyEmail";
 import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/pages/DashboardHome';
-import PromptPage from './dashboard/components/PromptPage/PromptPage';
-import ChatPage from './dashboard/components/ChatPage/ChatPage';
-import AllNotes from './dashboard/components/Notes/AllNotes'; // Fixed naming
+
+import NotePromptPage from './dashboard/components/NotePromptPage/NotePromptPage';
+import NoteChatPage from './dashboard/components/NoteChatPage/NoteChatPage';
+import AllNotes from './dashboard/components/Notes/AllNotes';
+
+import PlanPromptPage from './dashboard/components/PlanPromptPage/PlanPromptPage';
+import PlanChatPage from './dashboard/components/PlanChatPage/PlanChatPage';
+import AllPlans from './dashboard/components/Plans/AllPlans';
+
+import AssessmentPromptPage from './dashboard/components/AssessmentPromptPage/AssessmentPromptPage';
+import AssessmentChatPage from './dashboard/components/AssessmentChatPage/AssessmentChatPage';
+import AllAssessment from './dashboard/components/Assessment/AllAssessment';
+
+
 
 function App() {
   const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
   const redirectUri = "http://localhost:5173";
 
   return (
-    <GoogleOAuthProvider clientId={clientId} redirectUri={redirectUri}>
-      <DataProvider>
+    
+      
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -34,14 +45,24 @@ function App() {
             {/* Dashboard Routes */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardHome />} />
-              <Route path="new" element={<PromptPage />} />
-              <Route path="chat/:id" element={<ChatPage />} />
-              <Route path="notes" element={<AllNotes />} /> {/* Fixed component name */}
+
+              <Route path="lesson-note" element={<NotePromptPage />} />
+              <Route path="note-chat/:id" element={<NoteChatPage />} />
+              <Route path="notes" element={<AllNotes />} />
+
+              <Route path="lesson-plan" element={<PlanPromptPage />} />
+              <Route path="plan-chat/:id" element={<PlanChatPage />} />
+              <Route path="plans" element={<AllPlans />} />
+
+              <Route path="lesson-assessment" element={<AssessmentPromptPage />} />
+              <Route path="assessment-chat/:id" element={<AssessmentChatPage />} />
+              <Route path="assessments" element={<AllAssessment />} />
+
+
             </Route>
           </Routes>
         </BrowserRouter>
-      </DataProvider>
-    </GoogleOAuthProvider>
+
   );
 }
 
