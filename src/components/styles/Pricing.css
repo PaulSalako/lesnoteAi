@@ -1,0 +1,138 @@
+/* src/components/styles/Pricing.css */
+.pricing-section {
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+  }
+  
+  .pricing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pricing-card.popular {
+    border: 2px solid #8a2be2;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.1);
+  }
+  
+  .pricing-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .pricing-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .pricing-badge {
+    background: #8a2be2;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+  }
+  
+  .pricing-card.popular .pricing-badge {
+    background: #ff6b6b;
+  }
+  
+  .token-amount {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(138, 43, 226, 0.05);
+    border-radius: 15px;
+  }
+  
+  .token-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #8a2be2;
+    display: block;
+  }
+  
+  .token-label {
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  .bonus-text {
+    display: block;
+    font-size: 0.9rem;
+    color: #ff6b6b;
+    margin-top: 0.5rem;
+  }
+  
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+  
+  .pricing-features li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .pricing-features i {
+    font-size: 1.2rem;
+  }
+  
+  /* Pricing Info Section */
+  .pricing-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .pricing-info h4 {
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .pricing-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(138, 43, 226, 0.05);
+    border-radius: 10px;
+  }
+  
+  .pricing-info-item i {
+    color: #8a2be2;
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 991.98px) {
+    .pricing-card {
+      margin-bottom: 2rem;
+    }
+  
+    .token-number {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (max-width: 767.98px) {
+    .pricing-info-item {
+      width: 100%;
+      justify-content: center;
+    }
+  }
