@@ -23,11 +23,11 @@ function LandingPage() {
       <Hero />
       <About/>
       <How_it_work/>
-      <Benefit/>
-      <Testimonials/>
       <Pricing/>
-      <Faqs/>
+      <Testimonials/>
       <Support/>
+      <Benefit/>
+      <Faqs/>
       <Footer />
       <BackToTop />
     </div>
