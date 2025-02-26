@@ -80,12 +80,6 @@ function Login() {
             <img src="/lesnotelogo1.png" alt="LesNote Logo" />
             <span>LesNoteAI</span>
           </div>
-
-          <div className="login-header">
-            <h2>Welcome Back!</h2>
-            <p>Sign in to continue your journey</p>
-          </div>
-
           {error && (
             <div className="error-message">
               {error}
