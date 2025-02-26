@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BuyTokensModal from '../BuyTokensModal/BuyTokensModal';
 import './Navbar.css';
 
 function Navbar({ onMenuClick }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: '',
     email: '',
-    tokens: 0
+    plan: 0 // Default to free plan (0)
   });
   
   const navigate = useNavigate();
@@ -24,16 +23,14 @@ function Navbar({ onMenuClick }) {
             'Content-Type': 'application/json'
           }
         });
-
         if (!statsResponse.ok) {
           throw new Error('Failed to fetch user data');
         }
-
         const statsData = await statsResponse.json();
         setUserData({
           name: statsData.userName || 'User',
           email: JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'))?.Email || '',
-          tokens: statsData.availableTokens || 0
+          plan: statsData.plan || 0
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -42,18 +39,25 @@ function Navbar({ onMenuClick }) {
         }
       }
     };
-
     if (token) {
       fetchUserData();
     } else {
-      navigate('/login');
+      navigate('/sign-in');
     }
   }, [token, navigate]);
 
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
-    navigate('/login');
+    navigate('/sign-in');
+  };
+
+  const getPlanName = (planNumber) => {
+    return planNumber === 1 ? 'Premium' : 'Free';
+  };
+
+  const getPlanIcon = (planNumber) => {
+    return planNumber === 1 ? 'bi-star-fill' : 'bi-star';
   };
 
   return (
@@ -68,21 +72,21 @@ function Navbar({ onMenuClick }) {
             <i className="bi bi-list"></i>
           </button>
         </div>
-
         <div className="navbar-right">
-          <div className="token-display">
-            <div className="token-count">
-              <i className="bi bi-coin"></i>
-              <span>{userData.tokens} tokens</span>
+          <div className="plan-display">
+            <div className="plan-badge">
+              <i className={`bi ${getPlanIcon(userData.plan)}`}></i>
+              <span>{getPlanName(userData.plan)} Plan</span>
             </div>
-            <button 
-              className="buy-more-btn"
-              onClick={() => setIsTokenModalOpen(true)}
-            >
-              Buy More
-            </button>
+            {userData.plan === 0 && (
+              <button 
+                className="upgrade-btn"
+                onClick={() => setIsPlanModalOpen(true)}
+              >
+                Upgrade
+              </button>
+            )}
           </div>
-
           <div className="profile-section">
             <div 
               className="profile-button"
@@ -92,7 +96,6 @@ function Navbar({ onMenuClick }) {
               <span className="profile-name">{userData.name?.split(" ")[0].charAt(0).toUpperCase() + userData.name?.split(" ")[0].slice(1).toLowerCase()}</span>
               <i className={`bi bi-chevron-${isProfileOpen ? 'up' : 'down'}`}></i>
             </div>
-
             {isProfileOpen && (
               <div className="profile-dropdown">
                 <div className="dropdown-header">
@@ -101,9 +104,9 @@ function Navbar({ onMenuClick }) {
                     <div className="user-details">
                       <span className="name">{userData.name}</span>
                       <span className="email">{userData.email}</span>
-                      <span className="token-info-dropdown">
-                        <i className="bi bi-coin"></i>
-                        {userData.tokens} tokens available
+                      <span className="plan-info-dropdown">
+                        <i className={`bi ${getPlanIcon(userData.plan)}`}></i>
+                        {getPlanName(userData.plan)} Plan
                       </span>
                     </div>
                   </div>
@@ -114,16 +117,18 @@ function Navbar({ onMenuClick }) {
                     <i className="bi bi-person"></i>
                     Profile
                   </button>
-                  <button 
-                    className="dropdown-item"
-                    onClick={() => {
-                      setIsProfileOpen(false);
-                      setIsTokenModalOpen(true);
-                    }}
-                  >
-                    <i className="bi bi-coin"></i>
-                    Buy Tokens
-                  </button>
+                  {userData.plan === 0 && (
+                    <button 
+                      className="dropdown-item upgrade-item"
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        setIsPlanModalOpen(true);
+                      }}
+                    >
+                      <i className="bi bi-star"></i>
+                      Upgrade to Premium
+                    </button>
+                  )}
                   <button className="dropdown-item">
                     <i className="bi bi-gear"></i>
                     Settings
@@ -139,14 +144,42 @@ function Navbar({ onMenuClick }) {
           </div>
         </div>
       </nav>
-
-      <BuyTokensModal 
-        isOpen={isTokenModalOpen}
-        onClose={() => setIsTokenModalOpen(false)}
-        userEmail={userData.email}
-      />
+      
+      {/* We'll need to create a PlanUpgradeModal component later */}
+      {isPlanModalOpen && (
+        <PlanUpgradeModal 
+          isOpen={isPlanModalOpen}
+          onClose={() => setIsPlanModalOpen(false)}
+          userEmail={userData.email}
+        />
+      )}
     </>
   );
 }
+
+// Placeholder for PlanUpgradeModal
+// Replace this with your actual modal implementation
+const PlanUpgradeModal = ({ isOpen, onClose, userEmail }) => {
+  if (!isOpen) return null;
+  
+  return (
+    <div className="modal-backdrop">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Upgrade to Premium</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <p>Upgrade your account to access premium features!</p>
+          {/* Add your payment integration here */}
+        </div>
+        <div className="modal-footer">
+          <button className="cancel-button" onClick={onClose}>Cancel</button>
+          <button className="upgrade-button">Upgrade Now</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Navbar;
