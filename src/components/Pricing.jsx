@@ -24,7 +24,7 @@ function Pricing() {
           
           <div className="pricing-body">
             <div className="token-amount">
-              <span className="token-number">20</span>
+              <span className="token-number">100</span>
               <span className="token-label">Tokens</span>
             </div>
             
