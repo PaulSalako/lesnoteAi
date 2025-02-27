@@ -66,7 +66,7 @@ function ForgotPassword() {
                 Please check your spam folder if you don't see the email in your inbox.
               </p>
               <div className="action-buttons">
-                <Link to="/login" className="primary-button">
+                <Link to="/sign-in" className="primary-button">
                   Return to Login
                 </Link>
               </div>
@@ -115,7 +115,7 @@ function ForgotPassword() {
                 </button>
 
                 <div className="back-to-login">
-                  <Link to="/login">
+                  <Link to="/sign-in">
                     <i className="bi bi-arrow-left"></i> Back to Login
                   </Link>
                 </div>
