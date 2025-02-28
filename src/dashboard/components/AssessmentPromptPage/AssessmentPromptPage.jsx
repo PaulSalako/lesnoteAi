@@ -64,7 +64,7 @@ function AssessmentPromptPage() {
       console.log('Success response:', responseData);
       
       // Navigate to assessment view page with the assessment ID
-      navigate(`/dashboard/assessment-chat/${responseData.data.assessmentId}`);
+      navigate(`/dashboard/lesson-assessment-chat/${responseData.data.assessmentId}`);
     } catch (error) {
       console.error('Error creating assessment:', error);
       setError(error.message || 'An error occurred while generating the assessment');

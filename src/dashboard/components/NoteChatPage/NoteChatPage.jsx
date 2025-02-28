@@ -1,6 +1,7 @@
 // src/dashboard/components/NoteChatPage/NoteChatPage.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import './NoteChatPage.css';
 
 function ChatPage() {
@@ -82,7 +83,7 @@ function ChatPage() {
     };
   
     if (id) {
-      fetchLessonNote(); // This line was missing in the previous version
+      fetchLessonNote();
     }
   }, [id]);
 
@@ -143,6 +144,66 @@ function ChatPage() {
     } catch (error) {
       console.error('Error regenerating response:', error);
       setError(error.message || 'An error occurred while regenerating the lesson note');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Function to send a message to the AI
+  const [newMessage, setNewMessage] = useState('');
+  
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+    
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      
+      // Add user message to the UI immediately
+      const userMessageId = `user-${Date.now()}`;
+      setMessages(prev => [
+        ...prev,
+        {
+          id: userMessageId,
+          type: 'user',
+          content: newMessage
+        }
+      ]);
+      
+      // Clear the input field
+      setNewMessage('');
+      
+      // Send message to the API
+      const response = await fetch(`https://localhost:7225/api/LessonNotes/${id}/message`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: newMessage })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to send message');
+      }
+      
+      const data = await response.json();
+      
+      // Add AI response to messages
+      setMessages(prev => [
+        ...prev,
+        {
+          id: data.data.aiMessage.id,
+          type: 'ai',
+          content: data.data.aiMessage.content
+        }
+      ]);
+      
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setError(error.message || 'An error occurred while sending your message');
     } finally {
       setIsLoading(false);
     }
@@ -239,10 +300,20 @@ function ChatPage() {
               </div>
             )}
             
+            {message.type === 'user' && (
+              <div className="message-avatar user-avatar">
+                <i className="bi bi-person"></i>
+              </div>
+            )}
+            
             <div className="message-content">
               {message.type === 'system' ? (
                 <div className="system-message">
                   <i className="bi bi-info-circle"></i>
+                  {message.content}
+                </div>
+              ) : message.type === 'user' ? (
+                <div className="user-message">
                   {message.content}
                 </div>
               ) : (
@@ -257,15 +328,34 @@ function ChatPage() {
                       Copy
                     </button>
                   </div>
-                  <pre className="response-content">
-                    {message.content}
-                  </pre>
+                  <div className="response-content markdown-content">
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </div>
                 </div>
               )}
             </div>
           </div>
         ))}
       </div>
+
+      {/* Message Input */}
+      <form onSubmit={handleSendMessage} className="message-form">
+        <div className="input-container">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Ask a question about this lesson note..."
+            disabled={isLoading}
+          />
+          <button 
+            type="submit" 
+            disabled={isLoading || !newMessage.trim()}
+          >
+            <i className="bi bi-send"></i>
+          </button>
+        </div>
+      </form>
 
       {/* Regenerate Section */}
       <div className="regenerate-section">

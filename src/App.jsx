@@ -27,8 +27,8 @@ import AllAssessment from './dashboard/components/Assessment/AllAssessment';
 
 
 function App() {
-  const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
-  const redirectUri = "http://localhost:5173";
+  // const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
+  // const redirectUri = "http://localhost:5173";
 
   return (
     
