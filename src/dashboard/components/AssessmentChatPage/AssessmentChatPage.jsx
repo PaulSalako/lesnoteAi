@@ -1,48 +1,93 @@
-// src/dashboard/components/NoteChatPage/NoteChatPage.jsx
-import { useState } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+// src/dashboard/components/AssessmentChatPage/AssessmentChatPage.jsx
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './AssessmentChatPage.css';
 
-function ChatPage() {
+function AssessmentChatPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const location = useLocation();
-  const noteData = location.state?.noteData;
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [assessmentData, setAssessmentData] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [regenerating, setRegenerating] = useState(false);
 
-  const [messages, setMessages] = useState([
-    // Example message structure
-    {
-      id: 1,
-      type: 'system',
-      content: 'Your lesson note has been generated.'
-    },
-    {
-      id: 2,
-      type: 'ai',
-      content: `Subject: Mathematics
-Topic: Introduction to Algebra
-Class: JSS 1
-Duration: 40 minutes
-
-Objectives:
-1. Students will understand basic algebraic concepts
-2. Students will be able to identify variables and constants
-3. Students will solve simple algebraic expressions
-
-Materials Needed:
-- Whiteboard and markers
-- Student workbooks
-- Basic calculators
-
-Introduction:
-Begin the lesson by explaining that algebra is a branch of mathematics that uses letters and symbols to represent numbers...`
+  // Fetch the assessment data when the component mounts
+  useEffect(() => {
+    const fetchAssessment = async () => {
+      try {
+        setIsLoading(true);
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error('Authentication token not found. Please log in again.');
+        }
+        
+        console.log('Fetching Assessment. ID:', id);
+        
+        const response = await fetch(`https://localhost:7225/api/Assessments/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to fetch assessment');
+        }
+        
+        const responseData = await response.json();
+        console.log('Fetched Assessment:', responseData);
+        
+        setAssessmentData(responseData);
+        
+        // Transform messages
+        const transformedMessages = [
+          {
+            id: 'system-1',
+            type: 'system',
+            content: 'Your assessment has been generated.'
+          }
+        ];
+        
+        // Add content or messages
+        if (responseData.messages && responseData.messages.length > 0) {
+          responseData.messages.forEach(msg => {
+            transformedMessages.push({
+              id: msg.id,
+              type: msg.role === 'assistant' ? 'ai' : 'user',
+              content: msg.content
+            });
+          });
+        } else if (responseData.content) {
+          transformedMessages.push({
+            id: 'ai-response',
+            type: 'ai',
+            content: responseData.content
+          });
+        }
+        
+        setMessages(transformedMessages);
+      } catch (error) {
+        console.error('Error fetching assessment:', error);
+        setError(error.message || 'An unexpected error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    if (id) {
+      fetchAssessment(); 
     }
-  ]);
+  }, [id]);
 
   const handleSaveAsPdf = async () => {
     try {
       // Implement PDF saving logic here
       console.log('Saving as PDF...');
+      alert('PDF export functionality will be implemented in a future update.');
     } catch (error) {
       console.error('Error saving PDF:', error);
     }
@@ -52,24 +97,116 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
     try {
       // Implement image saving logic here
       console.log('Saving as Image...');
+      alert('Image export functionality will be implemented in a future update.');
     } catch (error) {
       console.error('Error saving image:', error);
     }
   };
 
+  const handleRegenerateAssessment = async () => {
+    try {
+      setRegenerating(true);
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      
+      const response = await fetch(`https://localhost:7225/api/Assessments/regenerate/${id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ modifiedPrompt: '' }) // Empty for standard regeneration
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to regenerate assessment');
+      }
+      
+      const data = await response.json();
+      
+      // Add the new message to the list
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `system-${Date.now()}`,
+          type: 'system',
+          content: 'Assessment has been regenerated.'
+        },
+        {
+          id: `ai-${Date.now()}`,
+          type: 'ai',
+          content: data.data.content
+        }
+      ]);
+      
+    } catch (error) {
+      console.error('Error regenerating assessment:', error);
+      setError(error.message || 'An error occurred while regenerating the assessment');
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
+  // Function to copy text to clipboard
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        alert('Copied to clipboard!');
+      },
+      (err) => {
+        console.error('Could not copy text: ', err);
+      }
+    );
+  };
+
+  if (isLoading && !assessmentData) {
+    return (
+      <div className="loading-container">
+        <div className="spinner">
+          <i className="bi bi-arrow-repeat"></i>
+        </div>
+        <p>Loading assessment...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <i className="bi bi-exclamation-triangle"></i>
+        <h3>Error</h3>
+        <p>{error}</p>
+        <button 
+          className="action-btn primary" 
+          onClick={() => navigate('/dashboard/lesson-assessment')}
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="chat-container">
-      {/* Chat Header */}
-      <div className="chat-header">
-        <div className="chat-title">
-          <h2>Generated Lesson Note</h2>
+    <div className="assessment-chat-container">
+      {/* Assessment Header */}
+      <div className="assessment-header">
+        <div className="assessment-title">
+          <h2>{assessmentData?.topic || 'Generated Assessment'}</h2>
           <span className="status-badge">
             <i className="bi bi-check-circle-fill"></i>
             Complete
           </span>
         </div>
         
-        <div className="chat-actions">
+        <div className="assessment-meta">
+          <span><strong>Subject:</strong> {assessmentData?.subject}</span>
+          <span><strong>Class:</strong> {assessmentData?.class_}</span>
+          <span><strong>Type:</strong> {assessmentData?.assessmentType}</span>
+          <span><strong>Duration:</strong> {assessmentData?.duration}</span>
+          <span><strong>Date:</strong> {assessmentData?.date}</span>
+        </div>
+        
+        <div className="assessment-actions">
           <button className="action-btn" onClick={handleSaveAsPdf}>
             <i className="bi bi-file-pdf"></i>
             Save as PDF
@@ -80,16 +217,16 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
           </button>
           <button 
             className="action-btn primary" 
-            onClick={() => navigate('/dashboard/new')}
+            onClick={() => navigate('/dashboard/lesson-assessment')}
           >
             <i className="bi bi-plus-lg"></i>
-            New Note
+            New Assessment
           </button>
         </div>
       </div>
 
-      {/* Chat Messages */}
-      <div className="chat-messages">
+      {/* Assessment Messages */}
+      <div className="assessment-messages">
         {messages.map((message) => (
           <div 
             key={message.id} 
@@ -111,7 +248,10 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
                 <div className="ai-response">
                   <div className="response-header">
                     <span>AI Response</span>
-                    <button className="copy-btn">
+                    <button 
+                      className="copy-btn"
+                      onClick={() => copyToClipboard(message.content)}
+                    >
                       <i className="bi bi-clipboard"></i>
                       Copy
                     </button>
@@ -128,20 +268,36 @@ Begin the lesson by explaining that algebra is a branch of mathematics that uses
 
       {/* Regenerate Section */}
       <div className="regenerate-section">
-        <button className="regenerate-btn">
-          <i className="bi bi-arrow-clockwise"></i>
-          Regenerate Response
+        <button 
+          className="regenerate-btn"
+          onClick={handleRegenerateAssessment}
+          disabled={regenerating}
+        >
+          {regenerating ? (
+            <>
+              <span className="spinner">
+                <i className="bi bi-arrow-repeat"></i>
+              </span>
+              Processing...
+            </>
+          ) : (
+            <>
+              <i className="bi bi-arrow-clockwise"></i>
+              Regenerate Assessment
+            </>
+          )}
         </button>
         <button 
           className="modify-btn"
-          onClick={() => navigate('/dashboard/new')}
+          onClick={() => navigate('/dashboard/lesson-assessment')}
+          disabled={regenerating}
         >
           <i className="bi bi-pencil"></i>
-          Modify Prompt
+          New Assessment
         </button>
       </div>
     </div>
   );
 }
 
-export default ChatPage;
+export default AssessmentChatPage;

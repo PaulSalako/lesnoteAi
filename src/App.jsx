@@ -51,11 +51,11 @@ function App() {
               <Route path="notes" element={<AllNotes />} />
 
               <Route path="lesson-plan" element={<PlanPromptPage />} />
-              <Route path="plan-chat/:id" element={<PlanChatPage />} />
-              <Route path="plans" element={<AllPlans />} />
+              <Route path="lesson-plan-chat/:id" element={<PlanChatPage />} />
+              <Route path="lesson-plans" element={<AllPlans />} />
 
               <Route path="lesson-assessment" element={<AssessmentPromptPage />} />
-              <Route path="assessment-chat/:id" element={<AssessmentChatPage />} />
+              <Route path="lesson-assessment-chat/:id" element={<AssessmentChatPage />} />
               <Route path="assessments" element={<AllAssessment />} />
 
 

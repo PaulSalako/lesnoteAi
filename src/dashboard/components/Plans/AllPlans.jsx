@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AllPlans.css';
 
-function AllNotes() {
+function AllPlans() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [notes, setNotes] = useState([]);
+  const [plans, setPlans] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [deletingNoteId, setDeletingNoteId] = useState(null);
+  const [deletingPlanId, setDeletingPlanId] = useState(null);
   
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,13 +19,13 @@ function AllNotes() {
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
   useEffect(() => {
-    fetchNotes(currentPage);
+    fetchPlans(currentPage);
   }, [currentPage, pageSize]);
 
-  const fetchNotes = async (page) => {
+  const fetchPlans = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7225/api/Dashboard/all-notes?page=${page}&pageSize=${pageSize}`, {
+      const response = await fetch(`https://localhost:7225/api/Dashboard/all-lesson-plans?page=${page}&pageSize=${pageSize}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -33,11 +33,11 @@ function AllNotes() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch notes');
+        throw new Error('Failed to fetch lesson plans');
       }
 
       const result = await response.json();
-      setNotes(result.data);
+      setPlans(result.data);
       setTotalPages(result.totalPages);
       setTotalCount(result.totalCount);
     } catch (error) {
@@ -47,17 +47,17 @@ function AllNotes() {
     }
   };
 
-  const handleDelete = async (noteId) => {
-    const isConfirmed = window.confirm('Are you sure you want to delete this note? This action cannot be undone.');
+  const handleDelete = async (planId) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this lesson plan? This action cannot be undone.');
     
     if (!isConfirmed) {
       return;
     }
 
-    setDeletingNoteId(noteId);
+    setDeletingPlanId(planId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Dashboard/delete-note/${noteId}`, {
+      const response = await fetch(`https://localhost:7225/api/Dashboard/delete-lesson-plan/${planId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -68,25 +68,25 @@ function AllNotes() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete note');
+        throw new Error(data.message || 'Failed to delete lesson plan');
       }
 
       // Show success message
-      alert('Note deleted successfully');
+      alert('Lesson plan deleted successfully');
       
       // If it's the last item on the current page, go to previous page
-      if (filteredNotes.length === 1 && currentPage > 1) {
+      if (filteredPlans.length === 1 && currentPage > 1) {
         setCurrentPage(prev => prev - 1);
       } else {
         // Otherwise, just refresh the current page
-        fetchNotes(currentPage);
+        fetchPlans(currentPage);
       }
 
     } catch (error) {
-      console.error('Error deleting note:', error);
-      alert(error.message || 'Failed to delete note. Please try again.');
+      console.error('Error deleting lesson plan:', error);
+      alert(error.message || 'Failed to delete lesson plan. Please try again.');
     } finally {
-      setDeletingNoteId(null);
+      setDeletingPlanId(null);
     }
   };
 
@@ -102,16 +102,16 @@ function AllNotes() {
     setCurrentPage(1); // Reset to first page when changing page size
   };
 
-  const filteredNotes = notes.filter(note =>
-    note.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    note.subject.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPlans = plans.filter(plan =>
+    plan.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    plan.subject.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
     return (
       <div className="loading-state">
         <i className="bi bi-arrow-clockwise spinning"></i>
-        <p>Loading notes...</p>
+        <p>Loading lesson plans...</p>
       </div>
     );
   }
@@ -121,7 +121,7 @@ function AllNotes() {
       <div className="error-state">
         <i className="bi bi-exclamation-circle"></i>
         <p>{error}</p>
-        <button onClick={() => fetchNotes(currentPage)} className="retry-button">
+        <button onClick={() => fetchPlans(currentPage)} className="retry-button">
           <i className="bi bi-arrow-clockwise"></i> Retry
         </button>
       </div>
@@ -129,30 +129,30 @@ function AllNotes() {
   }
 
   return (
-    <div className="notes-page">
-      <div className="notes-header">
-        <h1>My Notes</h1>
+    <div className="plans-page">
+      <div className="plans-header">
+        <h1>My Lesson Plans</h1>
         <div className="header-actions">
           <div className="search-bar">
             <i className="bi bi-search"></i>
             <input
               type="text"
-              placeholder="Search notes..."
+              placeholder="Search plans..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <button 
-            className="new-note-btn"
-            onClick={() => navigate('/dashboard/new')}
+            className="new-plan-btn"
+            onClick={() => navigate('/dashboard/lesson-plan-chat')}
           >
             <i className="bi bi-plus-lg"></i>
-            New Note
+            New Lesson Plan
           </button>
         </div>
       </div>
 
-      <div className="notes-table-container">
+      <div className="plans-table-container">
         <div className="table-controls">
           <div className="page-size-selector">
             <label>Show</label>
@@ -166,53 +166,57 @@ function AllNotes() {
           </div>
         </div>
 
-        <table className="notes-table">
+        <table className="plans-table">
           <thead>
             <tr>
               <th>S/N</th>
               <th>Subject</th>
               <th>Topic</th>
+              <th>Class</th>
+              <th>Week</th>
               <th>Created Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredNotes.length > 0 ? (
-              filteredNotes.map((note, index) => (
-                <tr key={note.id}>
+            {filteredPlans.length > 0 ? (
+              filteredPlans.map((plan, index) => (
+                <tr key={plan.id}>
                   <td>{((currentPage - 1) * pageSize) + index + 1}</td>
-                  <td>{note.subject}</td>
-                  <td>{note.topic}</td>
-                  <td>{new Date(note.date).toLocaleDateString()}</td>
+                  <td>{plan.subject}</td>
+                  <td>{plan.topic}</td>
+                  <td>{plan.class_}</td>
+                  <td>{plan.week}</td>
+                  <td>{new Date(plan.createdAt).toLocaleDateString()}</td>
                   <td className="actions-cell">
                     <button 
                       className="view-btn"
-                      onClick={() => navigate(`/dashboard/chat/${note.id}`)}
+                      onClick={() => navigate(`/dashboard/lesson-plan-chat/${plan.id}`)}
                     >
                       <i className="bi bi-eye"></i>
                     </button>
                     <button 
-                      className={`delete-btn ${deletingNoteId === note.id ? 'deleting' : ''}`}
-                      onClick={() => handleDelete(note.id)}
-                      disabled={deletingNoteId === note.id}
+                      className={`delete-btn ${deletingPlanId === plan.id ? 'deleting' : ''}`}
+                      onClick={() => handleDelete(plan.id)}
+                      disabled={deletingPlanId === plan.id}
                     >
-                      <i className={`bi ${deletingNoteId === note.id ? 'bi-hourglass-split' : 'bi-trash'}`}></i>
+                      <i className={`bi ${deletingPlanId === plan.id ? 'bi-hourglass-split' : 'bi-trash'}`}></i>
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="empty-state">
-                  <i className="bi bi-journal-text"></i>
-                  <p>{searchTerm ? 'No matches found' : 'No notes yet'}</p>
+                <td colSpan="7" className="empty-state">
+                  <i className="bi bi-journal-bookmark"></i>
+                  <p>{searchTerm ? 'No matches found' : 'No lesson plans yet'}</p>
                 </td>
               </tr>
             )}
           </tbody>
         </table>
 
-        {notes.length > 0 && (
+        {plans.length > 0 && (
           <div className="pagination-controls">
             <div className="pagination-info">
               Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} entries
@@ -255,4 +259,4 @@ function AllNotes() {
   );
 }
 
-export default AllNotes;
+export default AllPlans;

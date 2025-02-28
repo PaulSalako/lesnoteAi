@@ -71,6 +71,11 @@
   color: #059669;
 }
 
+.red .card-icon {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
 .card-content h3 {
   font-size: 0.875rem;
   color: #666;
@@ -88,6 +93,12 @@
   margin-bottom: 2rem;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .create-button {
   background: #8a2be2;
   color: white;
@@ -99,11 +110,30 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .create-button:hover {
   background: #7525c5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.create-button.lesson-plan {
+  background: #2563eb;
+}
+
+.create-button.lesson-plan:hover {
+  background: #1d4ed8;
+}
+
+.create-button.assessment {
+  background: #ef4444;
+}
+
+.create-button.assessment:hover {
+  background: #dc2626;
 }
 
 /* Recent Notes Section */
@@ -112,6 +142,7 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
 }
 
 .section-header {
@@ -158,11 +189,13 @@
   background: #f8f9ff;
   cursor: pointer;
   transition: all 0.2s ease;
+  border-left: 4px solid #8a2be2;
 }
 
 .note-card:hover {
   background: #f0e6ff;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .note-icon {
@@ -198,6 +231,71 @@
   color: #888;
 }
 
+/* Lesson Plans Section */
+.lesson-plans-section .section-header h2 {
+  color: #2563eb;
+}
+
+.lesson-plans-section .view-all-button {
+  color: #2563eb;
+}
+
+.lesson-plans-section .view-all-button:hover {
+  background: #e6f3ff;
+}
+
+.lesson-plan-card {
+  border-left: 4px solid #2563eb;
+}
+
+.lesson-plan-card:hover {
+  background: #e6f3ff;
+}
+
+.lesson-plan-card .note-icon {
+  background: #2563eb;
+}
+
+/* Assessments Section */
+.assessments-section .section-header h2 {
+  color: #ef4444;
+}
+
+.assessments-section .view-all-button {
+  color: #ef4444;
+}
+
+.assessments-section .view-all-button:hover {
+  background: #fee2e2;
+}
+
+.assessment-card {
+  border-left: 4px solid #ef4444;
+}
+
+.assessment-card:hover {
+  background: #fee2e2;
+}
+
+.assessment-card .note-icon {
+  background: #ef4444;
+}
+
+.assessment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assessment-type {
+  font-size: 0.75rem;
+  color: #ef4444;
+  background: #fee2e2;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
@@ -210,6 +308,14 @@
   margin-bottom: 1rem;
   display: block;
   color: #8a2be2;
+}
+
+.lesson-plans-section .empty-state i {
+  color: #2563eb;
+}
+
+.assessments-section .empty-state i {
+  color: #ef4444;
 }
 
 /* Loading and Error States */
@@ -297,5 +403,9 @@
   .create-button {
       width: 100%;
       justify-content: center;
+  }
+
+  .action-buttons {
+      flex-direction: column;
   }
 }

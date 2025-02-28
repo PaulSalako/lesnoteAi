@@ -1,11 +1,12 @@
-// src/dashboard/components/NotePromptPage/NotePromptPage.jsx
+// src/dashboard/components/PlanPromptPage/PlanPromptPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PlanPromptPage.css';
 
-function PromptPage() {
+function PlanPromptPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     subject: '',
     topic: '',
@@ -26,22 +27,47 @@ function PromptPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
     
     try {
-      // Here you would normally make an API call to generate the note
-      // For now, we'll simulate it with a timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
-      // Generate a temporary ID (in real app, this would come from your API)
-      const noteId = Date.now();
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
       
-      // Navigate to chat page with the generated note ID
-      navigate(`/dashboard/plan-chat/${noteId}`, { 
-        state: { noteData: formData } 
+      console.log("Using token:", token);
+      
+      const response = await fetch('https://localhost:7225/api/LessonPlans', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          subject: formData.subject,
+          topic: formData.topic,
+          class: formData.class,
+          week: formData.week,
+          duration: formData.duration,
+          date: formData.date
+        })
       });
+      
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        console.error('Error response:', responseData);
+        throw new Error(responseData.message || 'Failed to create lesson plan');
+      }
+      
+      console.log('Success response:', responseData);
+      
+      // Navigate to plan view page with the plan ID
+      navigate(`/dashboard/lesson-plan-chat/${responseData.data.planId}`);
     } catch (error) {
-      console.error('Error generating note:', error);
-      // Handle error (show error message to user)
+      console.error('Error creating lesson plan:', error);
+      setError(error.message || 'An error occurred while generating the lesson plan');
     } finally {
       setIsLoading(false);
     }
@@ -55,6 +81,12 @@ function PromptPage() {
       </div>
 
       <div className="prompt-content">
+        {error && (
+          <div className="error-message">
+            <i className="bi bi-exclamation-triangle"></i> {error}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="prompt-form">
           <div className="form-grid">
             {/* Subject */}
@@ -68,6 +100,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., Mathematics"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -82,6 +115,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., Introduction to Algebra"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -96,6 +130,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., JSS 1"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -110,6 +145,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., Week 1"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -124,6 +160,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., 40 minutes"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -137,6 +174,7 @@ function PromptPage() {
                 value={formData.date}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -168,4 +206,4 @@ function PromptPage() {
   );
 }
 
-export default PromptPage;
+export default PlanPromptPage;
