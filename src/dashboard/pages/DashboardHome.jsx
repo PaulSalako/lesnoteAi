@@ -10,9 +10,13 @@ function DashboardHome() {
     availableTokens: 0,
     totalNotes: 0,
     todayNotes: 0,
+    totalLessonPlans: 0,
+    totalAssessments: 0,
     userName: ''
   });
   const [recentNotes, setRecentNotes] = useState([]);
+  const [recentLessonPlans, setRecentLessonPlans] = useState([]);
+  const [recentAssessments, setRecentAssessments] = useState([]);
   
   // Get user info from storage
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -30,8 +34,6 @@ function DashboardHome() {
           'Content-Type': 'application/json'
         };
     
-        console.log('Headers:', headers);
-    
         // Fetch stats
         const statsResponse = await fetch('https://localhost:7225/api/Dashboard/stats', {
           headers: headers,
@@ -48,8 +50,8 @@ function DashboardHome() {
         console.log('Stats data:', statsData);
         setStats(statsData);
 
-        // Fetch recent notes
-        const notesResponse = await fetch('https://localhost:7225/api/Dashboard/recent-notes', {
+        // Fetch recent lesson notes
+        const notesResponse = await fetch('https://localhost:7225/api/Dashboard/recent-notes?limit=6', {
           headers: headers,
           credentials: 'include'
         });
@@ -63,6 +65,40 @@ function DashboardHome() {
         const notesData = await notesResponse.json();
         console.log('Notes data:', notesData);
         setRecentNotes(notesData);
+        
+        // Fetch recent lesson plans
+        const plansResponse = await fetch('https://localhost:7225/api/Dashboard/recent-lesson-plans?limit=6', {
+          headers: headers,
+          credentials: 'include'
+        });
+
+        if (!plansResponse.ok) {
+          const errorData = await plansResponse.json();
+          console.error('Lesson plans error:', errorData);
+          // Don't throw error here, just log it to console - we still want to show the dashboard
+          console.error('Failed to fetch recent lesson plans');
+        } else {
+          const plansData = await plansResponse.json();
+          console.log('Lesson plans data:', plansData);
+          setRecentLessonPlans(plansData);
+        }
+        
+        // Fetch recent assessments
+        const assessmentsResponse = await fetch('https://localhost:7225/api/Dashboard/recent-assessments?limit=6', {
+          headers: headers,
+          credentials: 'include'
+        });
+
+        if (!assessmentsResponse.ok) {
+          const errorData = await assessmentsResponse.json();
+          console.error('Assessments error:', errorData);
+          // Don't throw error here, just log it to console - we still want to show the dashboard
+          console.error('Failed to fetch recent assessments');
+        } else {
+          const assessmentsData = await assessmentsResponse.json();
+          console.log('Assessments data:', assessmentsData);
+          setRecentAssessments(assessmentsData);
+        }
     
       } catch (err) {
         console.error('Full error:', err);
@@ -87,22 +123,22 @@ function DashboardHome() {
 
   const activityCards = [
     {
-      title: "Available Tokens",
-      value: stats.availableTokens,
-      icon: "bi-coin",
+      title: "Lesson Notes",
+      value: stats.totalNotes || stats.totalLessonNotes || 0,
+      icon: "bi-file-text",
       color: "purple"
     },
     {
-      title: "Total Notes",
-      value: stats.totalNotes,
-      icon: "bi-file-text",
+      title: "Lesson Plans",
+      value: stats.totalLessonPlans || 0,
+      icon: "bi-journal-bookmark",
       color: "blue"
     },
     {
-      title: "Today's Notes",
-      value: stats.todayNotes,
-      icon: "bi-calendar-check",
-      color: "green"
+      title: "Assessments",
+      value: stats.totalAssessments || 0,
+      icon: "bi-clipboard-check",
+      color: "red"
     }
   ];
 
@@ -139,7 +175,7 @@ function DashboardHome() {
       {/* Welcome Section */}
       <div className="welcome-section">
         <h1>Welcome back, {stats.userName || 'User'}! 👋</h1>
-        <p>Get started by creating a new lesson note or review your recent notes.</p>
+        <p>Get started by creating new content or review your recent materials.</p>
       </div>
 
       {/* Stats Cards */}
@@ -159,13 +195,31 @@ function DashboardHome() {
 
       {/* Quick Actions */}
       <div className="action-section">
-        <button 
-          className="create-button"
-          onClick={() => navigate('/dashboard/lesson-note')}
-        >
-          <i className="bi bi-plus-lg"></i>
-          Create New Note
-        </button>
+        <div className="action-buttons">
+          <button 
+            className="create-button"
+            onClick={() => navigate('/dashboard/lesson-note')}
+          >
+            <i className="bi bi-file-text"></i>
+            Create Lesson Note
+          </button>
+          
+          <button 
+            className="create-button lesson-plan"
+            onClick={() => navigate('/dashboard/lesson-plan')}
+          >
+            <i className="bi bi-journal-bookmark"></i>
+            Create Lesson Plan
+          </button>
+          
+          <button 
+            className="create-button assessment"
+            onClick={() => navigate('/dashboard/assessment')}
+          >
+            <i className="bi bi-clipboard-check"></i>
+            Create Assessment
+          </button>
+        </div>
       </div>
 
       {/* Recent Notes */}
@@ -186,7 +240,7 @@ function DashboardHome() {
               <div
                 key={note.id}
                 className="note-card"
-                onClick={() => navigate(`/dashboard/chat/${note.id}`)}
+                onClick={() => navigate(`/dashboard/note-chat/${note.id}`)}
               >
                 <div className="note-icon">
                   <i className="bi bi-file-text"></i>
@@ -202,6 +256,87 @@ function DashboardHome() {
             <div className="empty-state">
               <i className="bi bi-journal-text"></i>
               <p>No recent notes found</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Lesson Plans */}
+      <div className="recent-notes lesson-plans-section">
+        <div className="section-header">
+          <h2>Recent Lesson Plans</h2>
+          <button 
+            className="view-all-button"
+            onClick={() => navigate('/dashboard/lesson-plans')}
+          >
+            View All
+          </button>
+        </div>
+
+        <div className="notes-grid">
+          {recentLessonPlans.length > 0 ? (
+            recentLessonPlans.map(plan => (
+              <div
+                key={plan.id}
+                className="note-card lesson-plan-card"
+                onClick={() => navigate(`/dashboard/lesson-plan-chat/${plan.id}`)}
+              >
+                <div className="note-icon">
+                  <i className="bi bi-journal-bookmark"></i>
+                </div>
+                <div className="note-details">
+                  <h4>{plan.subject}</h4>
+                  <p>{plan.topic}</p>
+                  <span className="note-date">{plan.date}</span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="empty-state">
+              <i className="bi bi-journal-bookmark"></i>
+              <p>No recent lesson plans found</p>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Recent Assessments */}
+      <div className="recent-notes assessments-section">
+        <div className="section-header">
+          <h2>Recent Assessments</h2>
+          <button 
+            className="view-all-button"
+            onClick={() => navigate('/dashboard/assessments')}
+          >
+            View All
+          </button>
+        </div>
+
+        <div className="notes-grid">
+          {recentAssessments.length > 0 ? (
+            recentAssessments.map(assessment => (
+              <div
+                key={assessment.id}
+                className="note-card assessment-card"
+                onClick={() => navigate(`/dashboard/lesson-assessment-chat/${assessment.id}`)}
+              >
+                <div className="note-icon">
+                  <i className="bi bi-clipboard-check"></i>
+                </div>
+                <div className="note-details">
+                  <h4>{assessment.subject}</h4>
+                  <p>{assessment.topic}</p>
+                  <div className="assessment-meta">
+                    <span className="assessment-type">{assessment.assessmentType}</span>
+                    <span className="note-date">{assessment.date}</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="empty-state">
+              <i className="bi bi-clipboard-check"></i>
+              <p>No recent assessments found</p>
             </div>
           )}
         </div>

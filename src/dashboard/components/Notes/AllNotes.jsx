@@ -187,7 +187,7 @@ function AllNotes() {
                   <td className="actions-cell">
                     <button 
                       className="view-btn"
-                      onClick={() => navigate(`/dashboard/chat/${note.id}`)}
+                      onClick={() => navigate(`/dashboard/note-chat/${note.id}`)}
                     >
                       <i className="bi bi-eye"></i>
                     </button>

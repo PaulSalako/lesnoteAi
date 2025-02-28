@@ -110,7 +110,7 @@ function Sidebar({ isOpen, onToggle }) {
     .slice(0, 3); // Limit to 3 items
 
   const handleHistoryItemClick = (id) => {
-    navigate(`/dashboard/chat/${id}`);
+    navigate(`/dashboard/note-chat/${id}`);
   };
 
   const handleViewAll = () => {

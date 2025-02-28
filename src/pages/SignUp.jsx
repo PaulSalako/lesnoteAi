@@ -340,7 +340,7 @@ function SignUp() {
             </button>
             
             <div className="login-link">
-              Already have an account? <Link to="/login">Sign in</Link>
+              Already have an account? <Link to="/sign-up">Sign in</Link>
             </div>
           </form>
         </div>

@@ -1,5 +1,5 @@
 /* Main container */
-.notes-page {
+.plans-page {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -8,14 +8,14 @@
 }
 
 /* Header section */
-.notes-header {
+.plans-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.notes-header h1 {
+.plans-header h1 {
   font-size: 2.5rem;
   font-weight: 600;
   color: #333;
@@ -53,12 +53,12 @@
 }
 
 .search-bar input:focus {
-  border-color: #8a2be2;
-  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+  border-color: #2563eb; /* Blue color for plans */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.new-note-btn {
-  background: #8a2be2;
+.new-plan-btn {
+  background: #2563eb; /* Blue color for plans */
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -69,17 +69,17 @@
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(138, 43, 226, 0.2);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
-.new-note-btn:hover {
-  background: #7525c5;
+.new-plan-btn:hover {
+  background: #1d4ed8; /* Darker blue on hover */
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(138, 43, 226, 0.3);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
 }
 
 /* Table container */
-.notes-table-container {
+.plans-table-container {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -116,13 +116,13 @@
 }
 
 /* Table styles */
-.notes-table {
+.plans-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
 
-.notes-table th {
+.plans-table th {
   background: #f8f9fa;
   padding: 1rem 1.5rem;
   font-weight: 600;
@@ -131,14 +131,14 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-.notes-table td {
+.plans-table td {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #f0f0f0;
   color: #444;
 }
 
-.notes-table tr:hover td {
-  background: #f8f9ff;
+.plans-table tr:hover td {
+  background: #f0f7ff; /* Light blue hover for plans */
 }
 
 /* Action buttons */
@@ -160,12 +160,12 @@
 }
 
 .view-btn {
-  color: #8a2be2;
-  background: #f3e8ff;
+  color: #2563eb; /* Blue color for plans */
+  background: #e1effe; /* Light blue background */
 }
 
 .view-btn:hover {
-  background: #e9d5ff;
+  background: #bfdbfe; /* Slightly darker blue on hover */
 }
 
 .delete-btn {
@@ -216,9 +216,9 @@
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: #f3e8ff;
-  border-color: #8a2be2;
-  color: #8a2be2;
+  background: #e1effe; /* Light blue background */
+  border-color: #2563eb; /* Blue border */
+  color: #2563eb; /* Blue text */
 }
 
 .page-info {
@@ -238,7 +238,7 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   display: block;
-  color: #8a2be2;
+  color: #2563eb; /* Blue color for plans */
 }
 
 /* Loading and Error states */
@@ -260,7 +260,7 @@
 .error-state i {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #8a2be2;
+  color: #2563eb; /* Blue color for plans */
 }
 
 .error-state i {
@@ -278,11 +278,11 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .notes-page {
+  .plans-page {
     padding: 1rem;
   }
 
-  .notes-header {
+  .plans-header {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
@@ -319,5 +319,12 @@
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+  
+  /* Make the table scrollable horizontally on small screens */
+  .plans-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }

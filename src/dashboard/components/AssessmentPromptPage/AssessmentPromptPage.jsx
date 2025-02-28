@@ -1,16 +1,17 @@
-// src/dashboard/components/NotePromptPage/NotePromptPage.jsx
+// src/dashboard/components/AssessmentPromptPage/AssessmentPromptPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AssessmentPromptPage.css';
 
-function PromptPage() {
+function AssessmentPromptPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     subject: '',
     topic: '',
     class: '',
-    week: '',
+    assessmentType: 'Quiz', // Default value
     duration: '',
     date: new Date().toISOString().split('T')[0]
   });
@@ -26,22 +27,47 @@ function PromptPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
     
     try {
-      // Here you would normally make an API call to generate the note
-      // For now, we'll simulate it with a timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
-      // Generate a temporary ID (in real app, this would come from your API)
-      const noteId = Date.now();
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
       
-      // Navigate to chat page with the generated note ID
-      navigate(`/dashboard/assessment-chat/${noteId}`, { 
-        state: { noteData: formData } 
+      console.log("Using token:", token);
+      
+      const response = await fetch('https://localhost:7225/api/Assessments', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          subject: formData.subject,
+          topic: formData.topic,
+          class: formData.class,
+          assessmentType: formData.assessmentType,
+          duration: formData.duration,
+          date: formData.date
+        })
       });
+      
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        console.error('Error response:', responseData);
+        throw new Error(responseData.message || 'Failed to create assessment');
+      }
+      
+      console.log('Success response:', responseData);
+      
+      // Navigate to assessment view page with the assessment ID
+      navigate(`/dashboard/assessment-chat/${responseData.data.assessmentId}`);
     } catch (error) {
-      console.error('Error generating note:', error);
-      // Handle error (show error message to user)
+      console.error('Error creating assessment:', error);
+      setError(error.message || 'An error occurred while generating the assessment');
     } finally {
       setIsLoading(false);
     }
@@ -50,11 +76,17 @@ function PromptPage() {
   return (
     <div className="prompt-container">
       <div className="prompt-header">
-        <h1>Generate Lesson Assessment</h1>
-        <p>Fill in the details below to create your lesson note</p>
+        <h1>Generate Assessment</h1>
+        <p>Fill in the details below to create your assessment</p>
       </div>
 
       <div className="prompt-content">
+        {error && (
+          <div className="error-message">
+            <i className="bi bi-exclamation-triangle"></i> {error}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="prompt-form">
           <div className="form-grid">
             {/* Subject */}
@@ -68,6 +100,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., Mathematics"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -82,6 +115,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., Introduction to Algebra"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -96,21 +130,27 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., JSS 1"
                 required
+                disabled={isLoading}
               />
             </div>
 
-            {/* Week */}
+            {/* Assessment Type */}
             <div className="form-group">
-              <label htmlFor="week">Week</label>
-              <input
-                type="text"
-                id="week"
-                name="week"
-                value={formData.week}
+              <label htmlFor="assessmentType">Assessment Type</label>
+              <select
+                id="assessmentType"
+                name="assessmentType"
+                value={formData.assessmentType}
                 onChange={handleInputChange}
-                placeholder="e.g., Week 1"
                 required
-              />
+                disabled={isLoading}
+              >
+                <option value="Quiz">Quiz</option>
+                <option value="Test">Test</option>
+                <option value="Exam">Exam</option>
+                <option value="Assignment">Assignment</option>
+                <option value="Project">Project</option>
+              </select>
             </div>
 
             {/* Duration */}
@@ -124,6 +164,7 @@ function PromptPage() {
                 onChange={handleInputChange}
                 placeholder="e.g., 40 minutes"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -137,6 +178,7 @@ function PromptPage() {
                 value={formData.date}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -144,7 +186,7 @@ function PromptPage() {
           <div className="form-actions">
             <button 
               type="submit" 
-              className="generate-btn"
+              className="generate-btn assessment-btn"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -157,7 +199,7 @@ function PromptPage() {
               ) : (
                 <>
                   <i className="bi bi-magic"></i>
-                  Generate Lesson Note
+                  Generate Assessment
                 </>
               )}
             </button>
@@ -168,4 +210,4 @@ function PromptPage() {
   );
 }
 
-export default PromptPage;
+export default AssessmentPromptPage;
