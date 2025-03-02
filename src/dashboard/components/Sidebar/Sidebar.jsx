@@ -224,8 +224,8 @@ function Sidebar({ isOpen, onToggle }) {
               {expandedCategories.browse && (
                 <div className="category-content">
                   <button 
-                    className={`menu-item ${location.pathname.includes('/view-lesson-notes') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('view-lesson-notes')}
+                    className={`menu-item ${location.pathname.includes('/notes') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
+                    onClick={() => handlePremiumFeatureClick('notes')}
                   >
                     <i className="bi bi-journal-text"></i>
                     <span>Lesson Notes</span>
@@ -233,8 +233,8 @@ function Sidebar({ isOpen, onToggle }) {
                   </button>
 
                   <button 
-                    className={`menu-item ${location.pathname.includes('/view-lesson-plan') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('view-lesson-plan')}
+                    className={`menu-item ${location.pathname.includes('/lesson-plans') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
+                    onClick={() => handlePremiumFeatureClick('lesson-plans')}
                   >
                     <i className="bi bi-file-earmark-text"></i>
                     <span>Lesson Plans</span>
@@ -242,8 +242,8 @@ function Sidebar({ isOpen, onToggle }) {
                   </button>
 
                   <button 
-                    className={`menu-item ${location.pathname.includes('/view-assessment') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('view-assessment')}
+                    className={`menu-item ${location.pathname.includes('/assessments') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
+                    onClick={() => handlePremiumFeatureClick('assessments')}
                   >
                     <i className="bi bi-card-checklist"></i>
                     <span>Assessments</span>

@@ -116,6 +116,11 @@
   font-size: 1.25rem;
 }
 
+.user-avatar {
+  background: #e9ecef;
+  color: #495057;
+}
+
 .message-content {
   flex: 1;
 }
@@ -128,6 +133,14 @@
   background: #f8f9fa;
   border-radius: 8px;
   color: #666;
+}
+
+.user-message {
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
 }
 
 .ai-response {
@@ -163,51 +176,168 @@
 }
 
 .response-content {
-  padding: 1.5rem;
+  padding: 1rem;
   margin: 0;
-  white-space: pre-wrap;
-  font-family: inherit;
   color: #333;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
-/* Feedback Section */
-.feedback-section {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
+/* Markdown Content Styling with Reduced Spacing */
+.markdown-content {
+  padding: 1rem;
+  color: #333;
+  line-height: 1.3;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 0.7rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.markdown-content h1 {
+  font-size: 1.6em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.2em;
+}
+
+.markdown-content h2 {
+  font-size: 1.4em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.2em;
+}
+
+.markdown-content h3 {
+  font-size: 1.2em;
+}
+
+.markdown-content p {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+/* Add a style for consecutive paragraphs to reduce spacing */
+.markdown-content p + p {
+  margin-top: -0.1rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+.markdown-content li {
+  margin: 0.1rem 0;
+}
+
+.markdown-content li p {
+  margin-bottom: 0.2rem;
+}
+
+.markdown-content li + li {
+  margin-top: 0.05rem;
+}
+
+.markdown-content code {
+  padding: 0.1em 0.3em;
+  margin: 0;
+  background-color: rgba(27,31,35,0.05);
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.markdown-content pre {
+  padding: 0.75rem;
+  overflow: auto;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+  margin: 0 0 0.5rem;
+  padding: 0 0.75rem;
+  color: #6a737d;
+  border-left: 0.25rem solid #dfe2e5;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid #dfe2e5;
+}
+
+.markdown-content table th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+/* Adjust spacing between main content sections */
+.markdown-content hr {
+  margin: 0.4rem 0;
+  border: 0;
+  border-top: 1px solid #eaecef;
+}
+
+/* Message Form */
+.message-form {
   margin-bottom: 2rem;
+}
+
+.input-container {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.feedback-section p {
-  margin: 0 0 1rem 0;
-  color: #666;
+.input-container input {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
 }
 
-.feedback-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.feedback-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #eee;
-  border-radius: 8px;
-  background: white;
-  color: #333;
+.input-container button {
+  border: none;
+  background: #2563eb; /* Blue for plans */
+  color: white;
+  padding: 0 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.feedback-btn:hover {
-  border-color: #2563eb; /* Blue for plans */
-  color: #2563eb; /* Blue for plans */
+.input-container button:hover {
+  background: #1d4ed8; /* Darker blue on hover */
+}
+
+.input-container button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
 }
 
 /* Regenerate Section */
@@ -215,6 +345,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
 .regenerate-btn,
@@ -239,6 +370,11 @@
   background: #1d4ed8; /* Darker blue on hover */
 }
 
+.regenerate-btn:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
 .modify-btn {
   background: #f8f9fa;
   color: #333;
@@ -246,6 +382,11 @@
 
 .modify-btn:hover {
   background: #e9ecef;
+}
+
+.modify-btn:disabled {
+  color: #999;
+  cursor: not-allowed;
 }
 
 /* Loading and Error States */

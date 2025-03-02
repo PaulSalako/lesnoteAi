@@ -24,11 +24,14 @@ import AssessmentPromptPage from './dashboard/components/AssessmentPromptPage/As
 import AssessmentChatPage from './dashboard/components/AssessmentChatPage/AssessmentChatPage';
 import AllAssessment from './dashboard/components/Assessment/AllAssessment';
 
+import AIChatSupport from './dashboard/components/AIChatSupport/AIChatSupport';
+
+
 
 
 function App() {
-  const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
-  const redirectUri = "http://localhost:5173";
+  // const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
+  // const redirectUri = "http://localhost:5173";
 
   return (
     
@@ -57,6 +60,8 @@ function App() {
               <Route path="lesson-assessment" element={<AssessmentPromptPage />} />
               <Route path="lesson-assessment-chat/:id" element={<AssessmentChatPage />} />
               <Route path="assessments" element={<AllAssessment />} />
+
+              <Route path="ai-chat" element={<AIChatSupport />} />
 
 
             </Route>
