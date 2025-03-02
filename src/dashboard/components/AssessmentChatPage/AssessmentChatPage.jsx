@@ -14,6 +14,48 @@ function AssessmentChatPage() {
   const [regenerating, setRegenerating] = useState(false);
   const [newMessage, setNewMessage] = useState('');
 
+  // Check for premium user on component mount
+  useEffect(() => {
+    const checkUserPremiumStatus = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (!token) {
+          // If no token, redirect to login
+          navigate('/login');
+          return;
+        }
+        
+        // Using the dashboard/stats endpoint to check plan status
+        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        
+        const userData = await response.json();
+        
+        // Check if user is premium (plan === 1)
+        if (userData.plan !== 1) {
+          // Redirect non-premium users back to dashboard
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Error checking premium status:', error);
+        // Redirect to dashboard on any error
+        navigate('/dashboard');
+      }
+    };
+    
+    checkUserPremiumStatus();
+  }, [navigate]);
+
   // Fetch the assessment data when the component mounts
   useEffect(() => {
     const fetchAssessment = async () => {

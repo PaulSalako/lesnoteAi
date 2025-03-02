@@ -17,19 +17,38 @@ function Navbar({ onMenuClick }) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Fetch user profile data which should include email
+        const profileResponse = await fetch('https://localhost:7225/api/Dashboard/user-profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!profileResponse.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        
+        const profileData = await profileResponse.json();
+        
+        // Fetch stats data for plan information
         const statsResponse = await fetch('https://localhost:7225/api/Dashboard/stats', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
+        
         if (!statsResponse.ok) {
-          throw new Error('Failed to fetch user data');
+          throw new Error('Failed to fetch user stats');
         }
+        
         const statsData = await statsResponse.json();
+        
+        // Combine data from both endpoints
         setUserData({
-          name: statsData.userName || 'User',
-          email: JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'))?.Email || '',
+          name: statsData.userName || profileData.firstName + ' ' + profileData.surname || 'User',
+          email: profileData.email || '', // Get email from profile endpoint
           plan: statsData.plan || 0
         });
       } catch (error) {
@@ -39,6 +58,7 @@ function Navbar({ onMenuClick }) {
         }
       }
     };
+    
     if (token) {
       fetchUserData();
     } else {
@@ -64,10 +84,10 @@ function Navbar({ onMenuClick }) {
     <>
       <nav className="dashboard-navbar">
         <div className="navbar-left">
-          <div className="brand">
+          {/* <div className="brand">
             <img src="/lesnotelogo1.png" alt="LesNote" className="brand-logo" />
             <span className="brand-name">LesNoteAI</span>
-          </div>
+          </div> */}
           <button className="menu-button" onClick={onMenuClick}>
             <i className="bi bi-list"></i>
           </button>
@@ -129,10 +149,10 @@ function Navbar({ onMenuClick }) {
                       Upgrade to Premium
                     </button>
                   )}
-                  <button className="dropdown-item">
+                  {/* <button className="dropdown-item">
                     <i className="bi bi-gear"></i>
                     Settings
-                  </button>
+                  </button> */}
                   <hr className="dropdown-divider" />
                   <button className="dropdown-item text-danger" onClick={handleLogout}>
                     <i className="bi bi-box-arrow-right"></i>
@@ -171,6 +191,7 @@ const PlanUpgradeModal = ({ isOpen, onClose, userEmail }) => {
         </div>
         <div className="modal-body">
           <p>Upgrade your account to access premium features!</p>
+          <p>Email: {userEmail}</p>
           {/* Add your payment integration here */}
         </div>
         <div className="modal-footer">

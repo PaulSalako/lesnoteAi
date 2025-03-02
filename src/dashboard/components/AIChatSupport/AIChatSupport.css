@@ -1,3 +1,4 @@
+/* Chat Support Button */
 .chat-support-button {
   position: fixed;
   bottom: 30px;
@@ -29,6 +30,7 @@
   transform: rotate(90deg);
 }
 
+/* Chat Window */
 .chat-support-window {
   position: fixed;
   bottom: 100px;
@@ -54,6 +56,7 @@
   visibility: visible;
 }
 
+/* Header Styles */
 .chat-support-header {
   display: flex;
   justify-content: space-between;
@@ -71,6 +74,82 @@
   font-weight: 600;
 }
 
+/* Header actions container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Clear chat button */
+.clear-chat-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.clear-chat-btn:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.clear-chat-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-chat-btn.confirm {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.clear-chat-btn.loading {
+  pointer-events: none;
+}
+
+/* Cancel clear button */
+.cancel-clear-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.cancel-clear-btn:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Confirmation banner */
+.clear-chat-confirm-banner {
+  padding: 10px 15px;
+  background-color: #ffebee;
+  color: #d32f2f;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clear-chat-confirm-banner i {
+  font-size: 16px;
+}
+
 .chat-close-btn {
   background: none;
   border: none;
@@ -83,6 +162,7 @@
   justify-content: center;
 }
 
+/* Messages Area */
 .chat-support-messages {
   flex: 1;
   padding: 15px;
@@ -139,6 +219,7 @@
   border-top-right-radius: 4px;
 }
 
+/* Typing Animation */
 .chat-bubble.typing {
   display: flex;
   align-items: center;
@@ -176,6 +257,17 @@
   }
 }
 
+/* Spinning Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Input Area */
 .chat-support-input {
   display: flex;
   padding: 10px 15px;
@@ -391,6 +483,7 @@
   font-weight: 600;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
   .chat-support-button {
     bottom: 20px;

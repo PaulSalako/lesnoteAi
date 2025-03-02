@@ -1,5 +1,5 @@
 // src/dashboard/components/AssessmentPromptPage/AssessmentPromptPage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AssessmentPromptPage.css';
 
@@ -15,6 +15,48 @@ function AssessmentPromptPage() {
     duration: '',
     date: new Date().toISOString().split('T')[0]
   });
+
+  // Check for premium user on component mount
+  useEffect(() => {
+    const checkUserPremiumStatus = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (!token) {
+          // If no token, redirect to login
+          navigate('/login');
+          return;
+        }
+        
+        // Using the dashboard/stats endpoint to check plan status
+        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        
+        const userData = await response.json();
+        
+        // Check if user is premium (plan === 1)
+        if (userData.plan !== 1) {
+          // Redirect non-premium users back to dashboard
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Error checking premium status:', error);
+        // Redirect to dashboard on any error
+        navigate('/dashboard');
+      }
+    };
+    
+    checkUserPremiumStatus();
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -122,16 +164,34 @@ function AssessmentPromptPage() {
             {/* Class */}
             <div className="form-group">
               <label htmlFor="class">Class</label>
-              <input
-                type="text"
+              <select
                 id="class"
                 name="class"
                 value={formData.class}
                 onChange={handleInputChange}
-                placeholder="e.g., JSS 1"
                 required
                 disabled={isLoading}
-              />
+              >
+                <option value="">Select Class</option>
+                <optgroup label="Primary">
+                  <option value="Primary 1">Primary 1</option>
+                  <option value="Primary 2">Primary 2</option>
+                  <option value="Primary 3">Primary 3</option>
+                  <option value="Primary 4">Primary 4</option>
+                  <option value="Primary 5">Primary 5</option>
+                  <option value="Primary 6">Primary 6</option>
+                </optgroup>
+                <optgroup label="Junior Secondary">
+                  <option value="JSS 1">JSS 1</option>
+                  <option value="JSS 2">JSS 2</option>
+                  <option value="JSS 3">JSS 3</option>
+                </optgroup>
+                <optgroup label="Senior Secondary">
+                  <option value="SS 1">SS 1</option>
+                  <option value="SS 2">SS 2</option>
+                  <option value="SS 3">SS 3</option>
+                </optgroup>
+              </select>
             </div>
 
             {/* Assessment Type */}
@@ -145,27 +205,42 @@ function AssessmentPromptPage() {
                 required
                 disabled={isLoading}
               >
+                <option value="">Select Assessment Type</option>
                 <option value="Quiz">Quiz</option>
                 <option value="Test">Test</option>
                 <option value="Exam">Exam</option>
                 <option value="Assignment">Assignment</option>
                 <option value="Project">Project</option>
+                <option value="Practical">Practical</option>
+                <option value="Oral Presentation">Oral Presentation</option>
               </select>
             </div>
 
             {/* Duration */}
             <div className="form-group">
               <label htmlFor="duration">Duration</label>
-              <input
-                type="text"
+              <select
                 id="duration"
                 name="duration"
                 value={formData.duration}
                 onChange={handleInputChange}
-                placeholder="e.g., 40 minutes"
                 required
                 disabled={isLoading}
-              />
+              >
+                <option value="">Select Duration</option>
+                {[10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 90, 120].map((minutes) => (
+                  <option 
+                    key={minutes} 
+                    value={`${minutes} minutes`}
+                  >
+                    {minutes} minutes{
+                      minutes === 60 ? ' (1 hour)' : 
+                      minutes === 90 ? ' (1.5 hours)' : 
+                      minutes === 120 ? ' (2 hours)' : ''
+                    }
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Date */}
