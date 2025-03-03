@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AllNotes.css';
 
@@ -17,6 +17,14 @@ function AllNotes() {
   const [totalCount, setTotalCount] = useState(0);
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  // Memoized filtered notes to prevent unnecessary recalculations
+  const filteredNotes = useMemo(() => {
+    return notes.filter(note =>
+      note.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [notes, searchTerm]);
 
   // Check for premium user on component mount
   useEffect(() => {
@@ -61,28 +69,69 @@ function AllNotes() {
   }, [navigate]);
 
   useEffect(() => {
-    fetchNotes(currentPage);
-  }, [currentPage, pageSize]);
+    if (token) {
+      fetchNotes(currentPage);
+    }
+  }, [currentPage, pageSize, token]);
+
+  // Log notes after they're set to help diagnose rendering issue
+  useEffect(() => {
+    console.log('Current notes:', notes);
+    console.log('Filtered notes:', filteredNotes);
+  }, [notes, filteredNotes]);
 
   const fetchNotes = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7225/api/Dashboard/all-notes?page=${page}&pageSize=${pageSize}`, {
+      // Log token for debugging
+      console.log('Fetching notes with token:', token);
+      console.log('Page:', page, 'Page Size:', pageSize);
+
+      const response = await fetch(`https://localhost:7225/api/LessonNotes?page=${page}&pageSize=${pageSize}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
+        // Log the full error response
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
         throw new Error('Failed to fetch notes');
       }
 
       const result = await response.json();
-      setNotes(result.data);
-      setTotalPages(result.totalPages);
-      setTotalCount(result.totalCount);
+      
+      // DEBUGGING: Log the full result object
+      console.log('FULL Fetched notes result:', JSON.stringify(result, null, 2));
+
+      // Log the specific properties of the result
+      console.log('Result properties:', {
+        hasData: !!result.data,
+        dataLength: result.data ? result.data.length : 'No data',
+        dataType: typeof result.data
+      });
+
+      // Robust data setting with additional checks
+      const notesData = result.data && Array.isArray(result.data) 
+        ? result.data.map(note => ({
+            ...note,
+            date: note.createdAt // Use createdAt as the date if date is not present
+          }))
+        : [];
+
+      setNotes(notesData);
+      setTotalPages(result.totalPages || 1);
+      setTotalCount(result.totalCount || 0);
+
+      // Additional logging
+      console.log('Notes set:', notesData);
     } catch (error) {
+      console.error('Error in fetchNotes:', error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -99,7 +148,7 @@ function AllNotes() {
     setDeletingNoteId(noteId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Dashboard/delete-note/${noteId}`, {
+      const response = await fetch(`https://localhost:7225/api/LessonNotes/${noteId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -107,10 +156,10 @@ function AllNotes() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete note');
+        // Try to parse error message if possible
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to delete note');
       }
 
       // Show success message
@@ -143,11 +192,6 @@ function AllNotes() {
     setPageSize(newSize);
     setCurrentPage(1); // Reset to first page when changing page size
   };
-
-  const filteredNotes = notes.filter(note =>
-    note.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    note.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   if (loading) {
     return (
@@ -219,7 +263,12 @@ function AllNotes() {
             </tr>
           </thead>
           <tbody>
-            {filteredNotes.length > 0 ? (
+            {console.log('Notes rendering:', {
+              notes, 
+              filteredNotes, 
+              filteredNotesLength: filteredNotes.length, 
+              searchTerm
+            }) || filteredNotes.length > 0 ? (
               filteredNotes.map((note, index) => (
                 <tr key={note.id}>
                   <td>{((currentPage - 1) * pageSize) + index + 1}</td>

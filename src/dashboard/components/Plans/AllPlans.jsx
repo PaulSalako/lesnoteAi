@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AllPlans.css';
 
@@ -17,6 +17,14 @@ function AllPlans() {
   const [totalCount, setTotalCount] = useState(0);
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  // Memoized filtered plans to prevent unnecessary recalculations
+  const filteredPlans = useMemo(() => {
+    return plans.filter(plan =>
+      plan.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      plan.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [plans, searchTerm]);
 
   // Check for premium user on component mount
   useEffect(() => {
@@ -61,13 +69,16 @@ function AllPlans() {
   }, [navigate]);
 
   useEffect(() => {
-    fetchPlans(currentPage);
-  }, [currentPage, pageSize]);
+    if (token) {
+      fetchPlans(currentPage);
+    }
+  }, [currentPage, pageSize, token]);
 
   const fetchPlans = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7225/api/Dashboard/all-lesson-plans?page=${page}&pageSize=${pageSize}`, {
+      const response = await fetch(`https://localhost:7225/api/LessonPlans?page=${page}&pageSize=${pageSize}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -75,14 +86,19 @@ function AllPlans() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch lesson plans');
+        // Try to parse error message
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to fetch lesson plans');
       }
 
       const result = await response.json();
+      
+      // Set plans with mapped data
       setPlans(result.data);
       setTotalPages(result.totalPages);
       setTotalCount(result.totalCount);
     } catch (error) {
+      console.error('Error fetching lesson plans:', error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -99,7 +115,7 @@ function AllPlans() {
     setDeletingPlanId(planId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Dashboard/delete-lesson-plan/${planId}`, {
+      const response = await fetch(`https://localhost:7225/api/LessonPlans/${planId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -107,10 +123,10 @@ function AllPlans() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete lesson plan');
+        // Try to parse error message
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to delete lesson plan');
       }
 
       // Show success message
@@ -143,11 +159,6 @@ function AllPlans() {
     setPageSize(newSize);
     setCurrentPage(1); // Reset to first page when changing page size
   };
-
-  const filteredPlans = plans.filter(plan =>
-    plan.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    plan.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   if (loading) {
     return (
