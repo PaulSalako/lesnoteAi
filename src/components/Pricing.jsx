@@ -130,7 +130,7 @@ function Pricing() {
             </ul>
 
             <button className="btn btn-primary btn-lg w-100 rounded-pill">
-              Subscribe
+            Upgrade Now
             </button>
           </div>
         </div>
