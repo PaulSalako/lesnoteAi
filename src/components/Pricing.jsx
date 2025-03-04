@@ -9,13 +9,13 @@ function Pricing() {
     <section className="pricing-section py-5" id="pricing">
   <div className="container">
     <div className="text-center mb-5">
-      <h2 className="display-4 fw-bold mb-3">Simple, Token-Based Pricing</h2>
+      <h2 className="display-4 fw-bold mb-3">Pricing</h2>
       <p className="lead text-muted">Choose the plan that works best for you</p>
     </div>
 
     <div className="row justify-content-center g-4">
       {/* Free Tier */}
-      <div className="col-md-6 col-lg-4">
+      {/* <div className="col-md-6 col-lg-4">
         <div className="pricing-card">
           <div className="pricing-header">
             <h3 className="pricing-title">Starter</h3>
@@ -52,22 +52,22 @@ function Pricing() {
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Basic Tier */}
       <div className="col-md-6 col-lg-4">
         <div className="pricing-card popular">
           <div className="pricing-header">
-            <h3 className="pricing-title">Basic</h3>
-            <div className="pricing-badge">Popular</div>
+            <h3 className="pricing-title mb-4">Basic</h3>
+            <div className="pricing-badge mb-4">Popular</div>
           </div>
           
-          <div className="pricing-body">
-            <div className="token-amount">
+          <div className="pricing-body text-center">
+            {/* <div className="token-amount">
               <span className="token-number">110</span>
               <span className="token-label">Tokens</span>
               <span className="bonus-text">100 + 10 Bonus</span>
-            </div>
+            </div> */}
             
             <ul className="pricing-features">
               <li>
@@ -76,20 +76,20 @@ function Pricing() {
               </li>
               <li>
                 <i className="bi bi-check-circle-fill text-success"></i>
-                Premium templates
+                Free on registration
               </li>
               <li>
                 <i className="bi bi-check-circle-fill text-success"></i>
-                Priority AI generation
+                Standard AI generation
               </li>
               <li>
                 <i className="bi bi-check-circle-fill text-success"></i>
-                Priority support
+                Chat support
               </li>
             </ul>
 
             <button className="btn btn-primary btn-lg w-100 rounded-pill">
-              Buy Tokens
+              Get Started
             </button>
           </div>
         </div>
@@ -99,16 +99,16 @@ function Pricing() {
       <div className="col-md-6 col-lg-4">
         <div className="pricing-card">
           <div className="pricing-header">
-            <h3 className="pricing-title">Premium</h3>
-            <div className="pricing-badge">Best Value</div>
+            <h3 className="pricing-title mb-4">Premium</h3>
+            <div className="pricing-badge mb-4">Best Value</div>
           </div>
           
           <div className="pricing-body">
-            <div className="token-amount">
+            {/* <div className="token-amount">
               <span className="token-number">550</span>
               <span className="token-label">Tokens</span>
               <span className="bonus-text">500 + 50 Bonus</span>
-            </div>
+            </div> */}
             
             <ul className="pricing-features">
               <li>
@@ -130,7 +130,7 @@ function Pricing() {
             </ul>
 
             <button className="btn btn-primary btn-lg w-100 rounded-pill">
-              Buy Tokens
+              Subscribe
             </button>
           </div>
         </div>
