@@ -99,7 +99,7 @@ function Support() {
     </div>
 
     {/* Contact Information */}
-    <div className="row mt-5">
+    {/* <div className="row mt-5">
       <div className="col-lg-8 mx-auto">
         <div className="contact-info text-center">
           <h4 className="mb-4">Additional Contact Information</h4>
@@ -119,7 +119,7 @@ function Support() {
           </div>
         </div>
       </div>
-    </div>
+    </div> */}
   </div>
 </section>
   );
