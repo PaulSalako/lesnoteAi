@@ -134,7 +134,7 @@ function SignUp() {
       formDataToSend.append("Email", formData.email.trim().toLowerCase());
       formDataToSend.append("Password", formData.password);
       
-      const response = await fetch("https://lesnote-api-prod-d9f7bmh4f9ejbbe9.westeurope-01.azurewebsites.net/api/Auth/register", {
+      const response = await fetch("https://localhost:7225/api/Auth/register", {
         method: "POST",
         body: formDataToSend
       });
