@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AllAssessment.css';
 
@@ -17,6 +17,15 @@ function AllAssessments() {
   const [totalCount, setTotalCount] = useState(0);
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  // Memoized filtered assessments to prevent unnecessary recalculations
+  const filteredAssessments = useMemo(() => {
+    return assessments.filter(assessment =>
+      assessment.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      assessment.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (assessment.assessmentType && assessment.assessmentType.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [assessments, searchTerm]);
 
   // Check for premium user on component mount
   useEffect(() => {
@@ -61,13 +70,16 @@ function AllAssessments() {
   }, [navigate]);
 
   useEffect(() => {
-    fetchAssessments(currentPage);
-  }, [currentPage, pageSize]);
+    if (token) {
+      fetchAssessments(currentPage);
+    }
+  }, [currentPage, pageSize, token]);
 
   const fetchAssessments = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7225/api/Dashboard/all-assessments?page=${page}&pageSize=${pageSize}`, {
+      const response = await fetch(`https://localhost:7225/api/Assessments?page=${page}&pageSize=${pageSize}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -75,14 +87,19 @@ function AllAssessments() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch assessments');
+        // Try to parse error message
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to fetch assessments');
       }
 
       const result = await response.json();
+      
+      // Set assessments
       setAssessments(result.data);
       setTotalPages(result.totalPages);
       setTotalCount(result.totalCount);
     } catch (error) {
+      console.error('Error fetching assessments:', error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -99,7 +116,7 @@ function AllAssessments() {
     setDeletingAssessmentId(assessmentId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Dashboard/delete-assessment/${assessmentId}`, {
+      const response = await fetch(`https://localhost:7225/api/Assessments/${assessmentId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -107,10 +124,10 @@ function AllAssessments() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete assessment');
+        // Try to parse error message
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to delete assessment');
       }
 
       // Show success message
@@ -143,12 +160,6 @@ function AllAssessments() {
     setPageSize(newSize);
     setCurrentPage(1); // Reset to first page when changing page size
   };
-
-  const filteredAssessments = assessments.filter(assessment =>
-    assessment.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    assessment.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (assessment.assessmentType && assessment.assessmentType.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
 
   if (loading) {
     return (
