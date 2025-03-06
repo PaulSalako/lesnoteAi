@@ -34,17 +34,7 @@ function Benefit() {
         </div>
       </div>
 
-      {/* Benefit 3 */}
-      <div className="col-md-6 col-lg-4">
-        <div className="benefit-card">
-          <div className="benefit-icon">
-            <i className="bi bi-palette"></i>
-          </div>
-          <h3>Customizable Templates</h3>
-          <p>Choose from a variety of professional templates or customize them to match your teaching style.</p>
-        </div>
-      </div>
-
+    
       {/* Benefit 4 */}
       <div className="col-md-6 col-lg-4">
         <div className="benefit-card">
