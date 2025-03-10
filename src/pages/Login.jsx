@@ -51,7 +51,7 @@ function Login() {
       }
 
       if (data.success) {
-        // Store token
+        // Store token and user data including role
         const token = data.token;
         if (rememberMe) {
           localStorage.setItem("token", token);
@@ -87,12 +87,9 @@ function Login() {
             <span>LesNoteAI</span>
           </div>
 
-
           <div className="login-header">
-            {/* <h2>Welcome Back!</h2> */}
             <p>Sign in to continue your journey</p>
           </div>
-
 
           {error && (
             <div className="error-message">

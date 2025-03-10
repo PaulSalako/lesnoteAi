@@ -26,6 +26,10 @@ import AllAssessment from './dashboard/components/Assessment/AllAssessment';
 
 import AIChatSupport from './dashboard/components/AIChatSupport/AIChatSupport';
 
+import ManageUsers from './dashboard/components/ManageUsers/ManageUsers';
+import ManageClass from './dashboard/components/ManageClass/ManageClass';
+import ManageSubject from './dashboard/components/ManageSubject/ManageSubject';
+import ManageTopic from './dashboard/components/ManageTopic/ManageTopic';
 
 
 
@@ -62,6 +66,13 @@ function App() {
               <Route path="assessments" element={<AllAssessment />} />
 
               <Route path="ai-chat" element={<AIChatSupport />} />
+
+              <Route path="manage-users" element={<ManageUsers />} />
+              <Route path="manage-class" element={<ManageClass />} />
+              <Route path="manage-subject" element={<ManageSubject />} />
+              <Route path="manage-topic" element={<ManageTopic />} />
+
+
 
 
             </Route>
