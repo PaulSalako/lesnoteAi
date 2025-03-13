@@ -45,7 +45,7 @@ function Hero() {
             
             <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
               <a href="/sign-up" className="btn btn-primary btn-lg rounded-pill px-5 d-flex align-items-center justify-content-center gap-2">
-                Start Now
+                Get Started
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"/>
                 </svg>

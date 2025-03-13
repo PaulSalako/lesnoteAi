@@ -1,5 +1,5 @@
 // src/components/About.jsx
-import React from 'react';
+// import React from 'react';
 // import './nav.css';
 import './Support.css';
 
@@ -63,7 +63,7 @@ function Support() {
               Quick response time
             </li>
           </ul>
-          <a href="mailto:support@lesnote.ai" className="btn btn-outline-primary rounded-pill px-4">
+          <a href="mailto:lesnoteai@gmail.com" className="btn btn-outline-primary rounded-pill px-4">
             Email Us
           </a>
         </div>
