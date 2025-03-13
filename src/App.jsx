@@ -16,6 +16,10 @@ import NotePromptPage from './dashboard/components/NotePromptPage/NotePromptPage
 import NoteChatPage from './dashboard/components/NoteChatPage/NoteChatPage';
 import AllNotes from './dashboard/components/Notes/AllNotes';
 
+import NoteSearchPage from './dashboard/components/NoteSearchPage/NoteSearchPage';
+import NoteSearchView from './dashboard/components/NoteSearchView/NoteSearchView';
+
+
 import PlanPromptPage from './dashboard/components/PlanPromptPage/PlanPromptPage';
 import PlanChatPage from './dashboard/components/PlanChatPage/PlanChatPage';
 import AllPlans from './dashboard/components/Plans/AllPlans';
@@ -30,6 +34,8 @@ import ManageUsers from './dashboard/components/ManageUsers/ManageUsers';
 import ManageClass from './dashboard/components/ManageClass/ManageClass';
 import ManageSubject from './dashboard/components/ManageSubject/ManageSubject';
 import ManageTopic from './dashboard/components/ManageTopic/ManageTopic';
+import ManageTheme from './dashboard/components/ManageTheme/ManageTheme';
+import ManageLessonStructure from './dashboard/components/ManageLessonStructure/ManageLessonStructure';
 
 
 
@@ -57,6 +63,10 @@ function App() {
               <Route path="note-chat/:id" element={<NoteChatPage />} />
               <Route path="notes" element={<AllNotes />} />
 
+              <Route path="note-search" element={<NoteSearchPage />} />
+              <Route path="view-note/:id" element={<NoteSearchView />} />
+
+
               <Route path="lesson-plan" element={<PlanPromptPage />} />
               <Route path="lesson-plan-chat/:id" element={<PlanChatPage />} />
               <Route path="lesson-plans" element={<AllPlans />} />
@@ -71,6 +81,8 @@ function App() {
               <Route path="manage-class" element={<ManageClass />} />
               <Route path="manage-subject" element={<ManageSubject />} />
               <Route path="manage-topic" element={<ManageTopic />} />
+              <Route path="manage-theme" element={<ManageTheme />} />
+              <Route path="manage-lesson-structure" element={<ManageLessonStructure />} />
 
 
 

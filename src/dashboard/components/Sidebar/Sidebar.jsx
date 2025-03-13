@@ -12,14 +12,16 @@ function Sidebar({ isOpen, onToggle }) {
   const [chatHistory, setChatHistory] = useState([]);
   const [userData, setUserData] = useState({
     userName: '',
-    plan: 0 // Default to free plan
+    plan: 0, // Default to free plan
+    roleId: 3 // Default to regular user
   });
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
   // Dropdown states
   const [expandedCategories, setExpandedCategories] = useState({
     create: true,
-    browse: false
+    browse: false,
+    manage: false // Added for management section
   });
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -29,6 +31,11 @@ function Sidebar({ isOpen, onToggle }) {
   const isNotesPage = location.pathname.includes('/notes');
   const isLessonPlanPage = location.pathname.includes('/lesson-plan');
   const isAssessmentPage = location.pathname.includes('/assessment');
+  const isManageClassesPage = location.pathname.includes('/manage-class');
+  const isManageSubjectsPage = location.pathname.includes('/manage-subject');
+  const isManageTopicsPage = location.pathname.includes('/manage-topic');
+  const isManageStructurePage = location.pathname.includes('/manage-lesson-structure');
+  const isSearchNotePage = location.pathname.includes('/note-search');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -47,7 +54,8 @@ function Sidebar({ isOpen, onToggle }) {
         const data = await response.json();
         setUserData({
           userName: data.userName || 'User',
-          plan: data.plan || 0
+          plan: data.plan || 0,
+          roleId: data.roleId || 3
         });
       } catch (err) {
         console.error('Error fetching user data:', err);
@@ -64,7 +72,8 @@ function Sidebar({ isOpen, onToggle }) {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      if (userData.plan === 0) return; // Don't fetch history for free users
+      // Only fetch history for admin/staff users, not regular users
+      if (userData.roleId === 3) return;
       
       try {
         setLoading(true);
@@ -100,7 +109,7 @@ function Sidebar({ isOpen, onToggle }) {
     if (token) {
       fetchHistory();
     }
-  }, [token, navigate, userData.plan]);
+  }, [token, navigate, userData.roleId]);
 
   const filteredHistory = chatHistory
     .filter(item =>
@@ -118,9 +127,9 @@ function Sidebar({ isOpen, onToggle }) {
   };
 
   const handlePremiumFeatureClick = (feature) => {
-    if (userData.plan === 0) { // Free user
+    if (userData.roleId === 3) { // Regular user
       setShowUpgradeModal(true);
-    } else { // Premium user
+    } else { // Admin or Staff user
       // Navigate to the feature
       navigate(`/dashboard/${feature}`);
     }
@@ -138,6 +147,15 @@ function Sidebar({ isOpen, onToggle }) {
       [category]: !expandedCategories[category]
     });
   };
+
+  // Check if the user is a regular user
+  const isRegularUser = userData.roleId === 3;
+  
+  // Check if the user is an admin
+  const isAdmin = userData.roleId === 1;
+  
+  // Check if user is staff or admin (not a regular user)
+  const isStaffOrAdmin = userData.roleId === 1 || userData.roleId === 2;
 
   return (
     <>
@@ -164,98 +182,184 @@ function Sidebar({ isOpen, onToggle }) {
               <span>Home</span>
             </button>
 
-            {/* Create Category */}
-            <div className="sidebar-category">
-              <div 
-                className="category-header" 
-                onClick={() => toggleCategory('create')}
+            {/* For Regular Users - Only show Search Notes */}
+            {isRegularUser && (
+              <button 
+                className={`menu-item ${isSearchNotePage ? 'active' : ''}`}
+                onClick={() => navigate('/dashboard/note-search')}
               >
-                <div className="category-title">
-                  <i className="bi bi-plus-square"></i>
-                  <span>Create</span>
+                <i className="bi bi-search"></i>
+                <span>Search Notes</span>
+              </button>
+            )}
+
+            {/* Create Category - Only for Staff and Admin */}
+            {isStaffOrAdmin && (
+              <div className="sidebar-category">
+                <div 
+                  className="category-header" 
+                  onClick={() => toggleCategory('create')}
+                >
+                  <div className="category-title">
+                    <i className="bi bi-plus-square"></i>
+                    <span>Create</span>
+                  </div>
+                  <i className={`bi bi-chevron-${expandedCategories.create ? 'down' : 'right'}`}></i>
                 </div>
-                <i className={`bi bi-chevron-${expandedCategories.create ? 'down' : 'right'}`}></i>
+                
+                {expandedCategories.create && (
+                  <div className="category-content">
+                    <button 
+                      className="new-note-btn"
+                      onClick={() => navigate('/dashboard/lesson-note')}
+                    >
+                      <i className="bi bi-plus-lg"></i>
+                      Lesson Note
+                    </button>
+                    
+                    {/* <button 
+                      className={`menu-item ${isLessonPlanPage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/lesson-plan')}
+                    >
+                      <i className="bi bi-book"></i>
+                      <span>Lesson Plan</span>
+                    </button>
+
+                    <button 
+                      className={`menu-item ${isAssessmentPage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/lesson-assessment')}
+                    >
+                      <i className="bi bi-check-square"></i>
+                      <span>Assessment</span>
+                    </button> */}
+                  </div>
+                )}
               </div>
-              
-              {expandedCategories.create && (
-                <div className="category-content">
-                  <button 
-                    className="new-note-btn"
-                    onClick={() => navigate('/dashboard/lesson-note')}
-                  >
-                    <i className="bi bi-plus-lg"></i>
-                    Lesson Note
-                  </button>
-                  
-                  <button 
-                    className={`menu-item ${isLessonPlanPage ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('lesson-plan')}
-                  >
-                    <i className="bi bi-book"></i>
-                    <span>Lesson Plan</span>
-                    {userData.plan === 0 && <i className="bi bi-star premium-icon"></i>}
-                  </button>
+            )}
 
-                  <button 
-                    className={`menu-item ${isAssessmentPage ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('lesson-assessment')}
-                  >
-                    <i className="bi bi-check-square"></i>
-                    <span>Assessment</span>
-                    {userData.plan === 0 && <i className="bi bi-star premium-icon"></i>}
-                  </button>
+            {/* Browse Category - Only for Staff and Admin */}
+            {isStaffOrAdmin && (
+              <div className="sidebar-category">
+                <div 
+                  className="category-header" 
+                  onClick={() => toggleCategory('browse')}
+                >
+                  <div className="category-title">
+                    <i className="bi bi-folder2-open"></i>
+                    <span>Browse</span>
+                  </div>
+                  <i className={`bi bi-chevron-${expandedCategories.browse ? 'down' : 'right'}`}></i>
                 </div>
-              )}
-            </div>
+                
+                {expandedCategories.browse && (
+                  <div className="category-content">
+                    <button 
+                      className={`menu-item ${location.pathname.includes('/notes') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/notes')}
+                    >
+                      <i className="bi bi-journal-text"></i>
+                      <span>Lesson Notes</span>
+                    </button>
 
-            {/* Browse Category */}
-            <div className="sidebar-category">
-              <div 
-                className="category-header" 
-                onClick={() => toggleCategory('browse')}
-              >
-                <div className="category-title">
-                  <i className="bi bi-folder2-open"></i>
-                  <span>Browse</span>
-                </div>
-                <i className={`bi bi-chevron-${expandedCategories.browse ? 'down' : 'right'}`}></i>
+                    {/* <button 
+                      className={`menu-item ${location.pathname.includes('/lesson-plans') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/lesson-plans')}
+                    >
+                      <i className="bi bi-file-earmark-text"></i>
+                      <span>Lesson Plans</span>
+                    </button>
+
+                    <button 
+                      className={`menu-item ${location.pathname.includes('/assessments') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/assessments')}
+                    >
+                      <i className="bi bi-card-checklist"></i>
+                      <span>Assessments</span>
+                    </button> */}
+                  </div>
+                )}
               </div>
-              
-              {expandedCategories.browse && (
-                <div className="category-content">
-                  <button 
-                    className={`menu-item ${location.pathname.includes('/notes') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('notes')}
-                  >
-                    <i className="bi bi-journal-text"></i>
-                    <span>Lesson Notes</span>
-                    {userData.plan === 0 && <i className="bi bi-star premium-icon"></i>}
-                  </button>
+            )}
 
-                  <button 
-                    className={`menu-item ${location.pathname.includes('/lesson-plans') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('lesson-plans')}
-                  >
-                    <i className="bi bi-file-earmark-text"></i>
-                    <span>Lesson Plans</span>
-                    {userData.plan === 0 && <i className="bi bi-star premium-icon"></i>}
-                  </button>
-
-                  <button 
-                    className={`menu-item ${location.pathname.includes('/assessments') ? 'active' : ''} ${userData.plan === 0 ? 'premium-feature' : ''}`}
-                    onClick={() => handlePremiumFeatureClick('assessments')}
-                  >
-                    <i className="bi bi-card-checklist"></i>
-                    <span>Assessments</span>
-                    {userData.plan === 0 && <i className="bi bi-star premium-icon"></i>}
-                  </button>
+            {/* Management Category - Only visible to admin users */}
+            {isAdmin && (
+              <div className="sidebar-category">
+                <div 
+                  className="category-header" 
+                  onClick={() => toggleCategory('manage')}
+                >
+                  <div className="category-title">
+                    <i className="bi bi-gear"></i>
+                    <span>Management</span>
+                  </div>
+                  <i className={`bi bi-chevron-${expandedCategories.manage ? 'down' : 'right'}`}></i>
                 </div>
-              )}
-            </div>
+                
+                {expandedCategories.manage && (
+                  <div className="category-content">
+                    <button 
+                      className={`menu-item ${isManageClassesPage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-class')}
+                    >
+                      <i className="bi bi-buildings"></i>
+                      <span>Manage Classes</span>
+                    </button>
+
+                    <button 
+                      className={`menu-item ${isManageSubjectsPage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-subject')}
+                    >
+                      <i className="bi bi-book"></i>
+                      <span>Manage Subjects</span>
+                    </button>
+
+                    <button 
+                      className={`menu-item ${isManageTopicsPage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-topic')}
+                    >
+                      <i className="bi bi-list-check"></i>
+                      <span>Manage Topics</span>
+                    </button>
+                    
+                    <button 
+                      className={`menu-item ${isManageStructurePage ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-lesson-structure')}
+                    >
+                      <i className="bi bi-diagram-3"></i>
+                      <span>Manage Structure</span>
+                    </button>
+                    
+                    <button 
+                      className={`menu-item ${location.pathname.includes('/manage-users') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-users')}
+                    >
+                      <i className="bi bi-people"></i>
+                      <span>Manage Users</span>
+                    </button>
+
+                    <button 
+                      className={`menu-item ${location.pathname.includes('/manage-theme') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-theme')}
+                    >
+                      <i className="bi bi-palette"></i>
+                      <span>Manage Theme</span>
+                    </button>
+                    
+                    <button 
+                      className={`menu-item ${location.pathname.includes('/manage-note') ? 'active' : ''}`}
+                      onClick={() => navigate('/dashboard/manage-note')}
+                    >
+                      <i className="bi bi-journal-text"></i>
+                      <span>Manage Notes</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Recent Notes - Only for Premium Users */}
-          {userData.plan === 1 && (
+          {/* Recent Notes - Only for Staff and Admin */}
+          {isStaffOrAdmin && (
             <div className="history-section">
               <div className="section-header">
                 <h3>Recent Notes</h3>
@@ -331,22 +435,11 @@ function Sidebar({ isOpen, onToggle }) {
             </div>
           )}
 
-          {/* Premium Banner for Free Users */}
-          {userData.plan === 0 && (
-            <div className="premium-banner">
-              <div className="premium-banner-icon">
-                <i className="bi bi-star-fill"></i>
-              </div>
-              <div className="premium-banner-content">
-                <h4>Upgrade to Premium</h4>
-                <p>Access all features and resources!</p>
-                <button 
-                  className="premium-banner-btn"
-                  onClick={() => setShowUpgradeModal(true)}
-                >
-                  Upgrade Now
-                </button>
-              </div>
+          {/* Info banner for regular users */}
+          {isRegularUser && (
+            <div className="info-banner">
+              <i className="bi bi-info-circle"></i>
+              <p>Use the Search Notes option to find and access available lesson notes.</p>
             </div>
           )}
         </div>
@@ -357,30 +450,21 @@ function Sidebar({ isOpen, onToggle }) {
         <div className="upgrade-modal-backdrop">
           <div className="upgrade-modal">
             <div className="upgrade-modal-header">
-              <h3>Upgrade to Premium</h3>
+              <h3>Feature Restricted</h3>
               <button onClick={() => setShowUpgradeModal(false)} className="close-modal">
                 <i className="bi bi-x-lg"></i>
               </button>
             </div>
             <div className="upgrade-modal-body">
               <div className="premium-icon-large">
-                <i className="bi bi-star-fill"></i>
+                <i className="bi bi-shield-lock"></i>
               </div>
-              <h4>Premium Feature</h4>
-              <p>This feature is available exclusively for premium users. Upgrade your plan to access:</p>
-              <ul className="premium-features-list">
-                <li><i className="bi bi-check-circle"></i> Create Lesson Plans</li>
-                <li><i className="bi bi-check-circle"></i> Create Assessments</li>
-                <li><i className="bi bi-check-circle"></i> View All Your Resources</li>
-                <li><i className="bi bi-check-circle"></i> Advanced AI-Powered Tools</li>
-              </ul>
+              <h4>Access Restricted</h4>
+              <p>This feature is only available to staff and admin users.</p>
             </div>
             <div className="upgrade-modal-footer">
-              <button className="cancel-upgrade" onClick={() => setShowUpgradeModal(false)}>
-                Maybe Later
-              </button>
-              <button className="confirm-upgrade">
-                Upgrade Now
+              <button className="confirm-upgrade" onClick={() => setShowUpgradeModal(false)}>
+                OK, I Understand
               </button>
             </div>
           </div>

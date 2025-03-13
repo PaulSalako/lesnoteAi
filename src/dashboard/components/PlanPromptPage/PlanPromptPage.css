@@ -16,7 +16,7 @@
 .prompt-header h1 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #2563eb; /* Blue color for lesson plans */
+  color: #5D2E5F; /* Purple color for lesson plans */
   margin-bottom: 0.5rem;
 }
 
@@ -48,8 +48,8 @@
   margin-bottom: 0.5rem;
 }
 
-.form-group input, 
-.form-group select, 
+.form-group input,
+.form-group select,
 .form-group textarea {
   padding: 0.75rem;
   border: 1px solid #e2e8f0;
@@ -58,16 +58,16 @@
   transition: all 0.2s ease;
 }
 
-.form-group input:focus, 
-.form-group select:focus, 
+.form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
-  border-color: #2563eb;
+  border-color: #5D2E5F;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(93, 46, 95, 0.1);
 }
 
-.form-group input::placeholder, 
-.form-group select::placeholder, 
+.form-group input::placeholder,
+.form-group select::placeholder,
 .form-group textarea::placeholder {
   color: #a0aec0;
 }
@@ -79,7 +79,7 @@
 
 .generate-btn {
   padding: 0.875rem 2rem;
-  background-color: #2563eb;
+  background-color: #5D2E5F;
   color: white;
   border: none;
   border-radius: 8px;
@@ -93,12 +93,12 @@
 }
 
 .generate-btn:hover {
-  background-color: #1d4ed8;
+  background-color: #4A1C4A;
   transform: translateY(-2px);
 }
 
 .generate-btn:disabled {
-  background-color: #93c5fd;
+  background-color: #D1E7FF;
   cursor: not-allowed;
   transform: none;
 }
@@ -114,8 +114,8 @@
 }
 
 .error-message {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: #E6F2FF;
+  color: #5D2E5F;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;

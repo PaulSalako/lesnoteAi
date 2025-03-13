@@ -36,8 +36,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #e1effe; /* Light blue background */
-  color: #2563eb; /* Blue text */
+  background: #E6F2FF; /* Light blue background */
+  color: #5D2E5F; /* Purple text */
   border-radius: 20px;
   font-size: 0.875rem;
 }
@@ -83,12 +83,12 @@
 }
 
 .action-btn.primary {
-  background: #2563eb; /* Blue for plans */
+  background: #5D2E5F; /* Purple for plans */
   color: white;
 }
 
 .action-btn.primary:hover {
-  background: #1d4ed8; /* Darker blue on hover */
+  background: #4A1C4A; /* Darker purple on hover */
 }
 
 /* Plan Messages */
@@ -107,12 +107,12 @@
 .message-avatar {
   width: 40px;
   height: 40px;
-  background: #e1effe; /* Light blue background */
+  background: #E6F2FF; /* Light blue background */
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #2563eb; /* Blue for plans */
+  color: #5D2E5F; /* Purple for plans */
   font-size: 1.25rem;
 }
 
@@ -148,6 +148,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border-left: 4px solid #5D2E5F;
 }
 
 .response-header {
@@ -156,6 +157,8 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid #eee;
+  background: #E6F2FF;
+  color: #5D2E5F;
 }
 
 .copy-btn {
@@ -166,7 +169,7 @@
   border: none;
   border-radius: 6px;
   background: #f8f9fa;
-  color: #666;
+  color: #5D2E5F;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -324,7 +327,7 @@
 
 .input-container button {
   border: none;
-  background: #2563eb; /* Blue for plans */
+  background: #5D2E5F; /* Purple for plans */
   color: white;
   padding: 0 1.5rem;
   cursor: pointer;
@@ -332,11 +335,11 @@
 }
 
 .input-container button:hover {
-  background: #1d4ed8; /* Darker blue on hover */
+  background: #4A1C4A; /* Darker purple on hover */
 }
 
 .input-container button:disabled {
-  background: #93c5fd;
+  background: #D1E7FF;
   cursor: not-allowed;
 }
 
@@ -362,16 +365,16 @@
 }
 
 .regenerate-btn {
-  background: #2563eb; /* Blue for plans */
+  background: #5D2E5F; /* Purple for plans */
   color: white;
 }
 
 .regenerate-btn:hover {
-  background: #1d4ed8; /* Darker blue on hover */
+  background: #4A1C4A; /* Darker purple on hover */
 }
 
 .regenerate-btn:disabled {
-  background: #93c5fd;
+  background: #D1E7FF;
   cursor: not-allowed;
 }
 
@@ -403,7 +406,7 @@
 
 .loading-container .spinner {
   font-size: 2rem;
-  color: #2563eb; /* Blue for plans */
+  color: #5D2E5F; /* Purple for plans */
   margin-bottom: 1rem;
   display: inline-block;
   animation: spin 1s linear infinite;
@@ -416,7 +419,7 @@
 
 .error-container i {
   font-size: 2.5rem;
-  color: #ef4444;
+  color: #6B7280;
   margin-bottom: 1rem;
 }
 

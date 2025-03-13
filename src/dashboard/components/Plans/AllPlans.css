@@ -3,7 +3,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  background: #f8f9ff;
+  background: #f0e6f2;
   min-height: 100vh;
 }
 
@@ -53,12 +53,12 @@
 }
 
 .search-bar input:focus {
-  border-color: #2563eb; /* Blue color for plans */
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #5D2E5F; /* Purple color for plans */
+  box-shadow: 0 0 0 3px rgba(93, 46, 95, 0.1);
 }
 
 .new-plan-btn {
-  background: #2563eb; /* Blue color for plans */
+  background: #5D2E5F; /* Purple color for plans */
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -69,13 +69,13 @@
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 4px rgba(93, 46, 95, 0.2);
 }
 
 .new-plan-btn:hover {
-  background: #1d4ed8; /* Darker blue on hover */
+  background: #4A1C4A; /* Darker purple on hover */
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 6px rgba(93, 46, 95, 0.3);
 }
 
 /* Table container */
@@ -138,7 +138,7 @@
 }
 
 .plans-table tr:hover td {
-  background: #f0f7ff; /* Light blue hover for plans */
+  background: #f0e6f2; /* Light purple hover for plans */
 }
 
 /* Action buttons */
@@ -160,21 +160,21 @@
 }
 
 .view-btn {
-  color: #2563eb; /* Blue color for plans */
-  background: #e1effe; /* Light blue background */
+  color: #5D2E5F; /* Purple color for plans */
+  background: #E6F2FF; /* Light blue background */
 }
 
 .view-btn:hover {
-  background: #bfdbfe; /* Slightly darker blue on hover */
+  background: #D1E7FF; /* Slightly darker blue on hover */
 }
 
 .delete-btn {
-  color: #dc3545;
-  background: #fff5f5;
+  color: #6B7280;
+  background: #f3f4f6;
 }
 
 .delete-btn:hover {
-  background: #ffe3e3;
+  background: #e5e7eb;
 }
 
 /* Pagination controls */
@@ -216,9 +216,9 @@
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: #e1effe; /* Light blue background */
-  border-color: #2563eb; /* Blue border */
-  color: #2563eb; /* Blue text */
+  background: #E6F2FF; /* Light blue background */
+  border-color: #5D2E5F; /* Purple border */
+  color: #5D2E5F; /* Purple text */
 }
 
 .page-info {
@@ -238,7 +238,7 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   display: block;
-  color: #2563eb; /* Blue color for plans */
+  color: #5D2E5F; /* Purple color for plans */
 }
 
 /* Loading and Error states */
@@ -260,11 +260,11 @@
 .error-state i {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #2563eb; /* Blue color for plans */
+  color: #5D2E5F; /* Purple color for plans */
 }
 
 .error-state i {
-  color: #dc3545;
+  color: #6B7280;
 }
 
 .spinning {
@@ -307,7 +307,7 @@
   }
 
   .delete-btn.deleting {
-    background: #ffe3e3;
+    background: #f3f4f6;
     cursor: not-allowed;
     opacity: 0.7;
   }

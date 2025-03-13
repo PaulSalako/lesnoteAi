@@ -3,7 +3,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  background: #f0f4ff;
+  background: #f0e6f2;
   min-height: 100vh;
 }
 
@@ -53,8 +53,8 @@
 }
 
 .search-bar input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #5D2E5F;
+  box-shadow: 0 0 0 3px rgba(93, 46, 95, 0.1);
 }
 
 /* Table container */
@@ -117,7 +117,7 @@
 }
 
 .users-table tr:hover td {
-  background: #f0f4ff;
+  background: #f0e6f2;
 }
 
 /* Role selector */
@@ -149,15 +149,15 @@
 }
 
 .role-selector select.staff-role {
-  color: #0284c7;
-  background-color: #e0f2fe;
-  border-color: #0284c7;
+  color: #5D2E5F;
+  background-color: #E6F2FF;
+  border-color: #5D2E5F;
 }
 
 .role-selector select.user-role {
-  color: #4f46e5;
-  background-color: #e0e7ff;
-  border-color: #4f46e5;
+  color: #6B7280;
+  background-color: #f3f4f6;
+  border-color: #6B7280;
 }
 
 .role-spinner {
@@ -181,7 +181,7 @@
 }
 
 .not-verified {
-  color: #dc2626;
+  color: #6B7280;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -202,12 +202,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dc3545;
-  background: #fff5f5;
+  color: #6B7280;
+  background: #f3f4f6;
 }
 
 .delete-btn:hover:not(:disabled) {
-  background: #ffe3e3;
+  background: #e5e7eb;
 }
 
 .delete-btn:disabled {
@@ -216,7 +216,7 @@
 }
 
 .delete-btn.deleting {
-  background: #ffe3e3;
+  background: #f3f4f6;
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -264,9 +264,9 @@
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: #e0f2fe;
-  border-color: #2563eb;
-  color: #2563eb;
+  background: #E6F2FF;
+  border-color: #5D2E5F;
+  color: #5D2E5F;
 }
 
 .page-info {
@@ -286,7 +286,7 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   display: block;
-  color: #2563eb;
+  color: #5D2E5F;
 }
 
 /* Loading and Error states */
@@ -308,11 +308,11 @@
 .error-state i {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #2563eb;
+  color: #5D2E5F;
 }
 
 .error-state i {
-  color: #dc3545;
+  color: #6B7280;
 }
 
 .spinning {
@@ -329,7 +329,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  background-color: #2563eb;
+  background-color: #5D2E5F;
   color: white;
   cursor: pointer;
   display: flex;
@@ -340,7 +340,7 @@
 }
 
 .retry-button:hover {
-  background-color: #1d4ed8;
+  background-color: #4A1C4A;
 }
 
 /* Responsive design */

@@ -3,7 +3,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  background: #fdf2f2;
+  background: #f0e6f2;
   min-height: 100vh;
 }
 
@@ -53,12 +53,12 @@
 }
 
 .search-bar input:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  border-color: #5D2E5F;
+  box-shadow: 0 0 0 3px rgba(93, 46, 95, 0.1);
 }
 
 .new-assessment-btn {
-  background: #ef4444;
+  background: #5D2E5F;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -69,13 +69,13 @@
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 4px rgba(93, 46, 95, 0.2);
 }
 
 .new-assessment-btn:hover {
-  background: #dc2626;
+  background: #4A1C4A;
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 6px rgba(93, 46, 95, 0.3);
 }
 
 /* Table container */
@@ -110,7 +110,7 @@
   cursor: pointer;
   background: white;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4h3.204a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
 }
@@ -138,15 +138,15 @@
 }
 
 .assessments-table tr:hover td {
-  background: #fdf2f2;
+  background: #f0e6f2;
 }
 
 /* Assessment Type Badge */
 .assessment-type-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  background-color: #fee2e2;
-  color: #ef4444;
+  background-color: #E6F2FF;
+  color: #5D2E5F;
   border-radius: 100px;
   font-size: 0.75rem;
   font-weight: 500;
@@ -171,21 +171,21 @@
 }
 
 .view-btn {
-  color: #ef4444;
-  background: #fee2e2;
+  color: #5D2E5F;
+  background: #E6F2FF;
 }
 
 .view-btn:hover {
-  background: #fecaca;
+  background: #D1E7FF;
 }
 
 .delete-btn {
-  color: #dc3545;
-  background: #fff5f5;
+  color: #6B7280;
+  background: #f3f4f6;
 }
 
 .delete-btn:hover {
-  background: #ffe3e3;
+  background: #e5e7eb;
 }
 
 /* Pagination controls */
@@ -227,9 +227,9 @@
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: #fee2e2;
-  border-color: #ef4444;
-  color: #ef4444;
+  background: #E6F2FF;
+  border-color: #5D2E5F;
+  color: #5D2E5F;
 }
 
 .page-info {
@@ -249,7 +249,7 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   display: block;
-  color: #ef4444;
+  color: #5D2E5F;
 }
 
 /* Loading and Error states */
@@ -271,11 +271,11 @@
 .error-state i {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #ef4444;
+  color: #5D2E5F;
 }
 
 .error-state i {
-  color: #dc3545;
+  color: #6B7280;
 }
 
 .spinner {
@@ -292,7 +292,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  background-color: #ef4444;
+  background-color: #5D2E5F;
   color: white;
   cursor: pointer;
   display: flex;
@@ -303,7 +303,7 @@
 }
 
 .retry-button:hover {
-  background-color: #dc2626;
+  background-color: #4A1C4A;
 }
 
 /* Responsive design */
@@ -337,7 +337,7 @@
   }
 
   .delete-btn.deleting {
-    background: #ffe3e3;
+    background: #f3f4f6;
     cursor: not-allowed;
     opacity: 0.7;
   }

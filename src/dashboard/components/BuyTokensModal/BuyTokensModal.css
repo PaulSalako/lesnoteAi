@@ -60,7 +60,7 @@
 }
 
 .token-plan {
-  background: #f8f5ff;
+  background: #E6F2FF;
   border: 2px solid transparent;
   border-radius: 8px;
   padding: 1.25rem;
@@ -71,12 +71,12 @@
 }
 
 .token-plan:hover {
-  border-color: #8a2be2;
+  border-color: #5D2E5F;
 }
 
 .token-plan.selected {
-  border-color: #8a2be2;
-  background: #f0e6ff;
+  border-color: #5D2E5F;
+  background: #f0e6f2;
 }
 
 .token-plan-amount {
@@ -96,7 +96,7 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: #8a2be2;
+  background: #5D2E5F;
   color: white;
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
@@ -112,7 +112,7 @@
 .token-plan-price {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #8a2be2;
+  color: #5D2E5F;
 }
 
 .token-purchase-footer {
@@ -127,7 +127,7 @@
 .select-plan-btn {
   width: 100%;
   padding: 0.875rem;
-  background: #8a2be2;
+  background: #5D2E5F;
   color: white;
   border: none;
   border-radius: 6px;
@@ -137,7 +137,7 @@
 }
 
 .select-plan-btn:hover:not(:disabled) {
-  background: #7525c5;
+  background: #4A1C4A;
 }
 
 .select-plan-btn:disabled {
@@ -159,15 +159,13 @@
   }
 }
 
-
-
 .selected-plan-summary {
-  background: #f0e6ff;
+  background: #f0e6f2;
   padding: 0.75rem;
   border-radius: 6px;
   margin-bottom: 1rem;
   text-align: center;
-  color: #8a2be2;
+  color: #5D2E5F;
   font-weight: 500;
 }
 
@@ -194,8 +192,8 @@
 }
 
 .payment-error {
-  color: #dc3545;
-  background: #fff5f5;
+  color: #6B7280;
+  background: #f3f4f6;
   padding: 0.75rem;
   border-radius: 6px;
   margin-bottom: 1rem;
@@ -203,8 +201,8 @@
 }
 
 .payment-success {
-  color: #28a745;
-  background: #f0fff4;
+  color: #5D2E5F;
+  background: #E6F2FF;
   padding: 0.75rem;
   border-radius: 6px;
   margin-bottom: 1rem;

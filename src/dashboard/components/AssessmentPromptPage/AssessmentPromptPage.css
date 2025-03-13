@@ -31,8 +31,8 @@
 
 /* Error message styling */
 .error-message {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: #E6F2FF;
+  color: #5D2E5F;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -64,8 +64,7 @@
   color: #333;
 }
 
-.form-group input,
-.form-group select {
+.form-group input, .form-group select {
   padding: 0.875rem 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -73,11 +72,10 @@
   transition: all 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #ef4444; /* Red color for assessments */
+.form-group input:focus, .form-group select:focus {
+  border-color: #5D2E5F; /* Purple color for focus */
   outline: none;
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 4px rgba(93, 46, 95, 0.1);
 }
 
 .form-group select {
@@ -99,7 +97,7 @@
 }
 
 .generate-btn {
-  background: #8a2be2;
+  background: #5D2E5F; /* Purple color */
   color: white;
   border: none;
   border-radius: 8px;
@@ -114,16 +112,16 @@
 }
 
 .generate-btn.assessment-btn {
-  background: #ef4444; /* Red color for assessments */
+  background: #5D2E5F; /* Purple color for assessments */
 }
 
 .generate-btn:not(:disabled):hover {
-  background: #7525c5;
+  background: #4A1C4A; /* Darker purple on hover */
   transform: translateY(-2px);
 }
 
 .generate-btn.assessment-btn:not(:disabled):hover {
-  background: #dc2626; /* Darker red on hover */
+  background: #4A1C4A; /* Darker purple on hover */
 }
 
 .generate-btn:disabled {

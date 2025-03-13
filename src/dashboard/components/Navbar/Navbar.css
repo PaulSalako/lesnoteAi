@@ -34,7 +34,7 @@
 .brand-name {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #6b2be4;
+  color: #5D2E5F;
 }
 
 .menu-button {
@@ -51,7 +51,7 @@
 }
 
 .menu-button:hover {
-  color: #8a2be2;
+  color: #5D2E5F;
 }
 
 /* Plan Display Styles */
@@ -79,7 +79,7 @@
 
 .upgrade-btn {
   margin-left: 0.75rem;
-  background-color: #6b2be4;
+  background-color: #5D2E5F;
   color: white;
   border: none;
   border-radius: 4px;
@@ -91,7 +91,7 @@
 }
 
 .upgrade-btn:hover {
-  background-color: #5a23c8;
+  background-color: #4A1C4A;
 }
 
 /* Profile Section */
@@ -124,7 +124,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #6b2be4;
+  background-color: #5D2E5F;
   color: white;
   border-radius: 50%;
   font-weight: 600;
@@ -165,7 +165,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #6b2be4;
+  background-color: #5D2E5F;
   color: white;
   border-radius: 50%;
   font-weight: 600;
@@ -233,7 +233,7 @@
 }
 
 .upgrade-item {
-  color: #6b2be4;
+  color: #5D2E5F;
   font-weight: 500;
 }
 
@@ -248,7 +248,7 @@
 }
 
 .text-danger {
-  color: #dc3545;
+  color: #6B7280;
 }
 
 /* Modal Styles */
@@ -319,7 +319,7 @@
 
 .upgrade-button {
   padding: 0.5rem 1rem;
-  background-color: #6b2be4;
+  background-color: #5D2E5F;
   color: white;
   border: none;
   border-radius: 4px;

@@ -1,13 +1,14 @@
 /* SignUp.css */
 
 :root {
-  --primary-color: #6b2be4;
+  --primary-color: #63152d;
+  --secondary-color: #3e5eb3;
   --text-color: #333;
   --background-color: #fff;
   --input-bg: #f4f4f4;
   --border-color: #ddd;
-  --error-color: #dc2626;
-  --error-bg: #fee2e2;
+  --error-color: #b32424;
+  --error-bg: #f7e8e8;
 }
 
 /* Main Layout */
@@ -21,7 +22,7 @@
 .signup-left {
   flex: 1;
   padding: 2rem;
-  background: #f8f9fa;
+  background: #f5f0e1;
 }
 
 .signup-left-content {
@@ -150,7 +151,7 @@
 }
 
 .file-input:hover {
-  background-color: rgba(107, 43, 228, 0.05);
+  background-color: rgba(99, 21, 45, 0.05);
 }
 
 .file-input.error {
@@ -171,7 +172,7 @@
 .form-group input:focus {
   border-color: var(--primary-color);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(107, 43, 228, 0.1);
+  box-shadow: 0 0 0 2px rgba(99, 21, 45, 0.1);
 }
 
 /* Error States */
@@ -253,7 +254,7 @@ input.error {
 }
 
 .signup-button:hover:not(:disabled) {
-  background: #5a24c4;
+  background: #521226;
   transform: translateY(-1px);
 }
 

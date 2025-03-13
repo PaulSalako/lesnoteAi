@@ -4,7 +4,7 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f5f0e1 100%);
   padding: 80px 0;
 }
 
@@ -35,7 +35,7 @@
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: rgba(138, 43, 226, 0.1);
+  background: rgba(99, 21, 45, 0.1);
   top: -100px;
   right: -100px;
   z-index: 0;
@@ -46,7 +46,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: rgba(138, 43, 226, 0.05);
+  background: rgba(99, 21, 45, 0.05);
   bottom: -50px;
   left: -50px;
   z-index: 0;
@@ -56,7 +56,7 @@
   position: absolute;
   width: 150px;
   height: 150px;
-  background-image: radial-gradient(circle, #8a2be2 1px, transparent 1px);
+  background-image: radial-gradient(circle, #63152d 1px, transparent 1px);
   background-size: 15px 15px;
   opacity: 0.2;
   top: 50%;
@@ -67,7 +67,7 @@
 /* About Section Styles */
 .about-section {
   overflow: hidden;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f5f0e1 100%);
   padding: 80px 0;
 }
 
@@ -132,14 +132,9 @@
   }
 }
 
-
-
-
-
-
 /* How It Works Section Styles */
 .how-it-works-section {
-  background: linear-gradient(135deg, #8a2be2 0%, #6b1da9 100%);
+  background: linear-gradient(135deg, #63152d 0%, #521226 100%);
   position: relative;
   overflow: hidden;
 }
@@ -164,7 +159,7 @@
   position: absolute;
   top: -15px;
   right: -15px;
-  background: #8a2be2;
+  background: #63152d;
   color: white;
   width: 40px;
   height: 40px;
@@ -242,12 +237,9 @@
   }
 }
 
-
-
-
 /* Benefits Section Styles */
 .benefits-section {
-  background-color: #f8f9fa;
+  background-color: #f5f0e1;
   position: relative;
 }
 
@@ -268,7 +260,7 @@
 .benefit-icon {
   width: 60px;
   height: 60px;
-  background: rgba(138, 43, 226, 0.1);
+  background: rgba(99, 21, 45, 0.1);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -278,7 +270,7 @@
 
 .benefit-icon i {
   font-size: 1.8rem;
-  color: #8a2be2;
+  color: #63152d;
 }
 
 .benefit-card h3 {
@@ -315,7 +307,7 @@
 .stat-number {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #8a2be2;
+  color: #63152d;
   margin-bottom: 0.5rem;
 }
 
@@ -355,13 +347,6 @@
   }
 }
 
-
-
-
-
-
-
-
 /* Testimonials Section Styles */
 .testimonials-section {
   background: #fff;
@@ -383,7 +368,7 @@
   transform: translateX(-50%);
   width: 40px;
   height: 40px;
-  background: #8a2be2;
+  background: #63152d;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -451,7 +436,7 @@
 .carousel-control-next {
   width: 40px;
   height: 40px;
-  background: #8a2be2;
+  background: #63152d;
   border-radius: 50%;
   opacity: 1;
   top: 50%;
@@ -480,7 +465,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #8a2be2;
+  background-color: #63152d;
   opacity: 0.5;
   margin: 0 5px;
 }
@@ -527,14 +512,9 @@
   }
 }
 
-
-
-
-
-
 /* Pricing Section Styles */
 .pricing-section {
-  background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+  background: linear-gradient(135deg, #f5f0e1 0%, #fff 100%);
 }
 
 .pricing-card {
@@ -554,8 +534,8 @@
 }
 
 .pricing-card.popular {
-  border: 2px solid #8a2be2;
-  box-shadow: 0 10px 30px rgba(138, 43, 226, 0.1);
+  border: 2px solid #63152d;
+  box-shadow: 0 10px 30px rgba(99, 21, 45, 0.1);
 }
 
 .pricing-header {
@@ -571,7 +551,7 @@
 }
 
 .pricing-badge {
-  background: #8a2be2;
+  background: #63152d;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -580,21 +560,21 @@
 }
 
 .pricing-card.popular .pricing-badge {
-  background: #ff6b6b;
+  background: #b32424;
 }
 
 .token-amount {
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: rgba(138, 43, 226, 0.05);
+  background: rgba(99, 21, 45, 0.05);
   border-radius: 15px;
 }
 
 .token-number {
   font-size: 3rem;
   font-weight: 700;
-  color: #8a2be2;
+  color: #63152d;
   display: block;
 }
 
@@ -606,7 +586,7 @@
 .bonus-text {
   display: block;
   font-size: 0.9rem;
-  color: #ff6b6b;
+  color: #b32424;
   margin-top: 0.5rem;
 }
 
@@ -645,12 +625,12 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(138, 43, 226, 0.05);
+  background: rgba(99, 21, 45, 0.05);
   border-radius: 10px;
 }
 
 .pricing-info-item i {
-  color: #8a2be2;
+  color: #63152d;
   font-size: 1.2rem;
 }
 
@@ -672,11 +652,9 @@
   }
 }
 
-
-
 /* FAQ Section Styles */
 .faq-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f5f0e1 100%);
 }
 
 .accordion-item {
@@ -696,14 +674,14 @@
 }
 
 .accordion-button:not(.collapsed) {
-  color: #8a2be2;
+  color: #63152d;
   background: white;
   box-shadow: none;
 }
 
 .accordion-button:focus {
   box-shadow: none;
-  border-color: rgba(138, 43, 226, 0.25);
+  border-color: rgba(99, 21, 45, 0.25);
 }
 
 .accordion-button::after {
@@ -737,7 +715,7 @@
 .support-icon {
   width: 70px;
   height: 70px;
-  background: rgba(138, 43, 226, 0.1);
+  background: rgba(99, 21, 45, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -747,7 +725,7 @@
 
 .support-icon i {
   font-size: 2rem;
-  color: #8a2be2;
+  color: #63152d;
 }
 
 .support-card h3 {
@@ -777,7 +755,7 @@
 }
 
 .support-features i {
-  color: #8a2be2;
+  color: #63152d;
 }
 
 .contact-info {
@@ -792,12 +770,12 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 1.5rem;
-  background: rgba(138, 43, 226, 0.05);
+  background: rgba(99, 21, 45, 0.05);
   border-radius: 10px;
 }
 
 .contact-item i {
-  color: #8a2be2;
+  color: #63152d;
   font-size: 1.2rem;
 }
 

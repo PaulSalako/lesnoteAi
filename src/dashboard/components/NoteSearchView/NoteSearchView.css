@@ -1,0 +1,368 @@
+/* src/dashboard/components/ViewNotePage/ViewNotePage.css */
+
+.view-note-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f0e6f2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Compact Note Header */
+.note-header-compact {
+  padding: 12px 16px;
+  background-color: white;
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 8px 8px 0 0;
+}
+
+.header-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.header-top-row h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.note-meta-compact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.note-meta-compact span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.note-meta-compact i {
+  font-size: 0.9rem;
+  color: #5D2E5F;
+}
+
+.lesson-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background-color: #E6F2FF;
+  color: #5D2E5F;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.back-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.back-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Note Content */
+.note-content-wrapper {
+  flex: 1;
+  padding: 8px 16px 20px;
+  overflow-y: auto;
+  height: calc(100vh - 160px); /* Adjust height to use more screen space */
+}
+
+.note-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  max-width: 900px; /* Increased max-width */
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.note-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.note-header-container {
+  display: none; /* Hide this container to save space */
+}
+
+.note-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Export Section */
+.export-section {
+  padding: 10px 16px;
+  background-color: white;
+  border-top: 1px solid #e9ecef;
+  margin-top: auto;
+  border-radius: 0 0 8px 8px;
+  position: sticky;
+  bottom: 0;
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.copy-btn, .export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.pdf-btn {
+  border-color: #6B7280;
+  color: #6B7280;
+}
+
+.pdf-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.img-btn {
+  border-color: #5D2E5F;
+  color: #5D2E5F;
+}
+
+.img-btn:hover {
+  background-color: #E6F2FF;
+}
+
+.doc-btn {
+  border-color: #5D2E5F;
+  color: #5D2E5F;
+}
+
+.doc-btn:hover {
+  background-color: #E6F2FF;
+}
+
+/* Export Loading Overlay */
+.export-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.export-loading-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+  font-size: 2rem;
+  color: #5D2E5F;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading and Error States */
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 48px;
+  text-align: center;
+}
+
+.spinner {
+  font-size: 2rem;
+  color: #5D2E5F;
+  margin-bottom: 16px;
+}
+
+.error-container i {
+  font-size: 3rem;
+  color: #6B7280;
+  margin-bottom: 16px;
+}
+
+.error-container h3 {
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.error-container p {
+  margin: 0 0 24px;
+  color: #666;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .note-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .export-actions {
+    flex-direction: column;
+  }
+  
+  .copy-btn, .export-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ReactMarkdown styling */
+.note-body h1, .note-body h2, .note-body h3,
+.note-body h4, .note-body h5, .note-body h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  color: #333;
+}
+
+.note-body h1 {
+  font-size: 1.8rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.3em;
+}
+
+.note-body h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.3em;
+}
+
+.note-body h3 {
+  font-size: 1.3rem;
+}
+
+.note-body h4 {
+  font-size: 1.1rem;
+}
+
+.note-body p {
+  margin: 0.8em 0;
+}
+
+.note-body ul, .note-body ol {
+  padding-left: 2em;
+  margin: 0.8em 0;
+}
+
+.note-body li {
+  margin: 0.4em 0;
+}
+
+.note-body blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  margin: 1em 0;
+  color: #666;
+}
+
+.note-body pre {
+  background-color: #f6f8fa;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.note-body code {
+  background-color: #f6f8fa;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.note-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.note-body table th,
+.note-body table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+}
+
+.note-body table th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+.note-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.note-body hr {
+  height: 1px;
+  background-color: #ddd;
+  border: none;
+  margin: 1.5em 0;
+}

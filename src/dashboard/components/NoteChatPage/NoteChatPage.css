@@ -73,12 +73,12 @@
 }
 
 .action-btn.primary {
-  background: #8a2be2;
+  background: #5D2E5F;
   color: white;
 }
 
 .action-btn.primary:hover {
-  background: #7525c5;
+  background: #4A1C4A;
 }
 
 /* Chat Messages */
@@ -97,12 +97,12 @@
 .message-avatar {
   width: 40px;
   height: 40px;
-  background: #f0e6ff;
+  background: #E6F2FF;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8a2be2;
+  color: #5D2E5F;
   font-size: 1.25rem;
 }
 
@@ -138,6 +138,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border-left: 4px solid #5D2E5F;
 }
 
 .response-header {
@@ -146,6 +147,8 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid #eee;
+  background: #E6F2FF;
+  color: #5D2E5F;
 }
 
 /* Response Actions */
@@ -163,7 +166,7 @@
   border: none;
   border-radius: 6px;
   background: #f8f9fa;
-  color: #666;
+  color: #5D2E5F;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -383,7 +386,7 @@
 
 .input-container button {
   border: none;
-  background: #8a2be2;
+  background: #5D2E5F;
   color: white;
   padding: 0 1.5rem;
   cursor: pointer;
@@ -391,7 +394,7 @@
 }
 
 .input-container button:hover {
-  background: #7525c5;
+  background: #4A1C4A;
 }
 
 .input-container button:disabled {
@@ -497,12 +500,12 @@
 }
 
 .regenerate-btn {
-  background: #8a2be2;
+  background: #5D2E5F;
   color: white;
 }
 
 .regenerate-btn:hover {
-  background: #7525c5;
+  background: #4A1C4A;
 }
 
 .regenerate-btn:disabled {
@@ -548,7 +551,7 @@
 
 .export-loading-content i {
   font-size: 2rem;
-  color: #8a2be2;
+  color: #5D2E5F;
   margin-bottom: 1rem;
 }
 
@@ -567,7 +570,7 @@
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
   font-size: 2rem;
-  color: #8a2be2;
+  color: #5D2E5F;
 }
 
 @keyframes spin {
@@ -577,7 +580,7 @@
 
 .error-container i {
   font-size: 3rem;
-  color: #dc3545;
+  color: #6B7280;
   margin-bottom: 1rem;
 }
 
