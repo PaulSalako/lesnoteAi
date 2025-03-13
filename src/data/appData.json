@@ -1,7 +1,0 @@
-{
-  "JwtSettings": {
-    "Key": "YourSuperSecretKey123456789",
-    "Issuer": "yourdomain.com",
-    "Audience": "yourdomain.com"
-  }
-}

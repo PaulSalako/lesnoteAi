@@ -1,14 +1,12 @@
 // App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-// import { DataProvider } from "./contexts/NoteContext";
+import LandingPage from "./homepage/LandingPage/LandingPage";
 import "./App.css";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import VerifyEmail from "./pages/VerifyEmail";
+import Login from "./homepage/Login/Login";
+import SignUp from "./homepage/Register/SignUp";
+import ForgotPassword from "./homepage/ForgotPassword/ForgotPassword";
+import ResetPassword from "./homepage/ReserPassword/ResetPassword";
+import VerifyEmail from "./homepage/VerifyEmail/VerifyEmail";
 import DashboardLayout from './dashboard/DashboardLayout';
 import DashboardHome from './dashboard/pages/DashboardHome';
 
@@ -40,12 +38,7 @@ import ManageLessonStructure from './dashboard/components/ManageLessonStructure/
 
 
 function App() {
-  // const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
-  // const redirectUri = "http://localhost:5173";
-
-  return (
-    
-      
+  return (         
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -83,15 +76,9 @@ function App() {
               <Route path="manage-topic" element={<ManageTopic />} />
               <Route path="manage-theme" element={<ManageTheme />} />
               <Route path="manage-lesson-structure" element={<ManageLessonStructure />} />
-
-
-
-
             </Route>
           </Routes>
         </BrowserRouter>
-
   );
 }
-
 export default App;
