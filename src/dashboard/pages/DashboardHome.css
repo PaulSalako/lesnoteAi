@@ -34,7 +34,7 @@
 .user-search-form h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #8a2be2;
+  color: #63152d;
   margin: 0 0 1.5rem 0;
 }
 
@@ -64,8 +64,8 @@
 .form-group select:focus,
 .form-group input:focus {
   outline: none;
-  border-color: #8a2be2;
-  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+  border-color: #63152d;
+  box-shadow: 0 0 0 3px rgba(99, 21, 45, 0.1);
 }
 
 .form-actions {
@@ -75,7 +75,7 @@
 }
 
 .search-button {
-  background: #8a2be2;
+  background: #63152d;
   color: white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -90,7 +90,7 @@
 }
 
 .search-button:hover {
-  background: #7525c5;
+  background: #521226;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
@@ -106,13 +106,13 @@
 }
 
 .admin-banner {
-  background-color: #fef3c7;
-  border-left: 4px solid #f59e0b;
+  background-color: #f0f7ee;
+  border-left: 4px solid #2e5e41;
 }
 
 .staff-banner {
-  background-color: #e0f2fe;
-  border-left: 4px solid #0284c7;
+  background-color: #e6edf9;
+  border-left: 4px solid #3e5eb3;
 }
 
 .admin-banner i, .staff-banner i {
@@ -120,11 +120,11 @@
 }
 
 .admin-banner i {
-  color: #d97706;
+  color: #2e5e41;
 }
 
 .staff-banner i {
-  color: #0284c7;
+  color: #3e5eb3;
 }
 
 .admin-banner p, .staff-banner p {
@@ -133,7 +133,7 @@
 }
 
 .admin-button {
-  background: #f59e0b;
+  background: #2e5e41;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -144,7 +144,7 @@
 }
 
 .admin-button:hover {
-  background: #d97706;
+  background: #264e36;
 }
 
 /* Stats Grid */
@@ -183,23 +183,23 @@
 }
 
 .purple .card-icon {
-  background: #f3e8ff;
-  color: #8a2be2;
+  background: #f1e2e6;
+  color: #63152d;
 }
 
 .blue .card-icon {
-  background: #e6f3ff;
-  color: #2563eb;
+  background: #e6edf9;
+  color: #3e5eb3;
 }
 
 .green .card-icon {
-  background: #ecfdf5;
-  color: #059669;
+  background: #e6f0ea;
+  color: #2e5e41;
 }
 
 .red .card-icon {
-  background: #fee2e2;
-  color: #ef4444;
+  background: #f7e8e8;
+  color: #b32424;
 }
 
 .card-content h3 {
@@ -223,10 +223,11 @@
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .create-button {
-  background: #8a2be2;
+  background: #63152d;
   color: white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -238,44 +239,48 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: auto;
+  min-width: 200px;
+  max-width: calc(33.333% - 1rem);
+  justify-content: flex-start;
 }
 
 .create-button:hover {
-  background: #7525c5;
+  background: #521226;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .create-button.lesson-plan {
-  background: #2563eb;
+  background: #3e5eb3;
 }
 
 .create-button.lesson-plan:hover {
-  background: #1d4ed8;
+  background: #334d94;
 }
 
 .create-button.assessment {
-  background: #ef4444;
+  background: #b32424;
 }
 
 .create-button.assessment:hover {
-  background: #dc2626;
+  background: #941d1d;
 }
 
 .create-button.admin {
-  background: #f59e0b;
+  background: #2e5e41;
 }
 
 .create-button.admin:hover {
-  background: #d97706;
+  background: #264e36;
 }
 
 .create-button.staff {
-  background: #0284c7;
+  background: #3e5eb3;
 }
 
 .create-button.staff:hover {
-  background: #026592;
+  background: #334d94;
 }
 
 /* Recent Notes Section */
@@ -304,7 +309,7 @@
 .view-all-button {
   background: none;
   border: none;
-  color: #8a2be2;
+  color: #63152d;
   font-weight: 500;
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -313,7 +318,7 @@
 }
 
 .view-all-button:hover {
-  background: #f0e6ff;
+  background: #f1e2e6;
 }
 
 .notes-grid {
@@ -331,11 +336,11 @@
   background: #f8f9ff;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-left: 4px solid #8a2be2;
+  border-left: 4px solid #63152d;
 }
 
 .note-card:hover {
-  background: #f0e6ff;
+  background: #f1e2e6;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
@@ -343,7 +348,7 @@
 .note-icon {
   width: 40px;
   height: 40px;
-  background: #8a2be2;
+  background: #63152d;
   color: white;
   border-radius: 8px;
   display: flex;
@@ -375,52 +380,52 @@
 
 /* Lesson Plans Section */
 .lesson-plans-section .section-header h2 {
-  color: #2563eb;
+  color: #3e5eb3;
 }
 
 .lesson-plans-section .view-all-button {
-  color: #2563eb;
+  color: #3e5eb3;
 }
 
 .lesson-plans-section .view-all-button:hover {
-  background: #e6f3ff;
+  background: #e6edf9;
 }
 
 .lesson-plan-card {
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #3e5eb3;
 }
 
 .lesson-plan-card:hover {
-  background: #e6f3ff;
+  background: #e6edf9;
 }
 
 .lesson-plan-card .note-icon {
-  background: #2563eb;
+  background: #3e5eb3;
 }
 
 /* Assessments Section */
 .assessments-section .section-header h2 {
-  color: #ef4444;
+  color: #b32424;
 }
 
 .assessments-section .view-all-button {
-  color: #ef4444;
+  color: #b32424;
 }
 
 .assessments-section .view-all-button:hover {
-  background: #fee2e2;
+  background: #f7e8e8;
 }
 
 .assessment-card {
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid #b32424;
 }
 
 .assessment-card:hover {
-  background: #fee2e2;
+  background: #f7e8e8;
 }
 
 .assessment-card .note-icon {
-  background: #ef4444;
+  background: #b32424;
 }
 
 .assessment-meta {
@@ -431,8 +436,8 @@
 
 .assessment-type {
   font-size: 0.75rem;
-  color: #ef4444;
-  background: #fee2e2;
+  color: #b32424;
+  background: #f7e8e8;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-weight: 500;
@@ -449,15 +454,15 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   display: block;
-  color: #8a2be2;
+  color: #63152d;
 }
 
 .lesson-plans-section .empty-state i {
-  color: #2563eb;
+  color: #3e5eb3;
 }
 
 .assessments-section .empty-state i {
-  color: #ef4444;
+  color: #b32424;
 }
 
 /* Loading and Error States */
@@ -478,7 +483,7 @@
 }
 
 .error-state i {
-  color: #dc3545;
+  color: #b32424;
 }
 
 .spinning {
@@ -495,7 +500,7 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  background-color: #8a2be2;
+  background-color: #63152d;
   color: white;
   cursor: pointer;
   display: flex;
@@ -506,7 +511,7 @@
 }
 
 .retry-button:hover {
-  background-color: #7525c5;
+  background-color: #521226;
 }
 
 /* Modal styling for roles */
@@ -572,8 +577,8 @@
 .role-icon-large {
   width: 64px;
   height: 64px;
-  background: #e6f3ff;
-  color: #2563eb;
+  background: #e6edf9;
+  color: #3e5eb3;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -608,7 +613,7 @@
 }
 
 .role-features-list li i {
-  color: #2563eb;
+  color: #3e5eb3;
 }
 
 .upgrade-modal-footer {
@@ -635,7 +640,7 @@
 }
 
 .confirm-upgrade, .confirm-role {
-  background: #2563eb;
+  background: #3e5eb3;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -646,10 +651,18 @@
 }
 
 .confirm-upgrade:hover, .confirm-role:hover {
-  background: #1d4ed8;
+  background: #334d94;
 }
 
 /* Responsive Design */
+/* Medium screens */
+@media (max-width: 992px) {
+  .create-button {
+    max-width: calc(50% - 1rem);
+  }
+}
+
+/* Small screens */
 @media (max-width: 768px) {
   .dashboard-home {
     padding: 1rem;
@@ -681,15 +694,6 @@
     width: 100%;
     text-align: center;
   }
-
-  .create-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
   
   .form-actions {
     justify-content: center;
@@ -698,5 +702,18 @@
   .search-button {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* Extra small screens - only apply column layout at very small sizes */
+@media (max-width: 576px) {
+  .create-button {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
   }
 }

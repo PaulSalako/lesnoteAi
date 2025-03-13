@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardHome.css';
-import AIChatSupport from '../components/AIChatSupport/AIChatSupport'; 
+import AIChatSupport from '../AIChatSupport/AIChatSupport'; 
 
 function DashboardHome() {
   const navigate = useNavigate();
@@ -44,13 +44,6 @@ function DashboardHome() {
       assessments: 0,
       allContent: 0
     }
-  });
-  
-  // Form state for regular users
-  const [formData, setFormData] = useState({
-    class: '',
-    subject: '',
-    topic: ''
   });
   
   // Get user info from storage
@@ -328,56 +321,6 @@ function DashboardHome() {
     }
   ];
 
-  // Today's system-wide stats for admin
-  const systemTodayStatsCards = [
-    {
-      title: "All Notes Today",
-      value: systemStats.today.lessonNotes,
-      icon: "bi-file-earmark-plus",
-      color: "purple"
-    },
-    {
-      title: "All Plans Today",
-      value: systemStats.today.lessonPlans,
-      icon: "bi-journal-plus",
-      color: "blue"
-    },
-    {
-      title: "All Assessments Today",
-      value: systemStats.today.assessments,
-      icon: "bi-clipboard-plus",
-      color: "red"
-    },
-    {
-      title: "Total Platform Activity Today",
-      value: systemStats.today.allContent,
-      icon: "bi-activity",
-      color: "green"
-    }
-  ];
-
-  // This is no longer needed as all users are Premium
-  const handlePremiumFeatureClick = () => {
-    // We still show the modal for historical reasons if needed
-    setShowUpgradeModal(true);
-  };
-
-  // Handle form input changes for regular users
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  // Handle search form submission for regular users
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // Navigate to search results or process the search
-    navigate('/dashboard/search-results', { state: { searchParams: formData } });
-  };
-
   if (loading) {
     return (
       <div className="dashboard-home">
@@ -427,98 +370,25 @@ function DashboardHome() {
     return stats.roleId === 3; // User role
   };
 
-  // Regular User Dashboard View
-  const RegularUserDashboard = () => (
+ // Regular User Dashboard View - SIMPLIFIED to welcome message only
+const RegularUserDashboard = () => {
+  return (
     <div className="dashboard-home">
       {/* Welcome Section */}
       <div className="welcome-section">
         <h1>Welcome back, {stats.userName || 'User'}! 👋</h1>
         <p>
           You are logged in as <strong>{stats.roleName}</strong>. 
-          Use the form below to create lessons and assessments.
+          Use the navigation menu to explore available lesson notes and other resources.
         </p>
       </div>
-
-      {/* Search Form for Regular Users */}
-      <div className="user-search-form">
-        <h2>Create Lesson Notes</h2>
-        <form onSubmit={handleSearch}>
-          <div className="form-group">
-            <label htmlFor="class">Class/Grade Level</label>
-            <select 
-              id="class" 
-              name="class" 
-              value={formData.class} 
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Select a class</option>
-              <option value="preschool">Preschool</option>
-              <option value="kindergarten">Kindergarten</option>
-              <option value="1">Grade 1</option>
-              <option value="2">Grade 2</option>
-              <option value="3">Grade 3</option>
-              <option value="4">Grade 4</option>
-              <option value="5">Grade 5</option>
-              <option value="6">Grade 6</option>
-              <option value="7">Grade 7</option>
-              <option value="8">Grade 8</option>
-              <option value="9">Grade 9</option>
-              <option value="10">Grade 10</option>
-              <option value="11">Grade 11</option>
-              <option value="12">Grade 12</option>
-              <option value="college">College/University</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="subject">Subject</label>
-            <select 
-              id="subject" 
-              name="subject" 
-              value={formData.subject} 
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Select a subject</option>
-              <option value="math">Mathematics</option>
-              <option value="science">Science</option>
-              <option value="english">English</option>
-              <option value="history">History</option>
-              <option value="geography">Geography</option>
-              <option value="art">Art</option>
-              <option value="music">Music</option>
-              <option value="pe">Physical Education</option>
-              <option value="computer">Computer Science</option>
-              <option value="foreign">Foreign Languages</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="topic">Topic</label>
-            <input 
-              type="text" 
-              id="topic" 
-              name="topic" 
-              value={formData.topic} 
-              onChange={handleInputChange}
-              placeholder="Enter a topic"
-              required
-            />
-          </div>
-
-          <div className="form-actions">
-            <button type="submit" className="search-button">
-              <i className="bi bi-search"></i> Create Lesson
-            </button>
-          </div>
-        </form>
-      </div>
+    
       
       {/* Add the AI Chat Support component */}
       <AIChatSupport isPremium={true} />
     </div>
   );
+};
 
   // Staff and Admin Dashboard View
   const StaffOrAdminDashboard = () => (
@@ -530,71 +400,7 @@ function DashboardHome() {
           You are logged in as <strong>{stats.roleName}</strong>. 
           Get started by creating new content or review your recent materials.
         </p>
-        
-        {/* Admin-specific message */}
-        {/* {hasAdminAccess() && (
-          <div className="admin-banner">
-            <i className="bi bi-shield-lock"></i>
-            <p>You have administrator privileges. Access the admin panel to manage users and system settings.</p>
-            <button 
-              className="admin-button"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              Admin Panel
-            </button>
-          </div>
-        )} */}
-        
-        {/* Staff-specific message */}
-        {/* {stats.roleId === 2 && (
-          <div className="staff-banner">
-            <i className="bi bi-person-badge"></i>
-            <p>You have staff privileges. You can manage content and support users.</p>
-          </div>
-        )} */}
       </div>
-
-      {/* Personal Content Statistics Section */}
-      {/* <div className="section-header stats-section-header">
-        <h2>My Content Statistics</h2>
-      </div>
-      <div className="stats-grid">
-        {contentStatsCards.map((card, index) => (
-          <div 
-            key={index} 
-            className={`stats-card ${card.color}`}
-          >
-            <div className="card-icon">
-              <i className={`bi ${card.icon}`}></i>
-            </div>
-            <div className="card-content">
-              <h3>{card.title}</h3>
-              <p className="value">{card.value || 0}</p>
-            </div>
-          </div>
-        ))}
-      </div> */}
-
-      {/* Today's Personal Activity Section */}
-      {/* <div className="section-header today-stats-header">
-        <h2>My Today's Activity</h2>
-      </div>
-      <div className="stats-grid">
-        {todayStatsCards.map((card, index) => (
-          <div 
-            key={index} 
-            className={`stats-card ${card.color}`}
-          >
-            <div className="card-icon">
-              <i className={`bi ${card.icon}`}></i>
-            </div>
-            <div className="card-content">
-              <h3>{card.title}</h3>
-              <p className="value">{card.value || 0}</p>
-            </div>
-          </div>
-        ))}
-      </div> */}
 
       {/* System-wide Content Stats - Admin Only */}
       {hasAdminAccess() && (
@@ -620,31 +426,6 @@ function DashboardHome() {
           </div>
         </>
       )}
-
-      {/* System-wide Today's Activity - Admin Only */}
-      {/* {hasAdminAccess() && (
-        <>
-          <div className="section-header system-today-stats-header">
-            <h2>Platform Today's Activity</h2>
-          </div>
-          <div className="stats-grid">
-            {systemTodayStatsCards.map((card, index) => (
-              <div 
-                key={index} 
-                className={`stats-card ${card.color}`}
-              >
-                <div className="card-icon">
-                  <i className={`bi ${card.icon}`}></i>
-                </div>
-                <div className="card-content">
-                  <h3>{card.title}</h3>
-                  <p className="value">{card.value || 0}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )} */}
 
       {/* User Stats Cards - Admin Only */}
       {hasAdminAccess() && (
@@ -691,7 +472,7 @@ function DashboardHome() {
             Create Lesson Note
           </button>
           
-          <button 
+          {/* <button 
             className="create-button lesson-plan"
             onClick={() => navigate('/dashboard/lesson-plan')}
           >
@@ -705,9 +486,9 @@ function DashboardHome() {
           >
             <i className="bi bi-clipboard-check"></i>
             Create Assessment
-          </button>
+          </button> */}
           
-          {/* Admin-only button */}
+          {/* Admin-only buttons */}
           {hasAdminAccess() && (
             <>
               <button 
@@ -736,12 +517,27 @@ function DashboardHome() {
 
               <button 
                 className="create-button admin"
+                onClick={() => navigate('manage-theme')}
+              >
+                <i className="bi bi-journal-text"></i>
+                Manage Theme
+              </button>
+
+              <button 
+                className="create-button admin"
                 onClick={() => navigate('manage-topic')}
               >
                 <i className="bi bi-journal-text"></i>
                 Manage Topic
               </button>
 
+              <button 
+                className="create-button admin"
+                onClick={() => navigate('manage-lesson-structure')}
+              >
+                <i className="bi bi-journal-text"></i>
+                Manage Structure
+              </button>
 
               <button 
                 className="create-button admin"
@@ -752,18 +548,6 @@ function DashboardHome() {
               </button>
             </>
           )}
-
-          
-          {/* Staff-level button */}
-          {/* {hasStaffAccess() && (
-            <button 
-              className="create-button staff"
-              onClick={() => navigate('/dashboard/content-management')}
-            >
-              <i className="bi bi-collection"></i>
-              Manage Content
-            </button>
-          )} */}
         </div>
       </div>
 
@@ -807,7 +591,7 @@ function DashboardHome() {
       </div>
 
       {/* Recent Lesson Plans */}
-      <div className="recent-notes lesson-plans-section">
+      {/* <div className="recent-notes lesson-plans-section">
         <div className="section-header">
           <h2>Recent Lesson Plans</h2>
           <button 
@@ -843,10 +627,10 @@ function DashboardHome() {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
       
       {/* Recent Assessments */}
-      <div className="recent-notes assessments-section">
+      {/* <div className="recent-notes assessments-section">
         <div className="section-header">
           <h2>Recent Assessments</h2>
           <button 
@@ -885,7 +669,7 @@ function DashboardHome() {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
       
       {/* Add the AI Chat Support component */}
       <AIChatSupport isPremium={true} />
@@ -914,10 +698,9 @@ function DashboardHome() {
               <h4>Your Role: {stats.roleName}</h4>
               <p>Your account has the following permissions:</p>
               <ul className="role-features-list">
-                <li><i className="bi bi-check-circle"></i> Create Lesson Notes</li>
-                <li><i className="bi bi-check-circle"></i> Create Lesson Plans</li>
-                <li><i className="bi bi-check-circle"></i> Create Assessments</li>
-                <li><i className="bi bi-check-circle"></i> Access to All Resources</li>
+                <li><i className="bi bi-check-circle"></i> Access Lesson Notes</li>
+                <li><i className="bi bi-check-circle"></i> View Lesson Plans</li>
+                <li><i className="bi bi-check-circle"></i> Access Assessments</li>
                 {hasStaffAccess() && (
                   <li><i className="bi bi-check-circle"></i> Content Management</li>
                 )}

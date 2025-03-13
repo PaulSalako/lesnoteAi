@@ -1,45 +1,44 @@
 // App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-// import { DataProvider } from "./contexts/NoteContext";
+import LandingPage from "./homepage/LandingPage/LandingPage";
 import "./App.css";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import VerifyEmail from "./pages/VerifyEmail";
-import DashboardLayout from './dashboard/DashboardLayout';
+import Login from "./homepage/Login/Login";
+import SignUp from "./homepage/Register/SignUp";
+import ForgotPassword from "./homepage/ForgotPassword/ForgotPassword";
+import ResetPassword from "./homepage/ResetPassword/ResetPassword";
+import VerifyEmail from "./homepage/VerifyEmail/VerifyEmail";
+import DashboardLayout from './dashboard/DashboardLayout/DashboardLayout';
 import DashboardHome from './dashboard/pages/DashboardHome';
 
-import NotePromptPage from './dashboard/components/NotePromptPage/NotePromptPage';
-import NoteChatPage from './dashboard/components/NoteChatPage/NoteChatPage';
-import AllNotes from './dashboard/components/Notes/AllNotes';
+import NotePromptPage from './dashboard/NotePromptPage/NotePromptPage';
+import NoteChatPage from './dashboard/NoteChatPage/NoteChatPage';
+import AllNotes from './dashboard/Notes/AllNotes';
 
-import PlanPromptPage from './dashboard/components/PlanPromptPage/PlanPromptPage';
-import PlanChatPage from './dashboard/components/PlanChatPage/PlanChatPage';
-import AllPlans from './dashboard/components/Plans/AllPlans';
+import NoteSearchPage from './dashboard/NoteSearchPage/NoteSearchPage';
+import NoteSearchView from './dashboard/NoteSearchView/NoteSearchView';
 
-import AssessmentPromptPage from './dashboard/components/AssessmentPromptPage/AssessmentPromptPage';
-import AssessmentChatPage from './dashboard/components/AssessmentChatPage/AssessmentChatPage';
-import AllAssessment from './dashboard/components/Assessment/AllAssessment';
 
-import AIChatSupport from './dashboard/components/AIChatSupport/AIChatSupport';
+import PlanPromptPage from './dashboard/PlanPromptPage/PlanPromptPage';
+import PlanChatPage from './dashboard/PlanChatPage/PlanChatPage';
+import AllPlans from './dashboard/Plans/AllPlans';
 
-import ManageUsers from './dashboard/components/ManageUsers/ManageUsers';
-import ManageClass from './dashboard/components/ManageClass/ManageClass';
-import ManageSubject from './dashboard/components/ManageSubject/ManageSubject';
-import ManageTopic from './dashboard/components/ManageTopic/ManageTopic';
+import AssessmentPromptPage from './dashboard/AssessmentPromptPage/AssessmentPromptPage';
+import AssessmentChatPage from './dashboard/AssessmentChatPage/AssessmentChatPage';
+import AllAssessment from './dashboard/Assessment/AllAssessment';
+
+import AIChatSupport from './dashboard/AIChatSupport/AIChatSupport';
+
+import ManageUsers from './dashboard/ManageUsers/ManageUsers';
+import ManageClass from './dashboard/ManageClass/ManageClass';
+import ManageSubject from './dashboard/ManageSubject/ManageSubject';
+import ManageTopic from './dashboard/ManageTopic/ManageTopic';
+import ManageTheme from './dashboard/ManageTheme/ManageTheme';
+import ManageLessonStructure from './dashboard/ManageLessonStructure/ManageLessonStructure';
 
 
 
 function App() {
-  // const clientId = "650098995580-m4gl92otbmg0ptr6dtqmb24lulujd7oh.apps.googleusercontent.com";
-  // const redirectUri = "http://localhost:5173";
-
-  return (
-    
-      
+  return (         
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -57,6 +56,10 @@ function App() {
               <Route path="note-chat/:id" element={<NoteChatPage />} />
               <Route path="notes" element={<AllNotes />} />
 
+              <Route path="note-search" element={<NoteSearchPage />} />
+              <Route path="view-note/:id" element={<NoteSearchView />} />
+
+
               <Route path="lesson-plan" element={<PlanPromptPage />} />
               <Route path="lesson-plan-chat/:id" element={<PlanChatPage />} />
               <Route path="lesson-plans" element={<AllPlans />} />
@@ -71,15 +74,11 @@ function App() {
               <Route path="manage-class" element={<ManageClass />} />
               <Route path="manage-subject" element={<ManageSubject />} />
               <Route path="manage-topic" element={<ManageTopic />} />
-
-
-
-
+              <Route path="manage-theme" element={<ManageTheme />} />
+              <Route path="manage-lesson-structure" element={<ManageLessonStructure />} />
             </Route>
           </Routes>
         </BrowserRouter>
-
   );
 }
-
 export default App;

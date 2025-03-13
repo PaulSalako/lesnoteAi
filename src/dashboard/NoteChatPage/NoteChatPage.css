@@ -1,0 +1,630 @@
+/* src/dashboard/components/NoteChatPage/NoteChatPage.css */
+.chat-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+}
+
+/* Chat Header */
+.chat-header {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chat-title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #e6f9e6;
+  color: #28a745;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.chat-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  color: #333;
+}
+
+.action-btn:hover {
+  background: #e9ecef;
+}
+
+.action-btn.primary {
+  background: #5D2E5F;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #4A1C4A;
+}
+
+/* Chat Messages */
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.message {
+  display: flex;
+  gap: 1rem;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  background: #E6F2FF;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5D2E5F;
+  font-size: 1.25rem;
+}
+
+.user-avatar {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.system-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}
+
+.user-message {
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.ai-response {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border-left: 4px solid #5D2E5F;
+}
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  background: #E6F2FF;
+  color: #5D2E5F;
+}
+
+/* Response Actions */
+.response-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #f8f9fa;
+  color: #5D2E5F;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+  background: #e9ecef;
+}
+
+/* Export Dropdown */
+.export-dropdown {
+  position: relative;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #f8f9fa;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+  background: #e9ecef;
+}
+
+.export-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  z-index: 10;
+  display: none;
+  overflow: hidden;
+}
+
+.export-dropdown:hover .export-dropdown-menu {
+  display: block;
+}
+
+.export-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  width: 100%;
+  text-align: left;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-option:hover {
+  background: #f8f9fa;
+}
+
+.export-option:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.response-content {
+  padding: 1rem;
+  margin: 0;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* Markdown Content Styling with Reduced Spacing */
+.markdown-content {
+  padding: 1rem;
+  color: #333;
+  line-height: 1.3;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 0.7rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.markdown-content h1 {
+  font-size: 1.6em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.2em;
+}
+
+.markdown-content h2 {
+  font-size: 1.4em;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.2em;
+}
+
+.markdown-content h3 {
+  font-size: 1.2em;
+}
+
+.markdown-content p {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+/* Add a style for consecutive paragraphs to reduce spacing */
+.markdown-content p + p {
+  margin-top: -0.1rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+.markdown-content li {
+  margin: 0.1rem 0;
+}
+
+.markdown-content li p {
+  margin-bottom: 0.2rem;
+}
+
+.markdown-content li + li {
+  margin-top: 0.05rem;
+}
+
+.markdown-content code {
+  padding: 0.1em 0.3em;
+  margin: 0;
+  background-color: rgba(27,31,35,0.05);
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.markdown-content pre {
+  padding: 0.75rem;
+  overflow: auto;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+  margin: 0 0 0.5rem;
+  padding: 0 0.75rem;
+  color: #6a737d;
+  border-left: 0.25rem solid #dfe2e5;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid #dfe2e5;
+}
+
+.markdown-content table th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+/* Adjust spacing between main content sections */
+.markdown-content hr {
+  margin: 0.4rem 0;
+  border: 0;
+  border-top: 1px solid #eaecef;
+}
+
+/* Message Form */
+.message-form {
+  margin-bottom: 2rem;
+}
+
+.input-container {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.input-container input {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.input-container button {
+  border: none;
+  background: #5D2E5F;
+  color: white;
+  padding: 0 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.input-container button:hover {
+  background: #4A1C4A;
+}
+
+.input-container button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Export All Button */
+.export-all-section {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.export-all-dropdown {
+  position: relative;
+}
+
+.export-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  background: #f8f9fa;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-all-btn:hover {
+  background: #e9ecef;
+}
+
+.export-all-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+  z-index: 10;
+  display: none;
+  overflow: hidden;
+}
+
+.export-all-dropdown:hover .export-all-menu {
+  display: block;
+}
+
+.export-all-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  width: 100%;
+  text-align: left;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-all-option:hover {
+  background: #f8f9fa;
+}
+
+.export-all-option:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Modified Regenerate Section */
+.regenerate-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.regenerate-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Keep original button styles */
+.regenerate-btn,
+.modify-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.regenerate-btn {
+  background: #5D2E5F;
+  color: white;
+}
+
+.regenerate-btn:hover {
+  background: #4A1C4A;
+}
+
+.regenerate-btn:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+
+.modify-btn {
+  background: #f8f9fa;
+  color: #333;
+}
+
+.modify-btn:hover {
+  background: #e9ecef;
+}
+
+.modify-btn:disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Export Loading Overlay */
+.export-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.export-loading-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.export-loading-content i {
+  font-size: 2rem;
+  color: #5D2E5F;
+  margin-bottom: 1rem;
+}
+
+/* Loading and Error States */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #5D2E5F;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container i {
+  font-size: 3rem;
+  color: #6B7280;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chat-container {
+    padding: 1rem;
+  }
+
+  .chat-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chat-meta {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .chat-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .regenerate-section {
+    flex-direction: column;
+  }
+
+  .regenerate-buttons {
+    width: 100%;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .input-container button {
+    padding: 0.75rem;
+  }
+}
