@@ -5,35 +5,35 @@ import "./App.css";
 import Login from "./homepage/Login/Login";
 import SignUp from "./homepage/Register/SignUp";
 import ForgotPassword from "./homepage/ForgotPassword/ForgotPassword";
-import ResetPassword from "./homepage/ReserPassword/ResetPassword";
+import ResetPassword from "./homepage/ResetPassword/ResetPassword";
 import VerifyEmail from "./homepage/VerifyEmail/VerifyEmail";
-import DashboardLayout from './dashboard/DashboardLayout';
+import DashboardLayout from './dashboard/DashboardLayout/DashboardLayout';
 import DashboardHome from './dashboard/pages/DashboardHome';
 
-import NotePromptPage from './dashboard/components/NotePromptPage/NotePromptPage';
-import NoteChatPage from './dashboard/components/NoteChatPage/NoteChatPage';
-import AllNotes from './dashboard/components/Notes/AllNotes';
+import NotePromptPage from './dashboard/NotePromptPage/NotePromptPage';
+import NoteChatPage from './dashboard/NoteChatPage/NoteChatPage';
+import AllNotes from './dashboard/Notes/AllNotes';
 
-import NoteSearchPage from './dashboard/components/NoteSearchPage/NoteSearchPage';
-import NoteSearchView from './dashboard/components/NoteSearchView/NoteSearchView';
+import NoteSearchPage from './dashboard/NoteSearchPage/NoteSearchPage';
+import NoteSearchView from './dashboard/NoteSearchView/NoteSearchView';
 
 
-import PlanPromptPage from './dashboard/components/PlanPromptPage/PlanPromptPage';
-import PlanChatPage from './dashboard/components/PlanChatPage/PlanChatPage';
-import AllPlans from './dashboard/components/Plans/AllPlans';
+import PlanPromptPage from './dashboard/PlanPromptPage/PlanPromptPage';
+import PlanChatPage from './dashboard/PlanChatPage/PlanChatPage';
+import AllPlans from './dashboard/Plans/AllPlans';
 
-import AssessmentPromptPage from './dashboard/components/AssessmentPromptPage/AssessmentPromptPage';
-import AssessmentChatPage from './dashboard/components/AssessmentChatPage/AssessmentChatPage';
-import AllAssessment from './dashboard/components/Assessment/AllAssessment';
+import AssessmentPromptPage from './dashboard/AssessmentPromptPage/AssessmentPromptPage';
+import AssessmentChatPage from './dashboard/AssessmentChatPage/AssessmentChatPage';
+import AllAssessment from './dashboard/Assessment/AllAssessment';
 
-import AIChatSupport from './dashboard/components/AIChatSupport/AIChatSupport';
+import AIChatSupport from './dashboard/AIChatSupport/AIChatSupport';
 
-import ManageUsers from './dashboard/components/ManageUsers/ManageUsers';
-import ManageClass from './dashboard/components/ManageClass/ManageClass';
-import ManageSubject from './dashboard/components/ManageSubject/ManageSubject';
-import ManageTopic from './dashboard/components/ManageTopic/ManageTopic';
-import ManageTheme from './dashboard/components/ManageTheme/ManageTheme';
-import ManageLessonStructure from './dashboard/components/ManageLessonStructure/ManageLessonStructure';
+import ManageUsers from './dashboard/ManageUsers/ManageUsers';
+import ManageClass from './dashboard/ManageClass/ManageClass';
+import ManageSubject from './dashboard/ManageSubject/ManageSubject';
+import ManageTopic from './dashboard/ManageTopic/ManageTopic';
+import ManageTheme from './dashboard/ManageTheme/ManageTheme';
+import ManageLessonStructure from './dashboard/ManageLessonStructure/ManageLessonStructure';
 
 
 

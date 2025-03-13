@@ -1,103 +1,21 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+// src/components/ResetPassword.jsx
+import { Link } from "react-router-dom";
+import { useResetPassword } from "./ResetPasswordLogic";
 import "./ResetPassword.css";
 
 function ResetPassword() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  
-  const [formData, setFormData] = useState({
-    email: searchParams.get('email') || '',
-    token: searchParams.get('token') || '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState({
-    new: false,
-    confirm: false
-  });
+  const {
+    formData,
+    error,
+    isLoading,
+    passwordVisible,
+    passwordValidation,
+    setPasswordVisible,
+    handleInputChange,
+    handleSubmit
+  } = useResetPassword();
 
-  // Validate token presence
-  useEffect(() => {
-    if (!formData.token || !formData.email) {
-      navigate('/forgot-password');
-    }
-  }, [formData.token, formData.email, navigate]);
-
-  const validatePassword = (password) => {
-    const hasMinLength = password.length >= 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumbers = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-    const requirements = [
-      { met: hasMinLength, text: "At least 8 characters" },
-      { met: hasUpperCase, text: "One uppercase letter" },
-      { met: hasLowerCase, text: "One lowercase letter" },
-      { met: hasNumbers, text: "One number" },
-      { met: hasSpecialChar, text: "One special character" }
-    ];
-
-    return {
-      isValid: requirements.every(req => req.met),
-      requirements
-    };
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    setError('');
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await fetch("https://localhost:7225/api/Auth/reset-password-with-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Token: formData.token,
-          NewPassword: formData.newPassword,
-          ConfirmNewPassword: formData.confirmPassword  // Add this line
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to reset password");
-      }
-
-      if (data.success) {
-        navigate('/login', { 
-          state: { message: 'Password reset successful. Please log in with your new password.' }
-        });
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred while resetting password');
-    } finally {
-      setLoading(false);
-    }
-};
-
-  const { isValid: isPasswordValid, requirements } = validatePassword(formData.newPassword);
+  const { isValid: isPasswordValid, requirements } = passwordValidation;
 
   return (
     <div className="reset-password-wrapper">
@@ -190,16 +108,14 @@ function ResetPassword() {
               disabled={isLoading || !isPasswordValid || formData.newPassword !== formData.confirmPassword}
             >
               {isLoading ? (
-                <span className="loading-spinner">
-                  <i className="bi bi-arrow-repeat"></i>
-                </span>
+                <i className="bi bi-arrow-repeat loading-spinner"></i>
               ) : (
                 "Reset Password"
               )}
             </button>
 
             <div className="back-to-login">
-              <Link to="/login">
+              <Link to="/sign-in">
                 <i className="bi bi-arrow-left"></i> Back to Login
               </Link>
             </div>

@@ -1,75 +1,20 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// src/components/Login.jsx
+import { Link } from "react-router-dom";
+import { useLogin } from "./LoginLogic";
 import "./Login.css";
 
 function Login() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-  
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear error when user starts typing
-    setError(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch("https://localhost:7225/api/Auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.requiresVerification) {
-          // Store email for verification page
-          localStorage.setItem("email", data.email);
-          navigate("/verify-email");
-          return;
-        }
-        throw new Error(data.message || "Login failed");
-      }
-
-      if (data.success) {
-        // Store token and user data including role
-        const token = data.token;
-        if (rememberMe) {
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-        } else {
-          sessionStorage.setItem("token", token);
-          sessionStorage.setItem("user", JSON.stringify(data.user));
-        }
-
-        // Navigate to dashboard
-        navigate("/dashboard");
-      }
-    } catch (err) {
-      setError(err.message || "An error occurred during login");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    formData,
+    errors,
+    passwordVisible,
+    rememberMe,
+    loading,
+    setPasswordVisible,
+    setRememberMe,
+    handleInputChange,
+    handleSubmit
+  } = useLogin();
 
   return (
     <div className="login-wrapper">
@@ -88,16 +33,17 @@ function Login() {
           </div>
 
           <div className="login-header">
+            <h2>Welcome Back</h2>
             <p>Sign in to continue your journey</p>
           </div>
 
-          {error && (
-            <div className="error-message">
-              {error}
+          {errors.general && (
+            <div className="error-banner">
+              {errors.general}
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-group">
               <label>Email</label>
               <input
@@ -106,9 +52,11 @@ function Login() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Enter your email"
-                className={error ? 'error' : ''}
-                required
+                className={errors.email ? 'error' : ''}
               />
+              {errors.email && (
+                <span className="error-message">{errors.email}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -120,8 +68,7 @@ function Login() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Enter your password"
-                  className={error ? 'error' : ''}
-                  required
+                  className={errors.password ? 'error' : ''}
                 />
                 <button 
                   type="button"
@@ -131,6 +78,9 @@ function Login() {
                   <i className={`bi bi-${passwordVisible ? 'eye' : 'eye-slash' }`}></i>
                 </button>
               </div>
+              {errors.password && (
+                <span className="error-message">{errors.password}</span>
+              )}
             </div>
 
             <div className="form-options">
@@ -149,21 +99,16 @@ function Login() {
             </div>
 
             <button 
-              type="submit" 
-              className="login-button"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="loading-spinner">
-                  <i className="bi bi-arrow-clockwise"></i>
-                </span>
-              ) : (
-                <>
-                  Sign In
-                  <i className="bi bi-arrow-right"></i>
-                </>
-              )}
-            </button>
+                type="submit" 
+                className="login-button"
+                disabled={loading}
+              >
+                {loading ? (
+                  <i className="bi bi-arrow-clockwise" style={{animation: "spin 1s linear infinite"}}></i>
+                ) : (
+                  "Sign In"
+                )}
+              </button>
 
             <div className="signup-link">
               Don't have an account? <Link to="/sign-up">Sign up</Link>

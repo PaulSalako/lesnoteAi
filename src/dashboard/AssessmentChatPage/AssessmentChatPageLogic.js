@@ -1,10 +1,8 @@
-// src/dashboard/components/AssessmentChatPage/AssessmentChatPage.jsx
+// src/dashboard/components/AssessmentChatPage/AssessmentChatPageLogic.js
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
-import './AssessmentChatPage.css';
 
-function AssessmentChatPage() {
+export function useAssessmentChat() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +20,7 @@ function AssessmentChatPage() {
         
         if (!token) {
           // If no token, redirect to login
-          navigate('/login');
+          navigate('/sign-in');
           return;
         }
         
@@ -131,7 +129,13 @@ function AssessmentChatPage() {
     try {
       // Implement PDF saving logic here
       console.log('Saving as PDF...');
-      alert('PDF export functionality will be implemented in a future update.');
+      
+      Swal.fire({
+        title: 'Feature Coming Soon',
+        text: 'PDF export functionality will be implemented in a future update.',
+        icon: 'info',
+        confirmButtonText: 'OK'
+      });
     } catch (error) {
       console.error('Error saving PDF:', error);
     }
@@ -141,7 +145,13 @@ function AssessmentChatPage() {
     try {
       // Implement image saving logic here
       console.log('Saving as Image...');
-      alert('Image export functionality will be implemented in a future update.');
+      
+      Swal.fire({
+        title: 'Feature Coming Soon',
+        text: 'Image export functionality will be implemented in a future update.',
+        icon: 'info',
+        confirmButtonText: 'OK'
+      });
     } catch (error) {
       console.error('Error saving image:', error);
     }
@@ -183,9 +193,23 @@ function AssessmentChatPage() {
         }
       ]);
       
+      Swal.fire({
+        title: 'Success',
+        text: 'Assessment has been regenerated successfully',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+      
     } catch (error) {
       console.error('Error regenerating assessment:', error);
       setError(error.message || 'An error occurred while regenerating the assessment');
+      
+      Swal.fire({
+        title: 'Error',
+        text: error.message || 'An error occurred while regenerating the assessment',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     } finally {
       setRegenerating(false);
     }
@@ -243,6 +267,13 @@ function AssessmentChatPage() {
     } catch (error) {
       console.error('Error sending message:', error);
       setError(error.message || 'An error occurred while sending your message');
+      
+      Swal.fire({
+        title: 'Error',
+        text: error.message || 'An error occurred while sending your message',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     } finally {
       setRegenerating(false);
     }
@@ -252,182 +283,49 @@ function AssessmentChatPage() {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(
       () => {
-        alert('Copied to clipboard!');
+        Swal.fire({
+          title: 'Copied!',
+          text: 'Text copied to clipboard',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
       },
       (err) => {
         console.error('Could not copy text: ', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'Could not copy text to clipboard',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     );
   };
 
-  if (isLoading && !assessmentData) {
-    return (
-      <div className="loading-container">
-        <div className="spinner">
-          <i className="bi bi-arrow-repeat"></i>
-        </div>
-        <p>Loading assessment...</p>
-      </div>
-    );
-  }
+  // Navigation functions
+  const navigateToNewAssessment = () => {
+    navigate('/dashboard/lesson-assessment');
+  };
 
-  if (error) {
-    return (
-      <div className="error-container">
-        <i className="bi bi-exclamation-triangle"></i>
-        <h3>Error</h3>
-        <p>{error}</p>
-        <button 
-          className="action-btn primary" 
-          onClick={() => navigate('/dashboard/lesson-assessment')}
-        >
-          Go Back
-        </button>
-      </div>
-    );
-  }
+  const navigateBack = () => {
+    navigate('/dashboard/lesson-assessment');
+  };
 
-  return (
-    <div className="assessment-chat-container">
-      {/* Assessment Header */}
-      <div className="assessment-header">
-        <div className="assessment-title">
-          <h2>{assessmentData?.topic || 'Generated Assessment'}</h2>
-          <span className="status-badge">
-            <i className="bi bi-check-circle-fill"></i>
-            Complete
-          </span>
-        </div>
-        
-        <div className="assessment-meta">
-          <span><strong>Subject:</strong> {assessmentData?.subject}</span>
-          <span><strong>Class:</strong> {assessmentData?.class_}</span>
-          <span><strong>Type:</strong> {assessmentData?.assessmentType}</span>
-          <span><strong>Duration:</strong> {assessmentData?.duration}</span>
-          <span><strong>Date:</strong> {assessmentData?.date}</span>
-        </div>
-        
-        <div className="assessment-actions">
-          <button className="action-btn" onClick={handleSaveAsPdf}>
-            <i className="bi bi-file-pdf"></i>
-            Save as PDF
-          </button>
-          <button className="action-btn" onClick={handleSaveAsImage}>
-            <i className="bi bi-image"></i>
-            Save as Image
-          </button>
-          <button 
-            className="action-btn primary" 
-            onClick={() => navigate('/dashboard/lesson-assessment')}
-          >
-            <i className="bi bi-plus-lg"></i>
-            New Assessment
-          </button>
-        </div>
-      </div>
-
-      {/* Assessment Messages */}
-      <div className="assessment-messages">
-        {messages.map((message) => (
-          <div 
-            key={message.id} 
-            className={`message ${message.type}`}
-          >
-            {message.type === 'ai' && (
-              <div className="message-avatar">
-                <i className="bi bi-robot"></i>
-              </div>
-            )}
-            
-            {message.type === 'user' && (
-              <div className="message-avatar user-avatar">
-                <i className="bi bi-person"></i>
-              </div>
-            )}
-            
-            <div className="message-content">
-              {message.type === 'system' ? (
-                <div className="system-message">
-                  <i className="bi bi-info-circle"></i>
-                  {message.content}
-                </div>
-              ) : message.type === 'user' ? (
-                <div className="user-message">
-                  {message.content}
-                </div>
-              ) : (
-                <div className="ai-response">
-                  <div className="response-header">
-                    <span>AI Response</span>
-                    <button 
-                      className="copy-btn"
-                      onClick={() => copyToClipboard(message.content)}
-                    >
-                      <i className="bi bi-clipboard"></i>
-                      Copy
-                    </button>
-                  </div>
-                  <div className="response-content markdown-content">
-                    <ReactMarkdown>{message.content}</ReactMarkdown>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-      
-      {/* Message Form */}
-      <form onSubmit={handleSendMessage} className="message-form">
-        <div className="input-container">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Ask a question about this assessment..."
-            disabled={regenerating}
-          />
-          <button 
-            type="submit" 
-            disabled={regenerating || !newMessage.trim()}
-          >
-            <i className="bi bi-send"></i>
-          </button>
-        </div>
-      </form>
-
-      {/* Regenerate Section */}
-      <div className="regenerate-section">
-        <button 
-          className="regenerate-btn"
-          onClick={handleRegenerateAssessment}
-          disabled={regenerating}
-        >
-          {regenerating ? (
-            <>
-              <span className="spinner">
-                <i className="bi bi-arrow-repeat"></i>
-              </span>
-              Processing...
-            </>
-          ) : (
-            <>
-              <i className="bi bi-arrow-clockwise"></i>
-              Regenerate Assessment
-            </>
-          )}
-        </button>
-        <button 
-          className="modify-btn"
-          onClick={() => navigate('/dashboard/lesson-assessment')}
-          disabled={regenerating}
-        >
-          <i className="bi bi-pencil"></i>
-          New Assessment
-        </button>
-      </div>
-    </div>
-  );
+  return {
+    isLoading,
+    error,
+    assessmentData,
+    messages,
+    regenerating,
+    newMessage,
+    setNewMessage,
+    handleSaveAsPdf,
+    handleSaveAsImage,
+    handleRegenerateAssessment,
+    handleSendMessage,
+    copyToClipboard,
+    navigateToNewAssessment,
+    navigateBack
+  };
 }
-
-export default AssessmentChatPage;

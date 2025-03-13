@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardHome.css';
-import AIChatSupport from '../components/AIChatSupport/AIChatSupport'; 
+import AIChatSupport from '../AIChatSupport/AIChatSupport'; 
 
 function DashboardHome() {
   const navigate = useNavigate();

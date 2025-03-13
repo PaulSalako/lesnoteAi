@@ -1,9 +1,9 @@
 // src/dashboard/DashboardLayout.jsx
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './components/Sidebar/Sidebar';
-import Navbar from './components/Navbar/Navbar';
-import BuyTokensModal from './components/BuyTokensModal/BuyTokensModal';
+import Sidebar from '../Sidebar/Sidebar';
+import Navbar from '../Navbar/Navbar';
+import BuyTokensModal from '../BuyTokensModal/BuyTokensModal';
 import './DashboardLayout.css';
 
 function DashboardLayout() {
