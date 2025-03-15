@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { saveAs } from 'file-saver';
-
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, BorderStyle } from 'docx';
 
 export function NoteChatPageLogic() {
   const navigate = useNavigate();
@@ -107,34 +107,234 @@ export function NoteChatPageLogic() {
         throw new Error('Content element not found');
       }
       
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false
-      });
+      // Extract text content
+      let textContent = element.innerText || '';
       
-      const imgData = canvas.toDataURL('image/png');
+      // Create PDF document
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
       
+      // Set up dimensions
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 20;
+      const contentWidth = pageWidth - (margin * 2);
+      
       // Add title
+      pdf.setFont("helvetica", "bold");
       pdf.setFontSize(16);
-      pdf.text(title, 20, 20);
+      pdf.text(title, pageWidth / 2, margin, { align: "center" });
       
       // Add metadata
+      pdf.setFont("helvetica", "normal");
       pdf.setFontSize(10);
-      pdf.text(`Subject: ${noteData?.subject || 'N/A'}`, 20, 30);
-      pdf.text(`Class: ${noteData?.class_ || 'N/A'}`, 20, 35);
-      pdf.text(`Duration: ${noteData?.duration || 'N/A'}`, 20, 40);
-      pdf.text(`Date: ${noteData?.date || 'N/A'}`, 20, 45);
+      let yPos = margin + 10;
       
-      // Add content image
-      const imgWidth = 170;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      pdf.addImage(imgData, 'PNG', 20, 50, imgWidth, imgHeight);
+      pdf.text(`Subject: ${noteData?.subject || 'N/A'}`, margin, yPos);
+      yPos += 5;
+      pdf.text(`Class: ${noteData?.class_ || 'N/A'}`, margin, yPos);
+      yPos += 5;
+      pdf.text(`Duration: ${noteData?.duration || 'N/A'}`, margin, yPos);
+      yPos += 5;
+      pdf.text(`Date: ${noteData?.date || 'N/A'}`, margin, yPos);
+      yPos += 5;
+      
+      // Extract week information if available
+      const weekInfo = extractWeek(textContent);
+      if (weekInfo) {
+        pdf.text(`Week: ${weekInfo}`, margin, yPos);
+        yPos += 5;
+      }
+      
+      // Add horizontal line
+      yPos += 2;
+      pdf.setDrawColor(200, 200, 200);
+      pdf.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 7;
+      
+      // Process the text content
+      // If we're exporting a specific message, it's likely an AI message with formatted content
+      if (content && content.includes('message-')) {
+        // This is a specific message, likely containing AI response
+        
+        // Check if this is for a single message (AI response)
+        const messageId = content.replace('message-', '');
+        const message = messages.find(msg => msg.id === messageId);
+        
+        if (message && message.type === 'ai') {
+          // It's an AI message, process its content
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.text("LESSON CONTENT", margin, yPos);
+          yPos += 7;
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(10);
+          
+          // Process content line by line
+          const lines = message.content.split('\n');
+          
+          let inList = false;
+          let listIndex = 1;
+          
+          lines.forEach(line => {
+            const trimmedLine = line.trim();
+            
+            // Skip empty lines
+            if (!trimmedLine) {
+              yPos += 2;
+              return;
+            }
+            
+            // Check if a new page is needed
+            if (yPos > pageHeight - 20) {
+              pdf.addPage();
+              yPos = margin;
+            }
+            
+            // Check if this is a section heading (ALL CAPS)
+            if (/^[A-Z][A-Z\s&']+(:)?$/.test(trimmedLine)) {
+              pdf.setFont("helvetica", "bold");
+              pdf.text(trimmedLine, margin, yPos);
+              pdf.setFont("helvetica", "normal");
+              yPos += 7;
+              return;
+            }
+            
+            // Handle numbered list items
+            const listMatch = trimmedLine.match(/^(\d+)\.?\s+(.+)$/);
+            if (listMatch) {
+              const listText = listMatch[2];
+              const listNumber = listMatch[1];
+              
+              // For formatting, split text into chunks that fit the page width
+              const textChunks = splitTextIntoChunks(listText, pdf, contentWidth - 10);
+              
+              // First line includes the number
+              pdf.text(`${listNumber}. ${textChunks[0]}`, margin + 5, yPos);
+              yPos += 5;
+              
+              // Additional lines are indented
+              for (let i = 1; i < textChunks.length; i++) {
+                pdf.text(textChunks[i], margin + 10, yPos);
+                yPos += 5;
+              }
+              
+              inList = true;
+              return;
+            }
+            
+            // Handle bullet points
+            if (trimmedLine.startsWith('* ') || trimmedLine.startsWith('- ')) {
+              const bulletText = trimmedLine.substring(2);
+              
+              // Split into chunks
+              const textChunks = splitTextIntoChunks(bulletText, pdf, contentWidth - 10);
+              
+              // First line with bullet
+              pdf.text(`• ${textChunks[0]}`, margin + 5, yPos);
+              yPos += 5;
+              
+              // Additional lines indented
+              for (let i = 1; i < textChunks.length; i++) {
+                pdf.text(textChunks[i], margin + 7, yPos);
+                yPos += 5;
+              }
+              
+              inList = true;
+              return;
+            }
+            
+            // Regular text
+            // If this is a continuation of a list item (indented text)
+            if (inList && trimmedLine.startsWith('  ')) {
+              const textChunks = splitTextIntoChunks(trimmedLine, pdf, contentWidth - 15);
+              
+              textChunks.forEach(chunk => {
+                pdf.text(chunk, margin + 10, yPos);
+                yPos += 5;
+              });
+            }
+            else {
+              inList = false;
+              
+              // Check if this is a subheading (ends with colon)
+              if (trimmedLine.endsWith(':')) {
+                pdf.setFont("helvetica", "bold");
+                pdf.text(trimmedLine, margin, yPos);
+                pdf.setFont("helvetica", "normal");
+                yPos += 5;
+              } else {
+                // Regular text, split into chunks
+                const textChunks = splitTextIntoChunks(trimmedLine, pdf, contentWidth);
+                
+                textChunks.forEach(chunk => {
+                  pdf.text(chunk, margin, yPos);
+                  yPos += 5;
+                });
+              }
+            }
+          });
+        }
+      } else {
+        // This is the entire chat, process messages
+        
+        // Go through each message
+        pdf.setFontSize(10);
+        
+        for (const message of messages) {
+          // Skip system messages in PDF export
+          if (message.type === 'system') continue;
+          
+          // Check if new page is needed
+          if (yPos > pageHeight - 30) {
+            pdf.addPage();
+            yPos = margin;
+          }
+          
+          // Add message sender
+          pdf.setFont("helvetica", "bold");
+          if (message.type === 'user') {
+            pdf.text("👤 User Message:", margin, yPos);
+          } else if (message.type === 'ai') {
+            pdf.text("🤖 AI Response:", margin, yPos);
+          }
+          yPos += 7;
+          
+          // Add message content
+          pdf.setFont("helvetica", "normal");
+          
+          const lines = message.content.split('\n');
+          
+          lines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (!trimmedLine) {
+              yPos += 2;
+              return;
+            }
+            
+            // Check if new page is needed
+            if (yPos > pageHeight - 20) {
+              pdf.addPage();
+              yPos = margin;
+            }
+            
+            // Split line into chunks that fit the page width
+            const chunks = splitTextIntoChunks(trimmedLine, pdf, contentWidth);
+            
+            chunks.forEach(chunk => {
+              pdf.text(chunk, margin, yPos);
+              yPos += 5;
+            });
+          });
+          
+          // Add spacing between messages
+          yPos += 10;
+        }
+      }
       
       // Save the PDF
       pdf.save(`${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
@@ -158,6 +358,34 @@ export function NoteChatPageLogic() {
       setExportType(null);
     }
   };
+  
+  // Helper function to split text into chunks that fit the page width
+  function splitTextIntoChunks(text, pdf, maxWidth) {
+    const chunks = [];
+    let currentChunk = '';
+    const words = text.split(' ');
+    
+    words.forEach(word => {
+      // Test if adding this word would exceed the width
+      const testChunk = currentChunk + (currentChunk ? ' ' : '') + word;
+      const textWidth = pdf.getStringUnitWidth(testChunk) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+      
+      if (textWidth <= maxWidth) {
+        currentChunk = testChunk;
+      } else {
+        // Current chunk is full, start a new one
+        chunks.push(currentChunk);
+        currentChunk = word;
+      }
+    });
+    
+    // Add the final chunk
+    if (currentChunk) {
+      chunks.push(currentChunk);
+    }
+    
+    return chunks;
+  }
 
   const handleSaveAsImage = async (content) => {
     try {
@@ -200,42 +428,130 @@ export function NoteChatPageLogic() {
     }
   };
 
-  const handleSaveAsDocx = async (content) => {
+  const handleSaveAsDocx = async (messageId) => {
     try {
       setExportLoading(true);
       setExportType('Document');
       
       const title = noteData?.topic || 'Lesson Note';
-      const contentText = content 
-        ? document.getElementById(content).innerText 
-        : contentRef.current.innerText;
       
-      if (!contentText) {
-        throw new Error('Content text not found');
+      // Determine which messages to include
+      let messagesToInclude = messages;
+      
+      // If a messageId is provided, only include that specific message
+      if (messageId) {
+        const id = messageId.replace('message-', '');
+        messagesToInclude = messages.filter(message => message.id === id);
+        
+        // If no matching message found
+        if (messagesToInclude.length === 0) {
+          throw new Error('Message not found');
+        }
       }
       
-      // Create a simple text document
-      // In a real implementation, you'd use a library like docx.js to create proper DOCX files
-      const metadata = `
-Title: ${title}
-Subject: ${noteData?.subject || 'N/A'}
-Class: ${noteData?.class_ || 'N/A'}
-Duration: ${noteData?.duration || 'N/A'}
-Date: ${noteData?.date || 'N/A'}
-
-`;
+      // Only include AI messages (content)
+      const aiMessages = messagesToInclude.filter(message => message.type === 'ai');
       
-      const blob = new Blob([metadata + contentText], { type: 'text/plain' });
-      saveAs(blob, `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`);
+      // Extract the content from the first AI message (to avoid repetition)
+      let lessonContent = '';
+      if (aiMessages.length > 0) {
+        lessonContent = aiMessages[0].content;
+      }
+      
+      // Extract week information if available
+      const weekInfo = extractWeek(lessonContent);
+      
+      // Create HTML content with improved formatting
+      let htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>${title}</title>
+          <style>
+            body { font-family: 'Calibri', sans-serif; margin: 40px; line-height: 1.5; }
+            h1 { text-align: center; color: #333; font-size: 24pt; margin-bottom: 20px; }
+            h2 { color: #444; margin-top: 24px; margin-bottom: 12px; font-size: 16pt; text-transform: uppercase; }
+            .metadata { margin: 20px 0 30px 0; border-bottom: 1px solid #ddd; padding-bottom: 15px; }
+            .metadata div { margin: 5px 0; }
+            p { margin: 12px 0; }
+            ul, ol { margin-left: 20px; margin-bottom: 15px; }
+            li { margin: 8px 0; padding-left: 10px; }
+            .main-content { margin-top: 20px; }
+            .section { margin-bottom: 20px; }
+          </style>
+        </head>
+        <body>
+          <h1>${title}</h1>
+      `;
+      
+      // Process the actual lesson content
+      let cleanedContent = removeDetailsSection(lessonContent);
+      
+      // Identify major sections by uppercase titles followed by colon
+      const sectionMatches = cleanedContent.match(/\n\s*([A-Z][A-Z\s&']+):\s*\n/g) || [];
+      
+      // If no sections are found, just use the whole content
+      if (sectionMatches.length === 0) {
+        htmlContent += `<div class="main-content">${processContentImproved(cleanedContent)}</div>`;
+      } else {
+        // Extract and process sections
+        const sectionTitles = [];
+        sectionMatches.forEach(match => {
+          const title = match.trim().replace(/:\s*$/, '').replace(/^\n\s*/, '');
+          sectionTitles.push(title);
+        });
+        
+        // Split content by section titles
+        let sections = cleanedContent.split(/\n\s*[A-Z][A-Z\s&']+:\s*\n/);
+        
+        // Remove the first empty part
+        sections = sections.slice(1);
+        
+        // Add each section to HTML
+        htmlContent += '<div class="main-content">';
+        for (let i = 0; i < sectionTitles.length; i++) {
+          if (i < sections.length) {
+            htmlContent += `<h2>${sectionTitles[i]}</h2>`;
+            htmlContent += `<div class="section">${processContentImproved(sections[i])}</div>`;
+          }
+        }
+        htmlContent += '</div>';
+      }
+      
+      // Close HTML
+      htmlContent += `
+        </body>
+        </html>
+      `;
+      
+      // Create a Blob with the HTML content
+      const blob = new Blob([htmlContent], { type: 'application/msword' });
+      
+      // Create filename
+      const filename = messageId
+        ? `${title}_message_${messageId.replace('message-', '')}`
+        : title;
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${filename.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.doc`;
+      
+      // Append to document, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       
       Swal.fire({
         title: 'Success',
-        text: 'Document saved successfully! (Note: This is a text file. For proper DOCX support, please integrate docx.js library)',
+        text: 'Document saved successfully!',
         icon: 'success',
         confirmButtonText: 'OK'
       });
     } catch (error) {
       console.error('Error saving document:', error);
+      console.error('Error details:', error.stack);
       Swal.fire({
         title: 'Error',
         text: 'Failed to save as document. Please try again.',
@@ -247,6 +563,82 @@ Date: ${noteData?.date || 'N/A'}
       setExportType(null);
     }
   };
+  
+  // Helper function to extract the Week information
+  function extractWeek(text) {
+    const weekMatch = text.match(/Week:\s*(Week\s*\d+)/i);
+    return weekMatch ? weekMatch[1] : '';
+  }
+  
+  // Helper function to remove the Details section
+  function removeDetailsSection(text) {
+    // Find and remove the Details section
+    const detailsPattern = /(\s*Details:[\s\S]*?)(?=\n\s*[A-Z][A-Z\s&']+:)/;
+    return text.replace(detailsPattern, '');
+  }
+  
+  // Improved content processing function
+  function processContentImproved(content) {
+    // Process numbered lists correctly
+    let processed = '';
+    let inList = false;
+    let listItems = [];
+    
+    // Split content into lines
+    const lines = content.split('\n');
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      // Skip empty lines
+      if (!line) {
+        if (inList && listItems.length > 0) {
+          processed += `<ol>${listItems.join('')}</ol>`;
+          listItems = [];
+          inList = false;
+        }
+        continue;
+      }
+      
+      // Check if line is a numbered list item
+      const listMatch = line.match(/^(\d+)\.\s+(.+)$/);
+      if (listMatch) {
+        // It's a list item
+        inList = true;
+        listItems.push(`<li>${listMatch[2]}</li>`);
+      } else {
+        // Not a list item
+        if (inList && listItems.length > 0) {
+          processed += `<ol>${listItems.join('')}</ol>`;
+          listItems = [];
+          inList = false;
+        }
+        
+        // Check for bullet points
+        if (line.startsWith('* ')) {
+          processed += `<ul><li>${line.substring(2)}</li></ul>`;
+        } else {
+          // Regular paragraph
+          processed += `<p>${line}</p>`;
+        }
+      }
+    }
+    
+    // Close any open list
+    if (inList && listItems.length > 0) {
+      processed += `<ol>${listItems.join('')}</ol>`;
+    }
+    
+    // Clean up consecutive lists of the same type
+    processed = processed.replace(/<\/ol>\s*<ol>/g, '');
+    processed = processed.replace(/<\/ul>\s*<ul>/g, '');
+    
+    // Format text (bold, italic) if needed
+    processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    return processed;
+  }
 
   const handleRegenerateResponse = async () => {
     try {

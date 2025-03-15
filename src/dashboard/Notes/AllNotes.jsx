@@ -1,5 +1,5 @@
 import React from 'react';
-import { AllNotesLogic } from './AllNotesLogic';
+import { useAllNotes } from './AllNotesLogic';
 import './AllNotes.css';
 
 function AllNotes() {
@@ -19,7 +19,7 @@ function AllNotes() {
     handlePageSizeChange,
     handleSearchChange,
     handleRetry
-  } = AllNotesLogic();
+  } = useAllNotes();
 
   if (loading) {
     return (
@@ -58,7 +58,7 @@ function AllNotes() {
           </div>
           <button 
             className="new-note-btn"
-            onClick={() => navigate('/dashboard/new')}
+            onClick={() => navigate('/dashboard/lesson-note')}
           >
             <i className="bi bi-plus-lg"></i>
             New Note

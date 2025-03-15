@@ -3,8 +3,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-
-export function AllNotesLogic() {
+// Changed the export to match the import in AllNotes.jsx
+export function useAllNotes() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

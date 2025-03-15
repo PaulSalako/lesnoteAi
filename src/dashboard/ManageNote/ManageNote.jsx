@@ -58,7 +58,7 @@ function ManageNote() {
           </div>
           <button 
             className="new-note-btn"
-            onClick={() => navigate('/dashboard/new')}
+            onClick={() => navigate('/dashboard/lesson-note')}
           >
             <i className="bi bi-plus-lg"></i>
             New Note

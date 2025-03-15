@@ -43,7 +43,7 @@ function NoteChatPage() {
         <p>{error}</p>
         <button 
           className="action-btn primary" 
-          onClick={() => navigate('/dashboard/new')}
+          onClick={() => navigate('/dashboard/lesson-note')}
         >
           Go Back
         </button>
@@ -73,7 +73,7 @@ function NoteChatPage() {
         <div className="chat-actions">
           <button 
             className="action-btn primary" 
-            onClick={() => navigate('/dashboard/new')}
+            onClick={() => navigate('/dashboard/lesson-note')}
           >
             <i className="bi bi-plus-lg"></i>
             New Note
@@ -249,7 +249,7 @@ function NoteChatPage() {
           </button>
           <button 
             className="modify-btn"
-            onClick={() => navigate('/dashboard/new')}
+            onClick={() => navigate('/dashboard/lesson-note')}
             disabled={isLoading}
           >
             <i className="bi bi-pencil"></i>
