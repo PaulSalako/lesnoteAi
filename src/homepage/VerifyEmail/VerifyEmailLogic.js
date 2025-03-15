@@ -1,6 +1,8 @@
 // src/components/VerifyEmailLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 export function useVerifyEmail() {
   const [code, setCode] = useState("");
@@ -58,7 +60,7 @@ export function useVerifyEmail() {
     try {
       const email = localStorage.getItem("email");
       
-      const response = await fetch("https://localhost:7225/api/Auth/resend-verification", {
+      const response = await fetch(`${API_URL}/Auth/resend-verification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +122,7 @@ export function useVerifyEmail() {
     try {
       const userId = localStorage.getItem("userId");
       
-      const response = await fetch("https://localhost:7225/api/Auth/verify-email", {
+      const response = await fetch(`${API_URL}/Auth/verify-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

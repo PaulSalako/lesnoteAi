@@ -1,84 +1,45 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { NavbarLogic } from './NavbarLogic';
 import './Navbar.css';
 
-function Navbar({ onMenuClick }) {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    plan: 0 // Default to free plan (0)
-  });
+// Placeholder for PlanUpgradeModal
+// Replace this with your actual modal implementation
+const PlanUpgradeModal = ({ isOpen, onClose, userEmail }) => {
+  if (!isOpen) return null;
   
-  const navigate = useNavigate();
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  return (
+    <div className="modal-backdrop">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Upgrade to Premium</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <p>Upgrade your account to access premium features!</p>
+          <p>Email: {userEmail}</p>
+          {/* Add your payment integration here */}
+        </div>
+        <div className="modal-footer">
+          <button className="cancel-button" onClick={onClose}>Cancel</button>
+          <button className="upgrade-button">Upgrade Now</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Fetch user profile data which should include email
-        const profileResponse = await fetch('https://localhost:7225/api/Dashboard/user-profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-        
-        const profileData = await profileResponse.json();
-        
-        // Fetch stats data for plan information
-        const statsResponse = await fetch('https://localhost:7225/api/Dashboard/stats', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (!statsResponse.ok) {
-          throw new Error('Failed to fetch user stats');
-        }
-        
-        const statsData = await statsResponse.json();
-        
-        // Combine data from both endpoints
-        setUserData({
-          name: statsData.userName || profileData.firstName + ' ' + profileData.surname || 'User',
-          email: profileData.email || '', // Get email from profile endpoint
-          plan: statsData.plan || 0
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        if (error.message.includes('unauthorized')) {
-          handleLogout();
-        }
-      }
-    };
-    
-    if (token) {
-      fetchUserData();
-    } else {
-      navigate('/sign-in');
-    }
-  }, [token, navigate]);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    navigate('/sign-in');
-  };
-
-  const getPlanName = (planNumber) => {
-    return planNumber === 1 ? 'Premium' : 'Free';
-  };
-
-  const getPlanIcon = (planNumber) => {
-    return planNumber === 1 ? 'bi-star-fill' : 'bi-star';
-  };
+function Navbar({ onMenuClick }) {
+  const {
+    isProfileOpen,
+    isPlanModalOpen,
+    userData,
+    handleLogout,
+    toggleProfileDropdown,
+    openPlanModal,
+    closePlanModal,
+    getPlanName,
+    getPlanIcon
+  } = NavbarLogic();
 
   return (
     <>
@@ -101,7 +62,7 @@ function Navbar({ onMenuClick }) {
             {userData.plan === 0 && (
               <button 
                 className="upgrade-btn"
-                onClick={() => setIsPlanModalOpen(true)}
+                onClick={openPlanModal}
               >
                 Upgrade
               </button>
@@ -110,7 +71,7 @@ function Navbar({ onMenuClick }) {
           <div className="profile-section">
             <div 
               className="profile-button"
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              onClick={toggleProfileDropdown}
             >
               <div className="profile-avatar">{userData.name?.charAt(0).toUpperCase()}</div>
               <span className="profile-name">{userData.name?.split(" ")[0].charAt(0).toUpperCase() + userData.name?.split(" ")[0].slice(1).toLowerCase()}</span>
@@ -140,10 +101,7 @@ function Navbar({ onMenuClick }) {
                   {userData.plan === 0 && (
                     <button 
                       className="dropdown-item upgrade-item"
-                      onClick={() => {
-                        setIsProfileOpen(false);
-                        setIsPlanModalOpen(true);
-                      }}
+                      onClick={openPlanModal}
                     >
                       <i className="bi bi-star"></i>
                       Upgrade to Premium
@@ -165,42 +123,16 @@ function Navbar({ onMenuClick }) {
         </div>
       </nav>
       
-      {/* We'll need to create a PlanUpgradeModal component later */}
+      {/* Plan upgrade modal */}
       {isPlanModalOpen && (
         <PlanUpgradeModal 
           isOpen={isPlanModalOpen}
-          onClose={() => setIsPlanModalOpen(false)}
+          onClose={closePlanModal}
           userEmail={userData.email}
         />
       )}
     </>
   );
 }
-
-// Placeholder for PlanUpgradeModal
-// Replace this with your actual modal implementation
-const PlanUpgradeModal = ({ isOpen, onClose, userEmail }) => {
-  if (!isOpen) return null;
-  
-  return (
-    <div className="modal-backdrop">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h2>Upgrade to Premium</h2>
-          <button className="close-button" onClick={onClose}>×</button>
-        </div>
-        <div className="modal-body">
-          <p>Upgrade your account to access premium features!</p>
-          <p>Email: {userEmail}</p>
-          {/* Add your payment integration here */}
-        </div>
-        <div className="modal-footer">
-          <button className="cancel-button" onClick={onClose}>Cancel</button>
-          <button className="upgrade-button">Upgrade Now</button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default Navbar;

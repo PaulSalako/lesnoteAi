@@ -1,16 +1,16 @@
-// src/components/AllAssessmentsLogic.js
 import { API_URL } from '../../config';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-export function useAllAssessments() {
+
+export function ManageNoteLogic() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [assessments, setAssessments] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [deletingAssessmentId, setDeletingAssessmentId] = useState(null);
+  const [deletingNoteId, setDeletingNoteId] = useState(null);
   
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,14 +20,13 @@ export function useAllAssessments() {
 
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
-  // Memoized filtered assessments to prevent unnecessary recalculations
-  const filteredAssessments = useMemo(() => {
-    return assessments.filter(assessment =>
-      assessment.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      assessment.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (assessment.assessmentType && assessment.assessmentType.toLowerCase().includes(searchTerm.toLowerCase()))
+  // Memoized filtered notes to prevent unnecessary recalculations
+  const filteredNotes = useMemo(() => {
+    return notes.filter(note =>
+      note.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.subject.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [assessments, searchTerm]);
+  }, [notes, searchTerm]);
 
   // Check for premium user on component mount
   useEffect(() => {
@@ -37,7 +36,7 @@ export function useAllAssessments() {
         
         if (!token) {
           // If no token, redirect to login
-          navigate('/sign-in');
+          navigate('/login');
           return;
         }
         
@@ -73,14 +72,25 @@ export function useAllAssessments() {
 
   useEffect(() => {
     if (token) {
-      fetchAssessments(currentPage);
+      fetchNotes(currentPage);
     }
   }, [currentPage, pageSize, token]);
 
-  const fetchAssessments = async (page) => {
+  // Log notes after they're set to help diagnose rendering issue
+  useEffect(() => {
+    console.log('Current notes:', notes);
+    console.log('Filtered notes:', filteredNotes);
+  }, [notes, filteredNotes]);
+
+  const fetchNotes = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/Assessments?page=${page}&pageSize=${pageSize}`, {
+      // Log token for debugging
+      console.log('Fetching notes with token:', token);
+      console.log('Page:', page, 'Page Size:', pageSize);
+
+      // Using the all-available endpoint for admin view
+      const response = await fetch(`${API_URL}/LessonNotes/all-available?page=${page}&pageSize=${pageSize}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -88,37 +98,70 @@ export function useAllAssessments() {
         }
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
-        // Try to parse error message
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to fetch assessments');
+        // Log the full error response
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error('Failed to fetch notes');
       }
 
       const result = await response.json();
       
-      // Set assessments
-      setAssessments(result.data);
-      setTotalPages(result.totalPages);
-      setTotalCount(result.totalCount);
+      // DEBUGGING: Log the full result object
+      console.log('FULL Fetched notes result:', JSON.stringify(result, null, 2));
+
+      // Log the specific properties of the result
+      console.log('Result properties:', {
+        hasData: !!result.data,
+        dataLength: result.data ? result.data.length : 'No data',
+        dataType: typeof result.data
+      });
+
+      // Robust data setting with additional checks
+      const notesData = result.data && Array.isArray(result.data) 
+        ? result.data.map(note => ({
+            ...note,
+            date: note.createdAt, // Use createdAt as the date if date is not present
+            ownerName: note.userName || (note.isOwner ? 'You' : 'User ' + note.userId)
+          }))
+        : [];
+
+      setNotes(notesData);
+      setTotalPages(result.totalPages || 1);
+      setTotalCount(result.totalCount || 0);
+
+      // Additional logging
+      console.log('Notes set:', notesData);
     } catch (error) {
-      console.error('Error fetching assessments:', error);
+      console.error('Error in fetchNotes:', error);
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (assessmentId) => {
-    const isConfirmed = window.confirm('Are you sure you want to delete this assessment? This action cannot be undone.');
+  const handleDelete = async (noteId) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Are you sure you want to delete this note? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    });
     
-    if (!isConfirmed) {
+    if (!result.isConfirmed) {
       return;
     }
 
-    setDeletingAssessmentId(assessmentId);
+    setDeletingNoteId(noteId);
 
     try {
-      const response = await fetch(`${API_URL}/Assessments/${assessmentId}`, {
+      // Admin can delete any note
+      const response = await fetch(`${API_URL}/LessonNotes/${noteId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -127,38 +170,37 @@ export function useAllAssessments() {
       });
 
       if (!response.ok) {
-        // Try to parse error message
+        // Try to parse error message if possible
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to delete assessment');
+        throw new Error(errorData.message || 'Failed to delete note');
       }
 
       // Show success message
       Swal.fire({
-        title: 'Success',
-        text: 'Assessment deleted successfully',
+        title: 'Deleted!',
+        text: 'Note deleted successfully',
         icon: 'success',
         confirmButtonText: 'OK'
       });
       
       // If it's the last item on the current page, go to previous page
-      if (filteredAssessments.length === 1 && currentPage > 1) {
+      if (filteredNotes.length === 1 && currentPage > 1) {
         setCurrentPage(prev => prev - 1);
       } else {
         // Otherwise, just refresh the current page
-        fetchAssessments(currentPage);
+        fetchNotes(currentPage);
       }
 
     } catch (error) {
-      console.error('Error deleting assessment:', error);
-      
+      console.error('Error deleting note:', error);
       Swal.fire({
         title: 'Error',
-        text: error.message || 'Failed to delete assessment. Please try again.',
+        text: error.message || 'Failed to delete note. Please try again.',
         icon: 'error',
         confirmButtonText: 'OK'
       });
     } finally {
-      setDeletingAssessmentId(null);
+      setDeletingNoteId(null);
     }
   };
 
@@ -174,38 +216,26 @@ export function useAllAssessments() {
     setCurrentPage(1); // Reset to first page when changing page size
   };
 
-  const handleSearch = (e) => {
+  const handleSearchInputChange = (e) => {
     setSearchTerm(e.target.value);
-  };
-
-  const handleRetry = () => {
-    fetchAssessments(currentPage);
-  };
-
-  const navigateToCreateAssessment = () => {
-    navigate('/dashboard/assessment');
-  };
-
-  const navigateToViewAssessment = (assessmentId) => {
-    navigate(`/dashboard/lesson-assessment-chat/${assessmentId}`);
   };
 
   return {
     loading,
     error,
-    filteredAssessments,
+    notes,
+    filteredNotes,
     searchTerm,
+    deletingNoteId,
     currentPage,
     totalPages,
     pageSize,
     totalCount,
-    deletingAssessmentId,
-    handleSearch,
+    navigate,
+    fetchNotes,
     handleDelete,
     handlePageChange,
     handlePageSizeChange,
-    handleRetry,
-    navigateToCreateAssessment,
-    navigateToViewAssessment
+    handleSearchInputChange
   };
 }

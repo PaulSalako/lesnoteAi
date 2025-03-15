@@ -1,6 +1,8 @@
 // src/components/ManageClassesLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 export function useManageClasses() {
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ export function useManageClasses() {
       if (!token) return; // Skip if no token (handled by previous useEffect)
       
       try {
-        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+        const response = await fetch(`${API_URL}/Dashboard/stats`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -86,7 +88,7 @@ export function useManageClasses() {
   const fetchClasses = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://localhost:7225/api/Class?page=${page}&pageSize=${pageSize}&search=${searchTerm}`, {
+      const response = await fetch(`${API_URL}/Class?page=${page}&pageSize=${pageSize}&search=${searchTerm}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -121,7 +123,7 @@ export function useManageClasses() {
     }
 
     try {
-      const response = await fetch('https://localhost:7225/api/Class', {
+      const response = await fetch(`${API_URL}/Class`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -172,7 +174,7 @@ export function useManageClasses() {
     }
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Class/${editingClass.id}`, {
+      const response = await fetch(`${API_URL}/Class/${editingClass.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -246,7 +248,7 @@ export function useManageClasses() {
     setDeletingClassId(classId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Class/${classId}`, {
+      const response = await fetch(`${API_URL}/Class/${classId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

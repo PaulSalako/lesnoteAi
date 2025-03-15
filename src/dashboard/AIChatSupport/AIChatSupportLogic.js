@@ -1,5 +1,7 @@
 // src/components/AIChatSupportLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect, useRef } from 'react';
+
 
 export function useAIChatSupport() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ export function useAIChatSupport() {
   // Fetch user profile
   const fetchUserProfile = async (token) => {
     try {
-      const response = await fetch('https://localhost:7225/api/Dashboard/user-profile', {
+      const response = await fetch(`${API_URL}/Dashboard/user-profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -64,7 +66,7 @@ export function useAIChatSupport() {
   // Fetch chat history
   const fetchChatHistory = async (token) => {
     try {
-      const response = await fetch('https://localhost:7225/api/AI/chat-history', {
+      const response = await fetch(`${API_URL}/AI/chat-history`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -254,7 +256,7 @@ export function useAIChatSupport() {
         throw new Error('Authentication required');
       }
       
-      const response = await fetch('https://localhost:7225/api/AI/chat', {
+      const response = await fetch(`${API_URL}/AI/chat`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -316,7 +318,7 @@ export function useAIChatSupport() {
           throw new Error('Authentication required');
         }
         
-        const response = await fetch('https://localhost:7225/api/AI/delete-chat', {
+        const response = await fetch(`${API_URL}/AI/delete-chat`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

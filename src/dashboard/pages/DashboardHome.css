@@ -717,3 +717,68 @@
     flex-direction: column;
   }
 }
+
+/* Classes Grid */
+.classes-header {
+  margin-top: 2rem;
+}
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.class-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background: #f8f9ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 4px solid #3e5eb3;
+}
+
+.class-card:hover {
+  background: #e6edf9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.class-icon {
+  width: 40px;
+  height: 40px;
+  background: #3e5eb3;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.class-content {
+  flex: 1;
+}
+
+.class-content h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 0.25rem 0;
+}
+
+.class-count {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive design for classes grid */
+@media (max-width: 768px) {
+  .classes-grid {
+    grid-template-columns: 1fr;
+  }
+}

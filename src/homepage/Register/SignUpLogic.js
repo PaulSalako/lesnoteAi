@@ -1,6 +1,8 @@
 // src/components/SignUpLogic.js
+import { API_URL } from '../../config';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 
 export function useSignUp() {
@@ -136,7 +138,7 @@ export function useSignUp() {
       formDataToSend.append("Email", formData.email.trim().toLowerCase());
       formDataToSend.append("Password", formData.password);
       
-      const response = await fetch("https://localhost:7225/api/Auth/Register", {
+      const response = await fetch(`${API_URL}/Auth/Register`, {
         method: "POST",
         body: formDataToSend
       });

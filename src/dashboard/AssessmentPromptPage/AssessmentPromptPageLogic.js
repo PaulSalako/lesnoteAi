@@ -1,6 +1,8 @@
 // src/dashboard/components/AssessmentPromptPage/AssessmentPromptPageLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 export function useAssessmentPrompt() {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export function useAssessmentPrompt() {
         }
         
         // Using the dashboard/stats endpoint to check plan status
-        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+        const response = await fetch(`${API_URL}/Dashboard/stats`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -79,7 +81,7 @@ export function useAssessmentPrompt() {
       
       console.log("Using token:", token);
       
-      const response = await fetch('https://localhost:7225/api/Assessments', {
+      const response = await fetch(`${API_URL}/Assessments`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

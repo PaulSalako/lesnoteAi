@@ -34,6 +34,7 @@ import ManageSubject from './dashboard/ManageSubject/ManageSubject';
 import ManageTopic from './dashboard/ManageTopic/ManageTopic';
 import ManageTheme from './dashboard/ManageTheme/ManageTheme';
 import ManageLessonStructure from './dashboard/ManageLessonStructure/ManageLessonStructure';
+import ManageNote from './dashboard/ManageNote/ManageNote';
 
 
 
@@ -76,6 +77,7 @@ function App() {
               <Route path="manage-topic" element={<ManageTopic />} />
               <Route path="manage-theme" element={<ManageTheme />} />
               <Route path="manage-lesson-structure" element={<ManageLessonStructure />} />
+              <Route path="manage-note" element={<ManageNote/>} />
             </Route>
           </Routes>
         </BrowserRouter>

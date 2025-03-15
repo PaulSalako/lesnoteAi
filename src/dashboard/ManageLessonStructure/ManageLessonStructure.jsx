@@ -38,6 +38,7 @@ function ManageLessonStructure() {
     handleClassChange,
     handleSubjectChange,
     handleThemeChange,
+    handleTopicChange, // Added this handler
     handlePageChange,
     handlePageSizeChange,
     handleSearch,
@@ -107,42 +108,54 @@ function ManageLessonStructure() {
             </div>
           </div>
           {filteredClass && (
-            <div className="filter-group">
-              <label>Filter by Subject:</label>
-              <div className="select-wrapper">
-                <select 
-                  value={filteredSubject} 
-                  onChange={(e) => handleSubjectFilter(e.target.value)}
-                  className="subject-select"
-                >
-                  <option value="">All Subjects</option>
-                  {subjects.map(subject => (
-                    <option key={subject.id} value={subject.id}>
-                      {subject.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+           <div className="filter-group">
+           <label>Filter by Subject:</label>
+           <div className="select-wrapper">
+             <select
+               value={filteredSubject}
+               onChange={(e) => handleSubjectFilter(e.target.value)}
+               className="subject-select"
+             >
+               <option value="">All Subjects</option>
+               {subjects.length > 0 ? (
+                 subjects.map(subject => (
+                   <option key={subject.id} value={subject.id}>
+                     {subject.name}
+                   </option>
+                 ))
+               ) : (
+                 <option value="" disabled>No subjects available</option>
+               )}
+             </select>
+           </div>
+         </div>
           )}
           {filteredSubject && (
-            <div className="filter-group">
-              <label>Filter by Theme:</label>
-              <div className="select-wrapper">
-                <select 
-                  value={filteredTheme} 
-                  onChange={(e) => handleThemeFilter(e.target.value)}
-                  className="theme-select"
-                >
-                  <option value="">All Themes</option>
-                  {themes.map(theme => (
-                    <option key={theme.id} value={theme.id}>
-                      {theme.displayName || `Theme ${theme.themeNumber}: ${theme.name}`}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="form-group">
+            <label htmlFor="themeSelect">Theme</label>
+            <div className="select-wrapper form-select-wrapper">
+              <select
+                id="themeSelect"
+                value={newStructureData.themeId}
+                onChange={(e) => handleThemeChange(e.target.value)}
+                className="form-select"
+                disabled={showEditModal || !newStructureData.subjectId}
+              >
+                {themes.length > 0 ? (
+                  [
+                    <option key="default" value="">Select a theme</option>,
+                    ...themes.map(theme => (
+                      <option key={theme.id} value={theme.id}>
+                        {theme.displayName || theme.name || `Theme ${theme.themeNumber}`}
+                      </option>
+                    ))
+                  ]
+                ) : (
+                  <option value="">No themes available for this subject</option>
+                )}
+              </select>
             </div>
+          </div>
           )}
           {filteredSubject && (
             <div className="filter-group">
@@ -462,89 +475,165 @@ function ManageLessonStructure() {
                 <div className="form-section">
                   <h3>Select Scope</h3>
                   <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="classSelect">Class</label>
-                      <div className="select-wrapper form-select-wrapper">
-                        <select
-                          id="classSelect"
-                          value={newStructureData.classId}
-                          onChange={(e) => handleClassChange(e.target.value)}
-                          className="form-select"
-                          disabled={showEditModal}
-                        >
-                          {classes.map(classItem => (
-                            <option key={classItem.id} value={classItem.id}>
-                              {classItem.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                  <div className="form-group">
+                    <label htmlFor="classSelect">Class</label>
+                    <div className="select-wrapper form-select-wrapper">
+                      <select
+                        id="classSelect"
+                        value={newStructureData.classId}
+                        onChange={(e) => handleClassChange(e.target.value)}
+                        className="form-select"
+                        disabled={showEditModal}
+                      >
+                        <option value="" disabled>Select a class</option>
+                        {classes.length > 0 ? (
+                          <>
+                            <optgroup label="Primary Classes">
+                              {classes
+                                .filter(classItem => classItem.name.startsWith('Primary'))
+                                .sort((a, b) => {
+                                  const aNum = parseInt(a.name.replace('Primary ', ''));
+                                  const bNum = parseInt(b.name.replace('Primary ', ''));
+                                  return aNum - bNum;
+                                })
+                                .map(classItem => (
+                                  <option key={classItem.id} value={classItem.id}>
+                                    {classItem.name}
+                                  </option>
+                                ))
+                              }
+                            </optgroup>
+                            <optgroup label="Junior Secondary School">
+                              {classes
+                                .filter(classItem => classItem.name.startsWith('JSS'))
+                                .sort((a, b) => {
+                                  const aNum = parseInt(a.name.replace('JSS ', ''));
+                                  const bNum = parseInt(b.name.replace('JSS ', ''));
+                                  return aNum - bNum;
+                                })
+                                .map(classItem => (
+                                  <option key={classItem.id} value={classItem.id}>
+                                    {classItem.name}
+                                  </option>
+                                ))
+                              }
+                            </optgroup>
+                            <optgroup label="Senior Secondary School">
+                              {classes
+                                .filter(classItem => classItem.name.startsWith('SSS'))
+                                .sort((a, b) => {
+                                  const aNum = parseInt(a.name.replace('SSS ', ''));
+                                  const bNum = parseInt(b.name.replace('SSS ', ''));
+                                  return aNum - bNum;
+                                })
+                                .map(classItem => (
+                                  <option key={classItem.id} value={classItem.id}>
+                                    {classItem.name}
+                                  </option>
+                                ))
+                              }
+                            </optgroup>
+                          </>
+                        ) : (
+                          <option value="" disabled>No classes found</option>
+                        )}
+                      </select>
                     </div>
+                  </div>
                     
                     <div className="form-group">
-                      <label htmlFor="subjectSelect">Subject</label>
-                      <div className="select-wrapper form-select-wrapper">
-                        <select
-                          id="subjectSelect"
-                          value={newStructureData.subjectId}
-                          onChange={(e) => handleSubjectChange(e.target.value)}
-                          className="form-select"
-                          disabled={showEditModal || !newStructureData.classId}
-                        >
-                          {subjects.length > 0 ? (
-                            subjects.map(subject => (
-                              <option key={subject.id} value={subject.id}>
-                                {subject.name}
-                              </option>
-                            ))
-                          ) : (
-                            <option value="">Select a class first</option>
-                          )}
-                        </select>
+                        <label htmlFor="subjectSelect">Subject</label>
+                        <div className="select-wrapper form-select-wrapper">
+                          <select
+                            id="subjectSelect"
+                            value={newStructureData.subjectId}
+                            onChange={(e) => handleSubjectChange(e.target.value)}
+                            className="form-select"
+                            disabled={showEditModal || !newStructureData.classId}
+                          >
+                            <option value="" disabled>Select a subject</option>
+                            {newStructureData.classId ? (
+                              subjects.length > 0 ? (
+                                subjects.map(subject => (
+                                  <option key={subject.id} value={subject.id}>
+                                    {subject.name}
+                                  </option>
+                                ))
+                              ) : (
+                                <option value="" disabled>No subjects available for this class</option>
+                              )
+                            ) : (
+                              <option value="" disabled>Select a class first</option>
+                            )}
+                          </select>
+                        </div>
                       </div>
-                    </div>
                   </div>
                   
                   <div className="form-row">
                     <div className="form-group">
-                      <label htmlFor="themeSelect">Theme</label>
-                      <div className="select-wrapper form-select-wrapper">
-                        <select
-                          id="themeSelect"
-                          value={newStructureData.themeId}
-                          onChange={(e) => handleThemeChange(e.target.value)}
-                          className="form-select"
-                          disabled={showEditModal || !newStructureData.subjectId}
-                        >
-                          <option value="">No Theme (Subject Level)</option>
-                          {themes.length > 0 && themes.map(theme => (
-                            <option key={theme.id} value={theme.id}>
-                              {theme.displayName || `Theme ${theme.themeNumber}: ${theme.name}`}
-                            </option>
-                          ))}
-                        </select>
+                        <label htmlFor="themeSelect">Theme</label>
+                        <div className="select-wrapper form-select-wrapper">
+                          <select
+                            id="themeSelect"
+                            value={newStructureData.themeId}
+                            onChange={(e) => handleThemeChange(e.target.value)}
+                            className="form-select"
+                            disabled={showEditModal || !newStructureData.subjectId}
+                          >
+                            {themes.length > 0 ? (
+                              [
+                                <option key="default" value="" disabled>Select a theme</option>,
+                                ...themes.map(theme => (
+                                  <option key={theme.id} value={theme.id}>
+                                    {theme.displayName || theme.name || `Theme ${theme.themeNumber}`}
+                                  </option>
+                                ))
+                              ]
+                            ) : (
+                              <option value="">No themes available for this subject</option>
+                            )}
+                          </select>
+                        </div>
                       </div>
-                    </div>
                     
-                    <div className="form-group">
-                      <label htmlFor="topicSelect">Topic</label>
-                      <div className="select-wrapper form-select-wrapper">
-                        <select
-                          id="topicSelect"
-                          value={newStructureData.topicId}
-                          onChange={(e) => setNewStructureData({...newStructureData, topicId: e.target.value})}
-                          className="form-select"
-                          disabled={showEditModal || !newStructureData.subjectId}
-                        >
-                          <option value="">{newStructureData.themeId ? "No Topic (Theme Level)" : "No Topic (Subject Level)"}</option>
-                          {topics.length > 0 && topics.map(topic => (
-                            <option key={topic.id} value={topic.id}>
-                              {topic.name}
+                      <div className="form-group">
+                        <label htmlFor="topicSelect">Topic</label>
+                        <div className="select-wrapper form-select-wrapper">
+                          <select
+                            id="topicSelect"
+                            value={newStructureData.topicId}
+                            onChange={(e) => handleTopicChange(e.target.value)}
+                            className="form-select"
+                            disabled={showEditModal || !newStructureData.subjectId}
+                          >
+                            <option value="" disabled>
+                              {newStructureData.themeId 
+                                ? "No Topic (Theme Level)" 
+                                : "No Topic (Subject Level)"
+                              }
                             </option>
-                          ))}
-                        </select>
+                            {newStructureData.subjectId ? (
+                              topics.length > 0 ? (
+                                topics.map(topic => (
+                                  <option key={topic.id} value={topic.id}>
+                                    {topic.name}
+                                  </option>
+                                ))
+                              ) : (
+                                <option value="" disabled>
+                                  {newStructureData.themeId 
+                                    ? "No topics available for this theme" 
+                                    : "No topics available for this subject"
+                                  }
+                                </option>
+                              )
+                            ) : (
+                              <option value="" disabled>Select a subject first</option>
+                            )}
+                          </select>
+                        </div>
                       </div>
-                    </div>
                   </div>
                 </div>
               )}
