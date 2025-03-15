@@ -1,6 +1,8 @@
 // src/components/ManageLessonStructureLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 export function useManageLessonStructure() {
   const navigate = useNavigate();
@@ -65,7 +67,7 @@ export function useManageLessonStructure() {
       if (!token) return; // Skip if no token (handled by previous useEffect)
       
       try {
-        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+        const response = await fetch(`${API_URL}/Dashboard/stats`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -174,7 +176,7 @@ export function useManageLessonStructure() {
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch('https://localhost:7225/api/Class/all', {
+      const response = await fetch(`${API_URL}/Class/all`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -200,7 +202,7 @@ export function useManageLessonStructure() {
 
   const fetchSubjectsByClass = async (classId) => {
     try {
-      const response = await fetch(`https://localhost:7225/api/Subject/by-class/${classId}`, {
+      const response = await fetch(`${API_URL}/Subject/by-class/${classId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -221,7 +223,7 @@ export function useManageLessonStructure() {
 
   const fetchThemesBySubject = async (subjectId) => {
     try {
-      const response = await fetch(`https://localhost:7225/api/Theme/by-subject/${subjectId}`, {
+      const response = await fetch(`${API_URL}/Theme/by-subject/${subjectId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -242,7 +244,7 @@ export function useManageLessonStructure() {
 
   const fetchTopicsBySubject = async (subjectId, themeId = null) => {
     try {
-      let url = `https://localhost:7225/api/Topic/by-subject/${subjectId}`;
+      let url = `${API_URL}/Topic/by-subject/${subjectId}`;
       
       const response = await fetch(url, {
         method: 'GET',
@@ -271,7 +273,7 @@ export function useManageLessonStructure() {
   
   const fetchSubjectsForClass = async (classId) => {
     try {
-      const response = await fetch(`https://localhost:7225/api/Subject/by-class/${classId}`, {
+      const response = await fetch(`${API_URL}/Subject/by-class/${classId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -292,7 +294,7 @@ export function useManageLessonStructure() {
   
   const fetchThemesForSubject = async (subjectId) => {
     try {
-      const response = await fetch(`https://localhost:7225/api/Theme/by-subject/${subjectId}`, {
+      const response = await fetch(`${API_URL}/Theme/by-subject/${subjectId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -313,7 +315,7 @@ export function useManageLessonStructure() {
   
   const fetchTopicsForSubject = async (subjectId, themeId = null) => {
     try {
-      let url = `https://localhost:7225/api/Topic/by-subject/${subjectId}`;
+      let url = `${API_URL}/Topic/by-subject/${subjectId}`;
       
       const response = await fetch(url, {
         method: 'GET',
@@ -328,7 +330,14 @@ export function useManageLessonStructure() {
       }
   
       const result = await response.json();
-      setTopics(result);
+      
+      // If a theme is selected, filter topics for that theme
+      let filteredTopics = result;
+      if (themeId && themeId !== '') {
+        filteredTopics = result.filter(topic => topic.themeId === themeId);
+      }
+      
+      setTopics(filteredTopics);
     } catch (error) {
       console.error('Error fetching topics for subject:', error);
     }
@@ -337,7 +346,7 @@ export function useManageLessonStructure() {
   const fetchStructures = async (page) => {
     try {
       setLoading(true);
-      let url = `https://localhost:7225/api/LessonNoteStructure?page=${page}&pageSize=${pageSize}`;
+      let url = `${API_URL}/LessonNoteStructure?page=${page}&pageSize=${pageSize}`;
       
       if (filteredClass) {
         url += `&classId=${filteredClass}`;
@@ -389,7 +398,7 @@ export function useManageLessonStructure() {
     try {
       setLoading(true);
       
-      const response = await fetch(`https://localhost:7225/api/LessonNoteStructure/${structureId}`, {
+      const response = await fetch(`${API_URL}/LessonNoteStructure/${structureId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -445,7 +454,7 @@ export function useManageLessonStructure() {
       dataToSubmit.topicId = null;
     }
     try {
-      const response = await fetch('https://localhost:7225/api/LessonNoteStructure', {
+      const response = await fetch('${API_URL}/LessonNoteStructure', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -512,7 +521,7 @@ export function useManageLessonStructure() {
       assessmentItems: newStructureData.assessmentItems.filter(item => item.trim() !== '')
     };
     try {
-      const response = await fetch(`https://localhost:7225/api/LessonNoteStructure/${editingStructure.id}`, {
+      const response = await fetch(`${API_URL}/LessonNoteStructure/${editingStructure.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -583,7 +592,7 @@ export function useManageLessonStructure() {
     setDeletingStructureId(structureId);
     
     try {
-      const response = await fetch(`https://localhost:7225/api/LessonNoteStructure/${structureId}`, {
+      const response = await fetch(`${API_URL}/LessonNoteStructure/${structureId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -681,8 +690,8 @@ export function useManageLessonStructure() {
   const resetStructureForm = () => {
     // Initialize with an empty array for each section
     setNewStructureData({
-      classId: classes.length > 0 ? classes[0].id : '',
-      subjectId: subjects.length > 0 ? subjects[0].id : '',
+      classId: '', // Empty string instead of preselecting first class
+      subjectId: '',
       themeId: '',
       topicId: '',
       performanceObjectives: [''],
@@ -748,6 +757,14 @@ export function useManageLessonStructure() {
       ...newStructureData,
       themeId,
       topicId: '' // Reset topic when theme changes
+    });
+  };
+
+  // New function to handle topic changes
+  const handleTopicChange = (topicId) => {
+    setNewStructureData({
+      ...newStructureData,
+      topicId
     });
   };
 
@@ -831,6 +848,7 @@ export function useManageLessonStructure() {
     handleClassChange,
     handleSubjectChange,
     handleThemeChange,
+    handleTopicChange, // Added this handler
     handlePageChange,
     handlePageSizeChange,
     handleSearch,

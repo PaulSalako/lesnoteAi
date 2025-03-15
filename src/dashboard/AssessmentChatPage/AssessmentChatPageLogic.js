@@ -1,6 +1,8 @@
 // src/dashboard/components/AssessmentChatPage/AssessmentChatPageLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 
 export function useAssessmentChat() {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export function useAssessmentChat() {
         }
         
         // Using the dashboard/stats endpoint to check plan status
-        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+        const response = await fetch(`${API_URL}/Dashboard/stats`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -67,7 +69,7 @@ export function useAssessmentChat() {
         
         console.log('Fetching Assessment. ID:', id);
         
-        const response = await fetch(`https://localhost:7225/api/Assessments/${id}`, {
+        const response = await fetch(`${API_URL}/Assessments/${id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -162,7 +164,7 @@ export function useAssessmentChat() {
       setRegenerating(true);
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
-      const response = await fetch(`https://localhost:7225/api/Assessments/regenerate/${id}`, {
+      const response = await fetch(`${API_URL}/Assessments/regenerate/${id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -239,7 +241,7 @@ export function useAssessmentChat() {
       setNewMessage('');
       
       // Send request to API
-      const response = await fetch(`https://localhost:7225/api/Assessments/${id}/message`, {
+      const response = await fetch(`${API_URL}/Assessments/${id}/message`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

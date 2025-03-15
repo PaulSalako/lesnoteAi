@@ -1,6 +1,8 @@
 // src/components/ManageSubjectsLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 export function useManageSubjects() {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export function useManageSubjects() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [newSubjectData, setNewSubjectData] = useState({
-    classId: '',
+    classId: '', // Initialize with empty string instead of selecting first class
     subjectCount: 1,
     subjectNames: ['']
   });
@@ -46,7 +48,7 @@ export function useManageSubjects() {
       if (!token) return; // Skip if no token (handled by previous useEffect)
       
       try {
-        const response = await fetch('https://localhost:7225/api/Dashboard/stats', {
+        const response = await fetch(`${API_URL}/Dashboard/stats`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -96,7 +98,7 @@ export function useManageSubjects() {
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch('https://localhost:7225/api/Class/all', {
+      const response = await fetch(`${API_URL}/Class/all`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -111,10 +113,7 @@ export function useManageSubjects() {
       const result = await response.json();
       setClasses(result);
       
-      // Set default class for new subject form
-      if (result.length > 0) {
-        setNewSubjectData(prev => ({ ...prev, classId: result[0].id }));
-      }
+      // We no longer set a default class here
     } catch (error) {
       console.error('Error fetching classes:', error);
     }
@@ -123,7 +122,7 @@ export function useManageSubjects() {
   const fetchSubjects = async (page) => {
     try {
       setLoading(true);
-      let url = `https://localhost:7225/api/Subject?page=${page}&pageSize=${pageSize}`;
+      let url = `${API_URL}/Subject?page=${page}&pageSize=${pageSize}`;
       
       if (filteredClass) {
         url += `&classId=${filteredClass}`;
@@ -161,6 +160,14 @@ export function useManageSubjects() {
     }
   };
 
+  // NEW FUNCTION: Handle class change in the form
+  const handleClassChange = (classId) => {
+    setNewSubjectData({
+      ...newSubjectData,
+      classId
+    });
+  };
+
   const handleAddSubjects = async () => {
     // Validate inputs
     if (!newSubjectData.classId) {
@@ -177,7 +184,7 @@ export function useManageSubjects() {
     }
 
     try {
-      const response = await fetch('https://localhost:7225/api/Subject/batch', {
+      const response = await fetch(`${API_URL}/Subject/batch`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -213,7 +220,7 @@ export function useManageSubjects() {
       
       // Reset form and close modal
       setNewSubjectData({
-        classId: classes.length > 0 ? classes[0].id : '',
+        classId: '', // Reset to empty string
         subjectCount: 1,
         subjectNames: ['']
       });
@@ -244,7 +251,7 @@ export function useManageSubjects() {
     }
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Subject/${editingSubject.id}`, {
+      const response = await fetch(`${API_URL}/Subject/${editingSubject.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -317,7 +324,7 @@ export function useManageSubjects() {
     setDeletingSubjectId(subjectId);
 
     try {
-      const response = await fetch(`https://localhost:7225/api/Subject/${subjectId}`, {
+      const response = await fetch(`${API_URL}/Subject/${subjectId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -326,25 +333,68 @@ export function useManageSubjects() {
       });
 
       if (!response.ok) {
-        // Try to parse error message
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to delete subject');
-      }
-
-      // Show success message
-      Swal.fire({
-        title: 'Deleted!',
-        text: 'Subject deleted successfully',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
-      
-      // If it's the last item on the current page, go to previous page
-      if (subjects.length === 1 && currentPage > 1) {
-        setCurrentPage(prev => prev - 1);
+        
+        // If there are details about related content
+        if (errorData.details) {
+          let contentAreas = [];
+          
+          if (errorData.details.hasThemes) {
+            contentAreas.push(`Themes (${errorData.details.themesCount})`);
+          }
+          if (errorData.details.hasTopics) {
+            contentAreas.push(`Topics (${errorData.details.topicsCount})`);
+          }
+          if (errorData.details.hasStructures) {
+            contentAreas.push(`Lesson Structures (${errorData.details.structuresCount})`);
+          }
+          if (errorData.details.hasLessonNotes) {
+            contentAreas.push(`Lesson Notes (${errorData.details.lessonNotesCount})`);
+          }
+          if (errorData.details.hasLessonPlans) {
+            contentAreas.push(`Lesson Plans (${errorData.details.lessonPlansCount})`);
+          }
+          if (errorData.details.hasAssessments) {
+            contentAreas.push(`Assessments (${errorData.details.assessmentsCount})`);
+          }
+          
+          Swal.fire({
+            title: 'Cannot Delete Subject',
+            html: `
+              <p>This subject is used in the following areas:</p>
+              <ul>
+                ${contentAreas.map(area => `<li>${area}</li>`).join('')}
+              </ul>
+              <p>Please remove these references before deleting this subject.</p>
+            `,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+          // Generic error if no details
+          Swal.fire({
+            title: 'Error',
+            text: errorData.message || 'Failed to delete subject',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
       } else {
-        // Refresh the current page
-        fetchSubjects(currentPage);
+        // Success case - subject was deleted
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Subject deleted successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        
+        // If it's the last item on the current page, go to previous page
+        if (subjects.length === 1 && currentPage > 1) {
+          setCurrentPage(prev => prev - 1);
+        } else {
+          // Refresh the current page
+          fetchSubjects(currentPage);
+        }
       }
 
     } catch (error) {
@@ -369,8 +419,9 @@ export function useManageSubjects() {
   };
 
   const openAddModal = () => {
+    // Initialize the form with empty class selection instead of default
     setNewSubjectData({
-      classId: classes.length > 0 ? classes[0].id : '',
+      classId: '', // Set to empty string to force user to select
       subjectCount: 1,
       subjectNames: ['']
     });
@@ -488,6 +539,7 @@ export function useManageSubjects() {
     newSubjectData,
     formError,
     getGroupedClasses,
+    handleClassChange,
     handleSubjectCountChange,
     handleSubjectNameChange,
     handlePageChange,
@@ -502,6 +554,8 @@ export function useManageSubjects() {
     handleAddSubjects,
     handleEditSubject,
     handleDelete,
-    handleRetry
+    handleRetry,
+    setNewSubjectName,
+    setNewSubjectData
   };
 }

@@ -1,39 +1,31 @@
 import React from 'react';
-import { ManageUsersLogic } from './ManageUsersLogic';
-import './ManageUsers.css';
+import { ManageNoteLogic } from './ManageNoteLogic';
+import './ManageNote.css';
 
-function ManageUsers() {
+function ManageNote() {
   const {
     loading,
     error,
-    filteredUsers,
+    filteredNotes,
     searchTerm,
-    deletingUserId,
-    updatingUserId,
-    isAdmin,
+    deletingNoteId,
     currentPage,
     totalPages,
     pageSize,
     totalCount,
-    roleOptions,
-    fetchUsers,
+    navigate,
+    fetchNotes,
     handleDelete,
-    handleRoleChange,
     handlePageChange,
     handlePageSizeChange,
-    handleSearchChange
-  } = ManageUsersLogic();
-
-  // Early return pattern: If not admin or still checking, show minimal loading state
-  if (!isAdmin) {
-    return null; // Return nothing while checking admin status or redirecting
-  }
+    handleSearchInputChange
+  } = ManageNoteLogic();
 
   if (loading) {
     return (
       <div className="loading-state">
         <i className="bi bi-arrow-clockwise spinning"></i>
-        <p>Loading users...</p>
+        <p>Loading notes...</p>
       </div>
     );
   }
@@ -43,7 +35,7 @@ function ManageUsers() {
       <div className="error-state">
         <i className="bi bi-exclamation-circle"></i>
         <p>{error}</p>
-        <button onClick={() => fetchUsers(currentPage)} className="retry-button">
+        <button onClick={() => fetchNotes(currentPage)} className="retry-button">
           <i className="bi bi-arrow-clockwise"></i> Retry
         </button>
       </div>
@@ -51,23 +43,30 @@ function ManageUsers() {
   }
 
   return (
-    <div className="users-page">
-      <div className="users-header">
-        <h1>Manage Users</h1>
+    <div className="notes-page">
+      <div className="notes-header">
+        <h1>Manage Notes</h1>
         <div className="header-actions">
           <div className="search-bar">
             <i className="bi bi-search"></i>
             <input
               type="text"
-              placeholder="Search users..."
+              placeholder="Search notes..."
               value={searchTerm}
-              onChange={handleSearchChange}
+              onChange={handleSearchInputChange}
             />
           </div>
+          <button 
+            className="new-note-btn"
+            onClick={() => navigate('/dashboard/lesson-note')}
+          >
+            <i className="bi bi-plus-lg"></i>
+            New Note
+          </button>
         </div>
       </div>
 
-      <div className="users-table-container">
+      <div className="notes-table-container">
         <div className="table-controls">
           <div className="page-size-selector">
             <label>Show</label>
@@ -81,74 +80,60 @@ function ManageUsers() {
           </div>
         </div>
 
-        <table className="users-table">
+        <table className="notes-table">
           <thead>
             <tr>
               <th>S/N</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Email Verified</th>
+              <th>Subject</th>
+              <th>Topic</th>
               <th>Created Date</th>
+              <th>Owner</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.length > 0 ? (
-              filteredUsers.map((user, index) => (
-                <tr key={user.id}>
+            {console.log('Notes rendering:', {
+              filteredNotes, 
+              filteredNotesLength: filteredNotes.length, 
+              searchTerm
+            }) || filteredNotes.length > 0 ? (
+              filteredNotes.map((note, index) => (
+                <tr key={note.id}>
                   <td>{((currentPage - 1) * pageSize) + index + 1}</td>
-                  <td>{`${user.firstName} ${user.surname}`}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    <div className="role-selector">
-                      <select
-                        value={user.roleId}
-                        onChange={(e) => handleRoleChange(user.id, parseInt(e.target.value))}
-                        disabled={updatingUserId === user.id}
-                        className={user.roleName === "Admin" ? "admin-role" : user.roleName === "Staff" ? "staff-role" : "user-role"}
-                      >
-                        {roleOptions.map(role => (
-                          <option key={role.id} value={role.id}>{role.name}</option>
-                        ))}
-                      </select>
-                      {updatingUserId === user.id && (
-                        <i className="bi bi-arrow-clockwise spinning role-spinner"></i>
-                      )}
-                    </div>
-                  </td>
-                  <td className="verified-cell">
-                    {user.isEmailVerified ? (
-                      <span className="verified"><i className="bi bi-check-circle-fill"></i> Verified</span>
-                    ) : (
-                      <span className="not-verified"><i className="bi bi-x-circle-fill"></i> Not Verified</span>
-                    )}
-                  </td>
-                  <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td>{note.subject}</td>
+                  <td>{note.topic}</td>
+                  <td>{new Date(note.date).toLocaleDateString()}</td>
+                  <td>{note.isOwner ? 'You' : note.ownerName || 'User'}</td>
                   <td className="actions-cell">
                     <button 
-                      className={`delete-btn ${deletingUserId === user.id ? 'deleting' : ''}`}
-                      onClick={() => handleDelete(user.id)}
-                      disabled={deletingUserId === user.id || user.roleName === "Admin"}
-                      title={user.roleName === "Admin" ? "Cannot delete admin users" : "Delete user"}
+                      className="view-btn"
+                      onClick={() => navigate(`/dashboard/note-chat/${note.id}`)}
                     >
-                      <i className={`bi ${deletingUserId === user.id ? 'bi-hourglass-split' : 'bi-trash'}`}></i>
+                      <i className="bi bi-eye"></i>
+                    </button>
+                    {/* Admin can delete any note */}
+                    <button 
+                      className={`delete-btn ${deletingNoteId === note.id ? 'deleting' : ''}`}
+                      onClick={() => handleDelete(note.id)}
+                      disabled={deletingNoteId === note.id}
+                    >
+                      <i className={`bi ${deletingNoteId === note.id ? 'bi-hourglass-split' : 'bi-trash'}`}></i>
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="empty-state">
-                  <i className="bi bi-people"></i>
-                  <p>{searchTerm ? 'No matches found' : 'No users found'}</p>
+                <td colSpan="6" className="empty-state">
+                  <i className="bi bi-journal-text"></i>
+                  <p>{searchTerm ? 'No matches found' : 'No notes yet'}</p>
                 </td>
               </tr>
             )}
           </tbody>
         </table>
 
-        {filteredUsers.length > 0 && (
+        {filteredNotes.length > 0 && (
           <div className="pagination-controls">
             <div className="pagination-info">
               Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} entries
@@ -191,4 +176,4 @@ function ManageUsers() {
   );
 }
 
-export default ManageUsers;
+export default ManageNote;

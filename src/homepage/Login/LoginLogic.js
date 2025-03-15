@@ -1,6 +1,9 @@
 // src/components/LoginLogic.js
+import { API_URL } from '../../config';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -84,7 +87,7 @@ export function useLogin() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://localhost:7225/api/Auth/login", {
+      const response = await fetch(`${API_URL}/Auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

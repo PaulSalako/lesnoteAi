@@ -23,6 +23,7 @@ function ManageSubjects() {
     newSubjectData,
     formError,
     getGroupedClasses,
+    handleClassChange, // Make sure to include the new handler
     handleSubjectCountChange,
     handleSubjectNameChange,
     handlePageChange,
@@ -37,7 +38,8 @@ function ManageSubjects() {
     handleAddSubjects,
     handleEditSubject,
     handleDelete,
-    handleRetry
+    handleRetry,
+    setNewSubjectName
   } = useManageSubjects();
 
   // Early return pattern: If not admin or still checking, show minimal loading state
@@ -251,12 +253,13 @@ function ManageSubjects() {
               <div className="form-group">
                 <label htmlFor="classSelect">Select Class</label>
                 <div className="select-wrapper modal-select-wrapper">
-                  <select
+                <select
                     id="classSelect"
                     value={newSubjectData.classId}
-                    onChange={(e) => setNewSubjectData({...newSubjectData, classId: e.target.value})}
+                    onChange={(e) => handleClassChange(e.target.value)}
                     className="modal-select"
                   >
+                    <option value="" disabled>Select a class</option>
                     {classes.length > 0 ? (
                       <>
                         {/* Primary Classes */}

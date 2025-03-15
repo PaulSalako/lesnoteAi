@@ -1,11 +1,14 @@
 // src/components/ForgotPasswordLogic.js
+import { API_URL } from '../../config';
 import { useState } from "react";
+
 
 export function useForgotPassword() {
   const [email, setEmail] = useState("");
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  
 
   // Validate email format
   const validateEmail = (email) => {
@@ -31,7 +34,7 @@ export function useForgotPassword() {
     setError(null);
 
     try {
-      const response = await fetch("https://localhost:7225/api/Auth/forgot-password", {
+      const response = await fetch(`${API_URL}/Auth/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

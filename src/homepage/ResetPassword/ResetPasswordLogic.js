@@ -1,6 +1,8 @@
 // src/components/ResetPasswordLogic.js
+import { API_URL } from '../../config';
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+
 
 export function useResetPassword() {
   const [searchParams] = useSearchParams();
@@ -67,7 +69,7 @@ export function useResetPassword() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("https://localhost:7225/api/Auth/reset-password-with-token", {
+      const response = await fetch(`${API_URL}/Auth/reset-password-with-token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
