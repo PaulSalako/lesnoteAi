@@ -66,7 +66,8 @@ function NoteSearchPage() {
     try {
       setLoadingClasses(true);
       // Change the endpoint to get all available classes, not just user-specific ones
-      const response = await fetch('https://localhost:7225/api/Class/all', {
+      // const response = await fetch('https://localhost:7225/api/Class/all', {
+        const response = await fetch('https://localhost:7225/api/Class/user-classes', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

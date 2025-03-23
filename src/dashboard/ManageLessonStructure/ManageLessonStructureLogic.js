@@ -454,7 +454,7 @@ export function useManageLessonStructure() {
       dataToSubmit.topicId = null;
     }
     try {
-      const response = await fetch('${API_URL}/LessonNoteStructure', {
+      const response = await fetch(`${API_URL}/LessonNoteStructure`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
