@@ -1,4 +1,5 @@
 // src/dashboard/components/NoteSearchPage/NoteSearchPage.jsx
+import { API_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NoteSearchPage.css';
@@ -66,7 +67,7 @@ function NoteSearchPage() {
     try {
       setLoadingClasses(true);
       // Change the endpoint to get all available classes, not just user-specific ones
-      const response = await fetch('https://localhost:7225/api/Class/all', {
+      const response = await fetch(`${API_URL}/Class/all`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -76,7 +77,7 @@ function NoteSearchPage() {
 
       if (!response.ok) {
         // Fallback to user-classes if all-classes endpoint doesn't exist
-        const fallbackResponse = await fetch('https://localhost:7225/api/Class/user-classes', {
+        const fallbackResponse = await fetch(`${API_URL}/class/user-classes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -113,7 +114,7 @@ function NoteSearchPage() {
   const fetchSubjects = async (classId) => {
     try {
       setLoadingSubjects(true);
-      const response = await fetch(`https://localhost:7225/api/Subject/by-class/${classId}`, {
+      const response = await fetch(`${API_URL}/Subject/by-class/${classId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -147,7 +148,7 @@ function NoteSearchPage() {
   const fetchTopics = async (subjectId) => {
     try {
       setLoadingTopics(true);
-      const response = await fetch(`https://localhost:7225/api/Topic/by-subject/${subjectId}`, {
+      const response = await fetch(`${API_URL}/Topic/by-subject/${subjectId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -216,7 +217,7 @@ function NoteSearchPage() {
       console.log('Search parameters:', searchData);
       
       // Search for available notes - Updated to use a general search endpoint
-      const response = await fetch('https://localhost:7225/api/LessonNotes/search-all', {
+      const response = await fetch(`${API_URL}/LessonNotes/search-all`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -227,7 +228,7 @@ function NoteSearchPage() {
       
       // If search-all endpoint doesn't exist, fall back to regular search
       if (response.status === 404) {
-        const fallbackResponse = await fetch('https://localhost:7225/api/LessonNotes/search', {
+        const fallbackResponse = await fetch(`${API_URL}/LessonNotes/search`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -283,7 +284,7 @@ function NoteSearchPage() {
       setLoadingNote(true);
       
       // Fetch the full note data
-      const response = await fetch(`https://localhost:7225/api/LessonNotes/${noteId}`, {
+      const response = await fetch(`${API_URL}/LessonNotes/${noteId}`, { 
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

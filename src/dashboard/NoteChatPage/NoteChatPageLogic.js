@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { saveAs } from 'file-saver';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, BorderStyle } from 'docx';
+
 
 export function NoteChatPageLogic() {
   const navigate = useNavigate();
