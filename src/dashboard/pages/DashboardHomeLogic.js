@@ -220,6 +220,16 @@ export function useDashboardHome() {
     return stats.roleId === 1 || stats.roleId === 2; // Admin or Staff role
   };
 
+  // NEW: Function to determine if user can manage topics, structures, themes, and notes
+  const canManageContent = () => {
+    return stats.roleId === 1 || stats.roleId === 2; // Admin or Staff role
+  };
+
+  // Function to determine if user can manage users and classes
+  const canManageUsersAndClasses = () => {
+    return stats.roleId === 1; // Only Admin role
+  };
+
   // Function to determine if the user is a regular user
   const isRegularUser = () => {
     return stats.roleId === 3; // User role
@@ -368,6 +378,8 @@ export function useDashboardHome() {
     hasAdminAccess,
     hasStaffAccess,
     isRegularUser,
+    canManageContent,
+    canManageUsersAndClasses,
     navigate,
     handleRetry,
     toggleUpgradeModal,

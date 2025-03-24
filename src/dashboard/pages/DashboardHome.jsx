@@ -17,6 +17,8 @@ function DashboardHome() {
     hasAdminAccess,
     hasStaffAccess,
     isRegularUser,
+    canManageContent,
+    canManageUsersAndClasses,
     navigate,
     handleRetry,
     setShowUpgradeModal
@@ -123,8 +125,8 @@ function DashboardHome() {
             Create Lesson Note
           </button>
           
-          {/* Admin-only buttons */}
-          {hasAdminAccess() && (
+          {/* Admin-only buttons for user and class management */}
+          {canManageUsersAndClasses() && (
             <>
               <button 
                 className="create-button admin"
@@ -149,9 +151,14 @@ function DashboardHome() {
                 <i className="bi bi-book"></i>
                 Manage Subject
               </button>
+            </>
+          )}
 
+          {/* Content management buttons - Available to both Admin and Staff */}
+          {canManageContent() && (
+            <>
               <button 
-                className="create-button admin"
+                className="create-button staff"
                 onClick={() => navigate('manage-theme')}
               >
                 <i className="bi bi-journal-text"></i>
@@ -159,7 +166,7 @@ function DashboardHome() {
               </button>
 
               <button 
-                className="create-button admin"
+                className="create-button staff"
                 onClick={() => navigate('manage-topic')}
               >
                 <i className="bi bi-journal-text"></i>
@@ -167,7 +174,7 @@ function DashboardHome() {
               </button>
 
               <button 
-                className="create-button admin"
+                className="create-button staff"
                 onClick={() => navigate('manage-lesson-structure')}
               >
                 <i className="bi bi-journal-text"></i>
@@ -175,7 +182,7 @@ function DashboardHome() {
               </button>
 
               <button 
-                className="create-button admin"
+                className="create-button staff"
                 onClick={() => navigate('manage-note')}
               >
                 <i className="bi bi-journal-text"></i>
@@ -289,11 +296,20 @@ function DashboardHome() {
                 <li><i className="bi bi-check-circle"></i> Access Lesson Notes</li>
                 <li><i className="bi bi-check-circle"></i> View Lesson Plans</li>
                 <li><i className="bi bi-check-circle"></i> Access Assessments</li>
-                {hasStaffAccess() && (
-                  <li><i className="bi bi-check-circle"></i> Content Management</li>
+                {canManageContent() && (
+                  <>
+                    <li><i className="bi bi-check-circle"></i> Manage Topics</li>
+                    <li><i className="bi bi-check-circle"></i> Manage Themes</li>
+                    <li><i className="bi bi-check-circle"></i> Manage Structures</li>
+                    <li><i className="bi bi-check-circle"></i> Manage Notes</li>
+                  </>
                 )}
-                {hasAdminAccess() && (
-                  <li><i className="bi bi-check-circle"></i> Full Admin Access</li>
+                {canManageUsersAndClasses() && (
+                  <>
+                    <li><i className="bi bi-check-circle"></i> Manage Users</li>
+                    <li><i className="bi bi-check-circle"></i> Manage Classes</li>
+                    <li><i className="bi bi-check-circle"></i> Manage Subjects</li>
+                  </>
                 )}
               </ul>
             </div>

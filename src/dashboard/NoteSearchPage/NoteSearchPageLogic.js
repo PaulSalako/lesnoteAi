@@ -4,6 +4,7 @@ import { useNoteSearchPage } from './NoteSearchPageLogic';
 import NoteViewModal from './NoteViewModal';
 import './NoteSearchPage.css';
 
+
 function NoteSearchPage() {
   const {
     isLoading,
