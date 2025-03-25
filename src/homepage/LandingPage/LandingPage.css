@@ -1,5 +1,14 @@
 /* src/components/LandingPage.css */
 
+.logo-text{
+  color: #5c142a;
+}
+
+.button{
+  background-color: #571328;
+  color: #ffffff;
+}
+
 /* Hero Section Styles */
 .hero-section {
   position: relative;

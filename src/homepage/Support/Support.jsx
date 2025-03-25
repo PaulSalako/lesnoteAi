@@ -35,7 +35,7 @@ function Support() {
               Video demonstrations
             </li>
           </ul>
-          <a href="/help" className="btn btn-outline-primary rounded-pill px-4">
+          <a href="/help" className="btn support-btn rounded-pill px-4">
             Visit Help Center
           </a>
         </div>
@@ -63,7 +63,7 @@ function Support() {
               Quick response time
             </li>
           </ul>
-          <a href="mailto:lesnoteai@gmail.com" className="btn btn-outline-primary rounded-pill px-4">
+          <a href="mailto:lesnoteai@gmail.com" className="support-btn rounded-pill px-4">
             Email Us
           </a>
         </div>
@@ -91,7 +91,7 @@ function Support() {
               Instant responses
             </li>
           </ul>
-          <button className="btn btn-outline-primary rounded-pill px-4">
+          <button className="btn support-btn rounded-pill px-4">
             Start Chat
           </button>
         </div>

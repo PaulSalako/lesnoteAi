@@ -41,7 +41,7 @@ function Navbar() {
             height="40" 
             className="me-2"
           />
-          <span className="fs-3 fw-bold text-primary">LesNoteAI</span>
+          <span className="fs-3 fw-bold logo-text">LesNoteAI</span>
         </a>
 
         {/* Mobile Toggle Button */}
@@ -77,15 +77,6 @@ function Navbar() {
             <li className="nav-item">
               <a 
                 className="nav-link"
-                onClick={() => scrollToSection('pricing')}
-                role="button"
-              >
-                Pricing
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                className="nav-link"
                 onClick={() => scrollToSection('testimonials')}
                 role="button"
               >
@@ -114,7 +105,7 @@ function Navbar() {
               <a href="/sign-in" className="btn btn-success rounded-pill px-4">Login</a>
             </li>
             <li className="nav-item ms-lg-2">
-              <a className="btn btn-primary rounded-pill px-4" href="/sign-up">
+              <a className="btn rounded-pill px-4 button" href="/sign-up">
                 Get Started
               </a>
             </li>

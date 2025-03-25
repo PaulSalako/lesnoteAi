@@ -11,6 +11,15 @@
     margin-bottom: 1rem;
   }
   
+  .wel-text{
+    color: #571328;
+  }
+
+  .hero-btn{
+    background-color: #571328;
+    color: #ffffff;
+  }
+  
   .typing-container {
     min-height: 120px;
   }
