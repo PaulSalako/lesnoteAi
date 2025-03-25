@@ -80,6 +80,17 @@
     color: #8a2be2;
     font-size: 1.2rem;
   }
+
+  .support-btn{
+    color: #5c142a;
+    border: 1px #5c142a solid;
+    padding: 8px 18px 8px 18px ;
+  }
+
+  .support-btn:hover{
+    background-color: #5c142a;
+    color: white;
+  }
   
   @media (max-width: 991.98px) {
     .support-card {
