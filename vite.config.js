@@ -1,18 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "./", // Ensures relative paths for assets
+  server: {
+    https: true
+  },
+  build: {
+    outDir: "dist", // Make sure Vite outputs to "dist"
+    emptyOutDir: true, // Clears old builds before new ones
+  }
 })
-
-
-// import { defineConfig } from 'vite'
-// import react from '@vitejs/plugin-react'
-
-// export default defineConfig({
-//   plugins: [react()],
-//   server: {
-//     https: true
-//   }
-// })
